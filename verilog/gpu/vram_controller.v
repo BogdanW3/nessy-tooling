@@ -1,20 +1,21 @@
-// Copyright (C) 1991-2013 Altera Corporation
-// Your use of Altera Corporation's design tools, logic functions 
-// and other software and tools, and its AMPP partner logic 
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
 // (including device programming or simulation files), and any 
 // associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License 
-// Subscription Agreement, Altera MegaCore Function License 
-// Agreement, or other applicable license agreement, including, 
-// without limitation, that your use is for the sole purpose of 
-// programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the 
-// applicable agreement for further details.
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
 
-// PROGRAM		"Quartus II 64-Bit"
-// VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 21:15:05 2023"
+// PROGRAM		"Quartus Prime"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Thu Aug  3 23:56:13 2023"
 
 module vram_controller(
 	read_scanline,
@@ -539,13 +540,16 @@ REG12_LD_CL	b2v_inst82(
 	
 	.DOUT(SDRAM_A));
 
+assign	OUT_DESL = L;
+
+
 assign	SYNTHESIZED_WIRE_34 = ~(POWERON_STABLE_CNT[15] | POWERON_STABLE_CNT[13] | POWERON_STABLE_CNT[14] | POWERON_STABLE_CNT[12] | POWERON_STABLE_CNT[10] | POWERON_STABLE_CNT[11] | POWERON_STABLE_CNT[9] | POWERON_STABLE_CNT[8]);
 
 assign	SYNTHESIZED_WIRE_35 = ~(POWERON_STABLE_CNT[7] | POWERON_STABLE_CNT[5] | POWERON_STABLE_CNT[6] | POWERON_STABLE_CNT[4] | POWERON_STABLE_CNT[2] | POWERON_STABLE_CNT[3] | POWERON_STABLE_CNT[1] | POWERON_STABLE_CNT[0]);
 
 assign	CMD_LD_INIT = SYNTHESIZED_WIRE_34 & SYNTHESIZED_WIRE_35;
 
-assign	CMD_LD = CMD_LD_STATE_UPDATE | CMD_LD_POWERON1 | CMD_LD_INIT;
+assign	CMD_LD = CMD_LD_STATE_UPDATE | CMD_LD_POWERON1 | CMD_LD_INIT | L | L | L | L | L | L | L | L | L;
 
 
 DC16	b2v_inst9(

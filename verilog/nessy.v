@@ -1,26 +1,26 @@
-// Copyright (C) 1991-2013 Altera Corporation
-// Your use of Altera Corporation's design tools, logic functions 
-// and other software and tools, and its AMPP partner logic 
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
 // (including device programming or simulation files), and any 
 // associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License 
-// Subscription Agreement, Altera MegaCore Function License 
-// Agreement, or other applicable license agreement, including, 
-// without limitation, that your use is for the sole purpose of 
-// programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the 
-// applicable agreement for further details.
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
 
-// PROGRAM		"Quartus II 64-Bit"
-// VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:47:38 2023"
+// PROGRAM		"Quartus Prime"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Thu Aug  3 23:57:02 2023"
 
 module nessy(
 	CLK,
-	PS2_CLK,
 	PS2_DATA,
-	SDRAM_CLK,
+	PS2_CLK,
 	SDRAM_CKE,
 	nSDRAM_CS,
 	nSDRAM_RAS,
@@ -30,6 +30,7 @@ module nessy(
 	SDRAM_LDQM,
 	VGA_VS,
 	VGA_HS,
+	SDRAM_CLK,
 	LED,
 	SDRAM_A,
 	SDRAM_BA,
@@ -41,9 +42,8 @@ module nessy(
 
 
 input wire	CLK;
-input wire	PS2_CLK;
 input wire	PS2_DATA;
-output wire	SDRAM_CLK;
+input wire	PS2_CLK;
 output wire	SDRAM_CKE;
 output wire	nSDRAM_CS;
 output wire	nSDRAM_RAS;
@@ -53,6 +53,7 @@ output wire	SDRAM_UDQM;
 output wire	SDRAM_LDQM;
 output wire	VGA_VS;
 output wire	VGA_HS;
+output wire	SDRAM_CLK;
 output wire	[7:0] LED;
 output wire	[11:0] SDRAM_A;
 output wire	[1:0] SDRAM_BA;
@@ -63,20 +64,28 @@ output wire	[3:0] VGA_R;
 
 wire	[15:0] A;
 wire	[7:0] D;
+wire	GPU_nCS;
 wire	H;
 wire	L;
+wire	nNMI;
 wire	OUT0;
+wire	RAM_nCS;
 wire	SYNTHESIZED_WIRE_0;
 wire	SYNTHESIZED_WIRE_1;
-wire	[7:0] SYNTHESIZED_WIRE_2;
+wire	SYNTHESIZED_WIRE_2;
+wire	[7:0] SYNTHESIZED_WIRE_3;
 
 
 
 
 
 gpu	b2v_inst(
+	.nCS(GPU_nCS),
 	.CLK(CLK),
+	.A(A[2:0]),
+	.D(D),
 	.SDRAM_DQ(SDRAM_DQ),
+	.nNMI(nNMI),
 	.SDRAM_CLK(SDRAM_CLK),
 	.SDRAM_CKE(SDRAM_CKE),
 	.nSDRAM_CS(nSDRAM_CS),
@@ -87,6 +96,7 @@ gpu	b2v_inst(
 	.SDRAM_LDQM(SDRAM_LDQM),
 	.VGA_VS(VGA_VS),
 	.VGA_HS(VGA_HS),
+	
 	.SDRAM_A(SDRAM_A),
 	.SDRAM_BA(SDRAM_BA),
 	
@@ -95,32 +105,46 @@ gpu	b2v_inst(
 	.VGA_R(VGA_R));
 
 
+assign	GPU_nCS = A[14] | SYNTHESIZED_WIRE_0 | A[15];
 
+assign	SYNTHESIZED_WIRE_0 =  ~A[13];
 
-REG8_INC_CL	b2v_inst3(
-	.CLK(CLK),
-	.INC(H),
-	.CL(L),
-	.DOUT(LED));
 
 
 kb_controller	b2v_inst4(
 	.PS2_CLK(PS2_CLK),
 	.PS2_DATA(PS2_DATA),
 	.CLK(CLK),
-	.INTA(SYNTHESIZED_WIRE_0),
-	.INTR(SYNTHESIZED_WIRE_1),
-	.Q(SYNTHESIZED_WIRE_2));
+	.INTA(SYNTHESIZED_WIRE_1),
+	.INTR(SYNTHESIZED_WIRE_2),
+	.Q(SYNTHESIZED_WIRE_3));
 
 
 kb_gamepad_bridge	b2v_inst5(
-	.CPU_OUT0(OUT0),
-	.KBINTR(SYNTHESIZED_WIRE_1),
+	.KBINTR(SYNTHESIZED_WIRE_2),
 	.CLK(CLK),
+	.OUT0(OUT0),
+	.ADDR(A),
+	.KEY(SYNTHESIZED_WIRE_3),
+	.KBINTA(SYNTHESIZED_WIRE_1),
+	.DATA(D));
+
+
+
+cpu	b2v_inst9(
+	.nNMI(nNMI),
 	.A(A),
-	.KEY(SYNTHESIZED_WIRE_2),
-	.KBINTA(SYNTHESIZED_WIRE_0)
+	.D(D),
+	.OUT0(OUT0)
+	
 	);
+
+
+REG8_INC_CL	b2v_test_reg-remove(
+	.CLK(CLK),
+	.INC(H),
+	.CL(L),
+	.DOUT(LED));
 
 assign	H = 1;
 assign	L = 0;

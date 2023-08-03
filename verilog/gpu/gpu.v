@@ -1,23 +1,26 @@
-// Copyright (C) 1991-2013 Altera Corporation
-// Your use of Altera Corporation's design tools, logic functions 
-// and other software and tools, and its AMPP partner logic 
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
 // (including device programming or simulation files), and any 
 // associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License 
-// Subscription Agreement, Altera MegaCore Function License 
-// Agreement, or other applicable license agreement, including, 
-// without limitation, that your use is for the sole purpose of 
-// programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the 
-// applicable agreement for further details.
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
 
-// PROGRAM		"Quartus II 64-Bit"
-// VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 21:15:03 2023"
+// PROGRAM		"Quartus Prime"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Fri Aug  4 00:10:40 2023"
 
 module gpu(
 	CLK,
+	nCS,
+	A,
 	SDRAM_CLK,
 	SDRAM_CKE,
 	nSDRAM_CS,
@@ -28,6 +31,8 @@ module gpu(
 	SDRAM_LDQM,
 	VGA_VS,
 	VGA_HS,
+	nNMI,
+	D,
 	SDRAM_A,
 	SDRAM_BA,
 	SDRAM_DQ,
@@ -38,6 +43,8 @@ module gpu(
 
 
 input wire	CLK;
+input wire	nCS;
+input wire	[2:0] A;
 output wire	SDRAM_CLK;
 output wire	SDRAM_CKE;
 output wire	nSDRAM_CS;
@@ -48,6 +55,8 @@ output wire	SDRAM_UDQM;
 output wire	SDRAM_LDQM;
 output wire	VGA_VS;
 output wire	VGA_HS;
+output wire	nNMI;
+inout wire	[7:0] D;
 output wire	[11:0] SDRAM_A;
 output wire	[1:0] SDRAM_BA;
 inout wire	[15:0] SDRAM_DQ;
@@ -55,12 +64,15 @@ output wire	[3:0] VGA_B;
 output wire	[3:0] VGA_G;
 output wire	[3:0] VGA_R;
 
+wire	A_STATUSREG;
 wire	[3:0] B;
 wire	DRAW;
 wire	[3:0] G;
 wire	H;
 wire	L;
+wire	noX;
 wire	[3:0] R;
+wire	VBLANK_START;
 wire	[19:0] VRAM_A;
 wire	[15:0] VRAM_D;
 wire	VRAM_READ;
@@ -81,6 +93,8 @@ wire	Y_END;
 wire	[15:0] Y_FP;
 wire	[15:0] Y_SP;
 wire	[15:0] Y_VIS;
+reg	SRFF_NMI_occured;
+reg	DFFE_NMI_output;
 wire	SYNTHESIZED_WIRE_0;
 wire	SYNTHESIZED_WIRE_1;
 wire	SYNTHESIZED_WIRE_2;
@@ -90,15 +104,61 @@ wire	SYNTHESIZED_WIRE_5;
 wire	SYNTHESIZED_WIRE_6;
 wire	SYNTHESIZED_WIRE_7;
 wire	SYNTHESIZED_WIRE_8;
+wire	SYNTHESIZED_WIRE_9;
+wire	SYNTHESIZED_WIRE_10;
+wire	SYNTHESIZED_WIRE_11;
+wire	SYNTHESIZED_WIRE_12;
 
-wire	[3:0] GDFX_TEMP_SIGNAL_0;
-wire	[3:0] GDFX_TEMP_SIGNAL_1;
-wire	[3:0] GDFX_TEMP_SIGNAL_2;
+wire	[7:0] GDFX_TEMP_SIGNAL_11;
+wire	[15:0] GDFX_TEMP_SIGNAL_7;
+wire	[15:0] GDFX_TEMP_SIGNAL_6;
+wire	[15:0] GDFX_TEMP_SIGNAL_5;
+wire	[15:0] GDFX_TEMP_SIGNAL_4;
+wire	[15:0] GDFX_TEMP_SIGNAL_3;
+wire	[15:0] GDFX_TEMP_SIGNAL_2;
+wire	[15:0] GDFX_TEMP_SIGNAL_1;
+wire	[15:0] GDFX_TEMP_SIGNAL_0;
+wire	[3:0] GDFX_TEMP_SIGNAL_8;
+wire	[3:0] GDFX_TEMP_SIGNAL_9;
+wire	[3:0] GDFX_TEMP_SIGNAL_10;
 
 
-assign	GDFX_TEMP_SIGNAL_0 = {DRAW,DRAW,DRAW,DRAW};
-assign	GDFX_TEMP_SIGNAL_1 = {DRAW,DRAW,DRAW,DRAW};
-assign	GDFX_TEMP_SIGNAL_2 = {DRAW,DRAW,DRAW,DRAW};
+assign	GDFX_TEMP_SIGNAL_11 = {L,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_7 = {L,L,L,L,L,L,H,L,H,L,L,H,H,L,L,H};
+assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,L,L,H,L,H,L,L,L,L,L,H,H};
+assign	GDFX_TEMP_SIGNAL_5 = {L,L,L,L,L,L,H,L,L,H,H,H,H,H,L,H};
+assign	GDFX_TEMP_SIGNAL_4 = {L,L,L,L,L,L,H,L,L,H,L,H,H,L,L,L};
+assign	GDFX_TEMP_SIGNAL_3 = {L,L,L,L,L,H,L,L,L,L,L,L,H,H,H,H};
+assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,L,L,L,H,H,H,H,L,H,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,L,H,H,L,H,L,H,H,L,L,L};
+assign	GDFX_TEMP_SIGNAL_0 = {L,L,L,L,L,L,H,H,L,L,H,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_8 = {DRAW,DRAW,DRAW,DRAW};
+assign	GDFX_TEMP_SIGNAL_9 = {DRAW,DRAW,DRAW,DRAW};
+assign	GDFX_TEMP_SIGNAL_10 = {DRAW,DRAW,DRAW,DRAW};
+
+assign	X_VIS = GDFX_TEMP_SIGNAL_0;
+
+
+assign	X_FP = GDFX_TEMP_SIGNAL_1;
+
+
+assign	X_SP = GDFX_TEMP_SIGNAL_2;
+
+
+assign	X_BP = GDFX_TEMP_SIGNAL_3;
+
+
+assign	Y_VIS = GDFX_TEMP_SIGNAL_4;
+
+
+assign	Y_FP = GDFX_TEMP_SIGNAL_5;
+
+
+assign	Y_SP = GDFX_TEMP_SIGNAL_6;
+
+
+assign	Y_BP = GDFX_TEMP_SIGNAL_7;
+
 
 
 vram_controller	b2v_inst(
@@ -122,132 +182,100 @@ vram_controller	b2v_inst(
 	);
 
 
-CONSTX	b2v_inst1(
-	.data(X_VIS));
-	defparam	b2v_inst1.const = 800;
-	defparam	b2v_inst1.size = 16;
+
+assign	nNMI = SRFF_NMI_occured & DFFE_NMI_output;
 
 
-
-
-CONSTX	b2v_inst12(
-	.data(Y_BP));
-	defparam	b2v_inst12.const = 665;
-	defparam	b2v_inst12.size = 16;
-
-
-CONSTX	b2v_inst2(
-	.data(X_FP));
-	defparam	b2v_inst2.const = 856;
-	defparam	b2v_inst2.size = 16;
-
-
-CONSTX	b2v_inst3(
-	.data(X_SP));
-	defparam	b2v_inst3.const = 976;
-	defparam	b2v_inst3.size = 16;
-
-
-CMPX	b2v_inst35(
-	.A(X),
-	.B(X_VIS),
-	.ls(X_DRAW)
-	
-	);
-	defparam	b2v_inst35.size = 16;
-
-
-CMPX	b2v_inst354(
-	.A(Y),
-	.B(Y_VIS),
-	.ls(Y_DRAW)
-	
-	);
-	defparam	b2v_inst354.size = 16;
-
-
-CMPX	b2v_inst36(
-	.A(X),
-	.B(X_FP),
-	
-	.eq(SYNTHESIZED_WIRE_0),
-	.gr(SYNTHESIZED_WIRE_1));
-	defparam	b2v_inst36.size = 16;
-
-assign	SYNTHESIZED_WIRE_3 = SYNTHESIZED_WIRE_0 | SYNTHESIZED_WIRE_1;
-
-
-CMPX	b2v_inst39(
-	.A(X),
-	.B(X_SP),
-	.ls(SYNTHESIZED_WIRE_2)
-	
-	);
-	defparam	b2v_inst39.size = 16;
-
-
-CONSTX	b2v_inst4(
-	.data(X_BP));
-	defparam	b2v_inst4.const = 1039;
-	defparam	b2v_inst4.size = 16;
-
-assign	VGA_HS = SYNTHESIZED_WIRE_2 & SYNTHESIZED_WIRE_3;
-
-
-CMPX	b2v_inst41(
+CMP16	b2v_inst14(
 	.A(X),
 	.B(X_BP),
 	
-	.eq(X_END)
+	.E(X_END)
 	);
-	defparam	b2v_inst41.size = 16;
 
 
-CMPX	b2v_inst43(
-	.A(Y),
-	.B(Y_FP),
-	
-	.eq(SYNTHESIZED_WIRE_4),
-	.gr(SYNTHESIZED_WIRE_5));
-	defparam	b2v_inst43.size = 16;
-
-assign	SYNTHESIZED_WIRE_7 = SYNTHESIZED_WIRE_4 | SYNTHESIZED_WIRE_5;
-
-
-CMPX	b2v_inst45(
-	.A(Y),
-	.B(Y_SP),
-	.ls(SYNTHESIZED_WIRE_6)
-	
-	);
-	defparam	b2v_inst45.size = 16;
-
-assign	VGA_VS = SYNTHESIZED_WIRE_6 & SYNTHESIZED_WIRE_7;
-
-
-CMPX	b2v_inst47(
+CMP16	b2v_inst15(
 	.A(Y),
 	.B(Y_BP),
 	
-	.eq(Y_END)
+	.E(Y_END)
 	);
-	defparam	b2v_inst47.size = 16;
+
+
+CMP16	b2v_inst16(
+	.A(X),
+	.B(X_VIS),
+	
+	
+	.L(X_DRAW));
+
+assign	SYNTHESIZED_WIRE_11 = noX & VBLANK_START;
+
+assign	SYNTHESIZED_WIRE_12 = noX & Y_END;
+
+assign	SYNTHESIZED_WIRE_0 = ~(X[0] | X[2] | X[1] | X[3] | X[5] | X[4] | X[6] | X[7]);
+
+assign	SYNTHESIZED_WIRE_1 = ~(X[8] | X[10] | X[9] | X[11] | X[13] | X[12] | X[14] | X[15]);
+
+assign	noX = SYNTHESIZED_WIRE_0 & SYNTHESIZED_WIRE_1;
+
+
+CMP16	b2v_inst22(
+	.A(Y),
+	.B(Y_VIS),
+	
+	.E(VBLANK_START),
+	.L(Y_DRAW));
+
+
+CMP16	b2v_inst23(
+	.A(X),
+	.B(X_FP),
+	.G(SYNTHESIZED_WIRE_3),
+	.E(SYNTHESIZED_WIRE_2)
+	);
+
+
+CMP16	b2v_inst24(
+	.A(Y),
+	.B(Y_FP),
+	.G(SYNTHESIZED_WIRE_7),
+	.E(SYNTHESIZED_WIRE_6)
+	);
+
+
+CMP16	b2v_inst25(
+	.A(X),
+	.B(X_SP),
+	
+	
+	.L(SYNTHESIZED_WIRE_4));
+
+
+CMP16	b2v_inst26(
+	.A(Y),
+	.B(Y_SP),
+	
+	
+	.L(SYNTHESIZED_WIRE_8));
+
+assign	SYNTHESIZED_WIRE_5 = SYNTHESIZED_WIRE_2 | SYNTHESIZED_WIRE_3;
+
+assign	VGA_HS = SYNTHESIZED_WIRE_4 & SYNTHESIZED_WIRE_5;
+
+assign	SYNTHESIZED_WIRE_9 = SYNTHESIZED_WIRE_6 | SYNTHESIZED_WIRE_7;
+
+assign	VGA_VS = SYNTHESIZED_WIRE_8 & SYNTHESIZED_WIRE_9;
 
 assign	DRAW = X_DRAW & Y_DRAW;
 
+assign	VGA_R = R & GDFX_TEMP_SIGNAL_8;
 
-CONSTX	b2v_inst5(
-	.data(Y_VIS));
-	defparam	b2v_inst5.const = 600;
-	defparam	b2v_inst5.size = 16;
+assign	VGA_G = G & GDFX_TEMP_SIGNAL_9;
 
-assign	VGA_R = R & GDFX_TEMP_SIGNAL_0;
+assign	VGA_B = B & GDFX_TEMP_SIGNAL_10;
 
-assign	VGA_G = G & GDFX_TEMP_SIGNAL_1;
-
-assign	VGA_B = B & GDFX_TEMP_SIGNAL_2;
-
-assign	SYNTHESIZED_WIRE_8 = X_END & Y_END;
+assign	SYNTHESIZED_WIRE_10 = X_END & Y_END;
 
 
 
@@ -260,24 +288,38 @@ REG16_INC_CL	b2v_inst6(
 	.CL(X_END),
 	.DOUT(X));
 
+assign	A_STATUSREG = ~(nCS | A[1] | A[2] | A[0]);
+
 
 REG16_INC_CL	b2v_inst7(
 	.CLK(CLK),
 	.INC(X_END),
-	.CL(SYNTHESIZED_WIRE_8),
+	.CL(SYNTHESIZED_WIRE_10),
 	.DOUT(Y));
 
+assign	D[7] = L ? GDFX_TEMP_SIGNAL_11[7] : 1'bz;
+assign	D[6] = L ? GDFX_TEMP_SIGNAL_11[6] : 1'bz;
+assign	D[5] = L ? GDFX_TEMP_SIGNAL_11[5] : 1'bz;
+assign	D[4] = L ? GDFX_TEMP_SIGNAL_11[4] : 1'bz;
+assign	D[3] = L ? GDFX_TEMP_SIGNAL_11[3] : 1'bz;
+assign	D[2] = L ? GDFX_TEMP_SIGNAL_11[2] : 1'bz;
+assign	D[1] = L ? GDFX_TEMP_SIGNAL_11[1] : 1'bz;
+assign	D[0] = L ? GDFX_TEMP_SIGNAL_11[0] : 1'bz;
 
-CONSTX	b2v_inst8(
-	.data(Y_FP));
-	defparam	b2v_inst8.const = 637;
-	defparam	b2v_inst8.size = 16;
+
+always@(posedge CLK)
+begin
+	SRFF_NMI_occured <= ~SRFF_NMI_occured & SYNTHESIZED_WIRE_11 | SRFF_NMI_occured & ~SYNTHESIZED_WIRE_12;
+end
 
 
-CONSTX	b2v_inst9(
-	.data(Y_SP));
-	defparam	b2v_inst9.const = 643;
-	defparam	b2v_inst9.size = 16;
+always@(posedge CLK)
+begin
+if (A_STATUSREG)
+	begin
+	DFFE_NMI_output <= D[7];
+	end
+end
 
 assign	B = 4'b0000;
 assign	G = 4'b0000;

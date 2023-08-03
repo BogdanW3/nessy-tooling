@@ -15,53 +15,42 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:42 2023"
+// CREATED		"Thu Aug  3 23:56:23 2023"
 
-module MX4x2(
-	S1,
-	S0,
-	D0_,
-	D1_,
-	D2_,
-	D3_,
-	Q_
+module CMP1(
+	A,
+	B,
+	G,
+	E,
+	L
 );
 
 
-input wire	S1;
-input wire	S0;
-input wire	[1:0] D0_;
-input wire	[1:0] D1_;
-input wire	[1:0] D2_;
-input wire	[1:0] D3_;
-output wire	[1:0] Q_;
+input wire	A;
+input wire	B;
+output wire	G;
+output wire	E;
+output wire	L;
 
-wire	[1:0] SYNTHESIZED_WIRE_0;
-wire	[1:0] SYNTHESIZED_WIRE_1;
-
-
+wire	G_ALTERA_SYNTHESIZED;
+wire	L_ALTERA_SYNTHESIZED;
+wire	nA;
+wire	nB;
 
 
 
-MX2x2	b2v_inst(
-	.S0(S0),
-	.D0_(D2_),
-	.D1_(D3_),
-	.Q(SYNTHESIZED_WIRE_1));
 
+assign	G_ALTERA_SYNTHESIZED = A & nB;
 
-MX2x2	b2v_inst1(
-	.S0(S0),
-	.D0_(D0_),
-	.D1_(D1_),
-	.Q(SYNTHESIZED_WIRE_0));
+assign	nB =  ~B;
 
+assign	nA =  ~A;
 
-MX2x2	b2v_inst3(
-	.S0(S1),
-	.D0_(SYNTHESIZED_WIRE_0),
-	.D1_(SYNTHESIZED_WIRE_1),
-	.Q(Q_));
+assign	E = ~(L_ALTERA_SYNTHESIZED | G_ALTERA_SYNTHESIZED);
 
+assign	L_ALTERA_SYNTHESIZED = nA & B;
+
+assign	G = G_ALTERA_SYNTHESIZED;
+assign	L = L_ALTERA_SYNTHESIZED;
 
 endmodule

@@ -15,53 +15,25 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:42 2023"
+// CREATED		"Thu Aug  3 23:48:51 2023"
 
-module MX4x2(
-	S1,
-	S0,
-	D0_,
-	D1_,
-	D2_,
-	D3_,
-	Q_
+module cpu(
+	nNMI,
+	OUT0,
+	A,
+	D
 );
 
 
-input wire	S1;
-input wire	S0;
-input wire	[1:0] D0_;
-input wire	[1:0] D1_;
-input wire	[1:0] D2_;
-input wire	[1:0] D3_;
-output wire	[1:0] Q_;
-
-wire	[1:0] SYNTHESIZED_WIRE_0;
-wire	[1:0] SYNTHESIZED_WIRE_1;
+input wire	nNMI;
+output wire	OUT0;
+inout wire	[15:0] A;
+inout wire	[7:0] D;
 
 
+assign	OUT0 = nNMI;
 
 
-
-MX2x2	b2v_inst(
-	.S0(S0),
-	.D0_(D2_),
-	.D1_(D3_),
-	.Q(SYNTHESIZED_WIRE_1));
-
-
-MX2x2	b2v_inst1(
-	.S0(S0),
-	.D0_(D0_),
-	.D1_(D1_),
-	.Q(SYNTHESIZED_WIRE_0));
-
-
-MX2x2	b2v_inst3(
-	.S0(S1),
-	.D0_(SYNTHESIZED_WIRE_0),
-	.D1_(SYNTHESIZED_WIRE_1),
-	.Q(Q_));
 
 
 endmodule

@@ -15,53 +15,45 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:42 2023"
+// CREATED		"Thu Aug  3 23:57:00 2023"
 
-module MX4x2(
-	S1,
-	S0,
-	D0_,
-	D1_,
-	D2_,
-	D3_,
-	Q_
+module RisingEdge(
+	CLK,
+	D,
+	Q
 );
 
 
-input wire	S1;
-input wire	S0;
-input wire	[1:0] D0_;
-input wire	[1:0] D1_;
-input wire	[1:0] D2_;
-input wire	[1:0] D3_;
-output wire	[1:0] Q_;
+input wire	CLK;
+input wire	D;
+output wire	Q;
 
-wire	[1:0] SYNTHESIZED_WIRE_0;
-wire	[1:0] SYNTHESIZED_WIRE_1;
+reg	SYNTHESIZED_WIRE_1;
+wire	SYNTHESIZED_WIRE_0;
+reg	DFF_inst1;
 
 
 
 
 
-MX2x2	b2v_inst(
-	.S0(S0),
-	.D0_(D2_),
-	.D1_(D3_),
-	.Q(SYNTHESIZED_WIRE_1));
+always@(posedge CLK)
+begin
+	begin
+	SYNTHESIZED_WIRE_1 <= D;
+	end
+end
 
 
-MX2x2	b2v_inst1(
-	.S0(S0),
-	.D0_(D0_),
-	.D1_(D1_),
-	.Q(SYNTHESIZED_WIRE_0));
+always@(posedge CLK)
+begin
+	begin
+	DFF_inst1 <= SYNTHESIZED_WIRE_1;
+	end
+end
 
+assign	Q = SYNTHESIZED_WIRE_0 & SYNTHESIZED_WIRE_1;
 
-MX2x2	b2v_inst3(
-	.S0(S1),
-	.D0_(SYNTHESIZED_WIRE_0),
-	.D1_(SYNTHESIZED_WIRE_1),
-	.Q(Q_));
+assign	SYNTHESIZED_WIRE_0 =  ~DFF_inst1;
 
 
 endmodule

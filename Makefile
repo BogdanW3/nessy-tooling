@@ -6,8 +6,11 @@ BDF_DIR=nessy/src
 VERILOG_DIR=verilog
 TLE=gpu/vram_controller
 
+default: verilog run
+
 SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))
+INCLUDE_FOLDERS = $(shell find ./nessy/src -type d -printf "-I${VERILOG_DIR}/%P ")
 
 ${VERILOG_DIR}/%.v: ${BDF_DIR}/%.bdf
 	quartus_map --convert_bdf_to_verilog=$< && dirname $@ | xargs mkdir --parents  && mv $(BDF_DIR)/$*.v $@
@@ -44,10 +47,8 @@ VERILATOR_FLAGS += --coverage
 #VERILATOR_FLAGS += --gdbbt
 
 # Input files for Verilator
-VERILATOR_INPUT =  -f input.vc -Iverilog/misc verilog/${TLE}.v tests/${TLE}/sim_main.cpp
+VERILATOR_INPUT =  -f input.vc $(INCLUDE_FOLDERS) verilog/${TLE}.v tests/${TLE}/sim_main.cpp
 
-######################################################################
-default: run
 
 run:
 	@echo

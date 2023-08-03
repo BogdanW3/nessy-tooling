@@ -1,74 +1,49 @@
-// Copyright (C) 1991-2013 Altera Corporation
-// Your use of Altera Corporation's design tools, logic functions 
-// and other software and tools, and its AMPP partner logic 
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
 // (including device programming or simulation files), and any 
 // associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License 
-// Subscription Agreement, Altera MegaCore Function License 
-// Agreement, or other applicable license agreement, including, 
-// without limitation, that your use is for the sole purpose of 
-// programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the 
-// applicable agreement for further details.
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
 
-// PROGRAM		"Quartus II 64-Bit"
-// VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 21:15:07 2023"
+// PROGRAM		"Quartus Prime"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Thu Aug  3 23:56:16 2023"
 
 module kb_gamepad_bridge(
 	KBINTR,
-	CPU_OUT0,
 	CLK,
-	A15,
-	A14,
-	A13,
-	A12,
-	A11,
-	A10,
-	A9,
-	A8,
-	A7,
-	A6,
-	A5,
-	A4,
-	A3,
-	A2,
-	A1,
-	A0,
+	OUT0,
+	ADDR,
 	KEY,
 	KBINTA,
-	D
+	DATA
 );
 
 
 input wire	KBINTR;
-input wire	CPU_OUT0;
 input wire	CLK;
-input wire	A15;
-input wire	A14;
-input wire	A13;
-input wire	A12;
-input wire	A11;
-input wire	A10;
-input wire	A9;
-input wire	A8;
-input wire	A7;
-input wire	A6;
-input wire	A5;
-input wire	A4;
-input wire	A3;
-input wire	A2;
-input wire	A1;
-input wire	A0;
+input wire	OUT0;
+input wire	[15:0] ADDR;
 input wire	[7:0] KEY;
 output wire	KBINTA;
-output wire	[7:0] D;
+output wire	[7:0] DATA;
 
 reg	A;
+wire	A1;
+wire	A14;
+wire	A2;
+wire	A4;
 reg	BRK;
 wire	CS;
-reg	D_ALTERA_SYNTHESIZED;
+reg	D;
 reg	DOWN;
 reg	E;
 reg	F;
@@ -115,20 +90,12 @@ wire	[15:0] nA;
 wire	nBRK;
 wire	[7:0] nKEY;
 reg	O;
-wire	OUT1;
 wire	P0;
 wire	P1;
 wire	P2;
 wire	P3;
+wire	[7:0] PDAT;
 reg	Q;
-wire	Q0;
-wire	Q1;
-wire	Q2;
-wire	Q3;
-wire	Q4;
-wire	Q5;
-wire	Q6;
-wire	Q7;
 reg	R;
 reg	RCTRL;
 reg	RIGHT;
@@ -195,26 +162,22 @@ wire	SYNTHESIZED_WIRE_54;
 
 assign	KBINTA = KBINTR;
 assign	SYNTHESIZED_WIRE_52 = 1;
-wire	[5:0] GDFX_TEMP_SIGNAL_8;
+wire	[5:0] GDFX_TEMP_SIGNAL_6;
+wire	[1:0] GDFX_TEMP_SIGNAL_4;
 wire	[1:0] GDFX_TEMP_SIGNAL_5;
-wire	[1:0] GDFX_TEMP_SIGNAL_6;
-wire	[7:0] GDFX_TEMP_SIGNAL_4;
 wire	[7:0] GDFX_TEMP_SIGNAL_3;
-wire	[7:0] GDFX_TEMP_SIGNAL_1;
 wire	[7:0] GDFX_TEMP_SIGNAL_2;
-wire	[7:0] GDFX_TEMP_SIGNAL_7;
-wire	[15:0] GDFX_TEMP_SIGNAL_0;
+wire	[7:0] GDFX_TEMP_SIGNAL_0;
+wire	[7:0] GDFX_TEMP_SIGNAL_1;
 
 
-assign	GDFX_TEMP_SIGNAL_8 = {L,L,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_5 = {P2,P0};
-assign	GDFX_TEMP_SIGNAL_6 = {P3,P1};
-assign	GDFX_TEMP_SIGNAL_4 = {LL,J,K,I,L,L,O,U};
-assign	GDFX_TEMP_SIGNAL_3 = {RIGHT,LEFT,DOWN,UP,L,L,RSHIFT,RCTRL};
-assign	GDFX_TEMP_SIGNAL_1 = {D_ALTERA_SYNTHESIZED,A,S,W,F,R,E,Q};
-assign	GDFX_TEMP_SIGNAL_2 = {KP6,KP4,KP5,KP8,L,L,KP9,KP7};
-assign	GDFX_TEMP_SIGNAL_7 = {Q7,Q6,Q5,Q4,Q3,Q2,Q1,Q0};
-assign	GDFX_TEMP_SIGNAL_0 = {A15,A14,A13,A12,A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1,A0};
+assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_4 = {P2,P0};
+assign	GDFX_TEMP_SIGNAL_5 = {P3,P1};
+assign	GDFX_TEMP_SIGNAL_3 = {LL,J,K,I,L,L,O,U};
+assign	GDFX_TEMP_SIGNAL_2 = {RIGHT,LEFT,DOWN,UP,L,L,RSHIFT,RCTRL};
+assign	GDFX_TEMP_SIGNAL_0 = {D,A,S,W,F,R,E,Q};
+assign	GDFX_TEMP_SIGNAL_1 = {KP6,KP4,KP5,KP8,L,L,KP9,KP7};
 
 assign	KEYBREAK = KEY[7] & KEY[5] & KEY[6] & KEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & nKEY[3];
 
@@ -269,7 +232,7 @@ assign	KEYKP4 = nKEY[7] & KEY[5] & KEY[6] & nKEY[4] & KEY[1] & nKEY[2] & KEY[0] 
 
 assign	KEYKP6 = nKEY[7] & KEY[5] & KEY[6] & KEY[4] & nKEY[1] & KEY[2] & nKEY[0] & nKEY[3];
 
-assign	nA =  ~GDFX_TEMP_SIGNAL_0;
+assign	nA =  ~ADDR;
 
 assign	nBRK =  ~BRK;
 
@@ -392,7 +355,7 @@ always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	D_ALTERA_SYNTHESIZED <= ~D_ALTERA_SYNTHESIZED & SYNTHESIZED_WIRE_14 | D_ALTERA_SYNTHESIZED & ~SYNTHESIZED_WIRE_15;
+	D <= ~D & SYNTHESIZED_WIRE_14 | D & ~SYNTHESIZED_WIRE_15;
 	end
 end
 
@@ -702,40 +665,40 @@ DC2	b2v_inst85(
 
 REG8_LD_SR	b2v_inst86(
 	.CLK(CLK),
-	.LD(OUT1),
+	.LD(OUT0),
 	.SR(CS),
 	.IR(L),
-	.DIN(GDFX_TEMP_SIGNAL_1),
+	.DIN(GDFX_TEMP_SIGNAL_0),
 	.S(P0)
 	);
 
 
 REG8_LD_SR	b2v_inst87(
 	.CLK(CLK),
-	.LD(OUT1),
+	.LD(OUT0),
 	.SR(CS),
 	.IR(L),
-	.DIN(GDFX_TEMP_SIGNAL_2),
+	.DIN(GDFX_TEMP_SIGNAL_1),
 	.S(P1)
 	);
 
 
 REG8_LD_SR	b2v_inst88(
 	.CLK(CLK),
-	.LD(OUT1),
+	.LD(OUT0),
 	.SR(CS),
 	.IR(L),
-	.DIN(GDFX_TEMP_SIGNAL_3),
+	.DIN(GDFX_TEMP_SIGNAL_2),
 	.S(P2)
 	);
 
 
 REG8_LD_SR	b2v_inst89(
 	.CLK(CLK),
-	.LD(OUT1),
+	.LD(OUT0),
 	.SR(CS),
 	.IR(L),
-	.DIN(GDFX_TEMP_SIGNAL_4),
+	.DIN(GDFX_TEMP_SIGNAL_3),
 	.S(P3)
 	);
 
@@ -743,26 +706,22 @@ assign	KEYW = nKEY[7] & nKEY[5] & nKEY[6] & nKEY[4] & nKEY[1] & KEY[2] & KEY[0] 
 
 
 MX2x2	b2v_inst91(
-	.S0(A0),
-	.D0_(GDFX_TEMP_SIGNAL_5),
-	.D1_(GDFX_TEMP_SIGNAL_6),
-	.Q({Q1,Q0}));
+	.S0(ADDR[0]),
+	.D0_(GDFX_TEMP_SIGNAL_4),
+	.D1_(GDFX_TEMP_SIGNAL_5),
+	.Q(PDAT[1:0]));
 
-assign	D[7] = CS ? GDFX_TEMP_SIGNAL_7[7] : 1'bz;
-assign	D[6] = CS ? GDFX_TEMP_SIGNAL_7[6] : 1'bz;
-assign	D[5] = CS ? GDFX_TEMP_SIGNAL_7[5] : 1'bz;
-assign	D[4] = CS ? GDFX_TEMP_SIGNAL_7[4] : 1'bz;
-assign	D[3] = CS ? GDFX_TEMP_SIGNAL_7[3] : 1'bz;
-assign	D[2] = CS ? GDFX_TEMP_SIGNAL_7[2] : 1'bz;
-assign	D[1] = CS ? GDFX_TEMP_SIGNAL_7[1] : 1'bz;
-assign	D[0] = CS ? GDFX_TEMP_SIGNAL_7[0] : 1'bz;
+assign	DATA[7] = CS ? PDAT[7] : 1'bz;
+assign	DATA[6] = CS ? PDAT[6] : 1'bz;
+assign	DATA[5] = CS ? PDAT[5] : 1'bz;
+assign	DATA[4] = CS ? PDAT[4] : 1'bz;
+assign	DATA[3] = CS ? PDAT[3] : 1'bz;
+assign	DATA[2] = CS ? PDAT[2] : 1'bz;
+assign	DATA[1] = CS ? PDAT[1] : 1'bz;
+assign	DATA[0] = CS ? PDAT[0] : 1'bz;
 
-assign	Q7 = GDFX_TEMP_SIGNAL_8[5];
-assign	Q6 = GDFX_TEMP_SIGNAL_8[4];
-assign	Q5 = GDFX_TEMP_SIGNAL_8[3];
-assign	Q4 = GDFX_TEMP_SIGNAL_8[2];
-assign	Q3 = GDFX_TEMP_SIGNAL_8[1];
-assign	Q2 = GDFX_TEMP_SIGNAL_8[0];
+assign	PDAT[7:2] = GDFX_TEMP_SIGNAL_6;
+
 
 assign	SYNTHESIZED_WIRE_53 = SYNTHESIZED_WIRE_52 & A2 & A1 & nA[3] & nA[6] & nA[5] & nA[7] & A4;
 
