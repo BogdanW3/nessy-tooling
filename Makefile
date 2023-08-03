@@ -4,7 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=misc/REG16_INC_CL
+TLE=gpu/vram_controller
 
 SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))
@@ -33,7 +33,7 @@ VERILATOR_FLAGS += -x-assign fast
 # Warn abount lint issues; may not want this on less solid designs
 VERILATOR_FLAGS += -Wno-fatal
 # Make waveforms
-#VERILATOR_FLAGS += --trace
+VERILATOR_FLAGS += --trace
 # Check SystemVerilog assertions
 #VERILATOR_FLAGS += --assert
 # Generate coverage analysis
@@ -67,10 +67,10 @@ run:
 	@echo "-- RUN ---------------------"
 	@rm -rf logs
 	@mkdir -p logs
-	obj_dir/V${shell basename ${TLE}} +trace
+	obj_dir/V${shell basename ${TLE}}.exe +trace
 
-#	@echo
-#	@echo "-- COVERAGE ----------------"
+	@echo
+	@echo "-- COVERAGE ----------------"
 	@rm -rf logs/annotated
 	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
 

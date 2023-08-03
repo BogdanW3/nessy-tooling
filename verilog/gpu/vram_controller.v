@@ -14,7 +14,7 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 18:17:35 2023"
+// CREATED		"Thu Aug 03 20:37:30 2023"
 
 module vram_controller(
 	read_scanline,
@@ -218,15 +218,22 @@ REG4_INC_CL	b2v_inst1(
 DC4	b2v_inst10(
 	.D1(POWERON_CNT[1]),
 	.D0(POWERON_CNT[0]),
-	
+	.E(H),
 	.Q3(POWERON_STATE_MRS),
+	.Q2(POWERON_STATE_REF_LOOP),
 	
-	.Q1(POWERON_STATE_REF_LOOP),
 	.Q0(POWERON_STATE_STABLE));
 
 assign	SYNTHESIZED_WIRE_2 = CMD_CURR_PREA & SYNTHESIZED_WIRE_0;
 
-
+	initial begin
+      if ($test$plusargs("trace") != 0) begin
+         $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+         $dumpfile("logs/vlt_dump.vcd");
+         $dumpvars();
+      end
+      $display("[%0t] Model running...\n", $time);
+    end
 
 assign	SYNTHESIZED_WIRE_0 =  ~CMD_LD;
 
@@ -546,7 +553,7 @@ DC16	b2v_inst9(
 	.D2(CMD_CURRENT[2]),
 	.D1(CMD_CURRENT[1]),
 	.D0(CMD_CURRENT[0]),
-	
+	.E(H),
 	
 	
 	
