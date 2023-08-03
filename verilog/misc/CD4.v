@@ -14,7 +14,7 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:46:34 2023"
+// CREATED		"Thu Aug 03 18:17:39 2023"
 
 module CD4(
 	D3,

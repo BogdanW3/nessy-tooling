@@ -14,18 +14,18 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:46:32 2023"
+// CREATED		"Thu Aug 03 18:17:37 2023"
 
 module CD2(
-	D1,
 	D0,
+	D1,
 	W,
 	Q
 );
 
 
-input wire	D1;
 input wire	D0;
+input wire	D1;
 output wire	W;
 output wire	[0:0] Q;
 
