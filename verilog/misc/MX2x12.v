@@ -14,31 +14,40 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 21:15:08 2023"
+// CREATED		"Thu Aug 03 21:15:12 2023"
 
-module DC2(
-	E,
-	D0,
-	Q0,
-	Q1
+module MX2x12(
+	S0,
+	D0_,
+	D1_,
+	Q
 );
 
 
-input wire	E;
-input wire	D0;
-output wire	Q0;
-output wire	Q1;
+input wire	S0;
+input wire	[11:0] D0_;
+input wire	[11:0] D1_;
+output wire	[11:0] Q;
 
-wire	SYNTHESIZED_WIRE_0;
-
-
+wire	[11:0] Q_ALTERA_SYNTHESIZED;
 
 
-assign	SYNTHESIZED_WIRE_0 =  ~D0;
 
-assign	Q1 = E & D0;
 
-assign	Q0 = SYNTHESIZED_WIRE_0 & E;
 
+MX2x4	b2v_inst(
+	.S0(S0),
+	.D0_(D0_[11:8]),
+	.D1_(D1_[11:8]),
+	.Q(Q_ALTERA_SYNTHESIZED[11:8]));
+
+
+MX2x8	b2v_inst1(
+	.S0(S0),
+	.D0_(D0_[7:0]),
+	.D1_(D1_[7:0]),
+	.Q(Q_ALTERA_SYNTHESIZED[7:0]));
+
+assign	Q = Q_ALTERA_SYNTHESIZED;
 
 endmodule

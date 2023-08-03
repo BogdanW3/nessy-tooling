@@ -14,7 +14,7 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 20:37:30 2023"
+// CREATED		"Thu Aug 03 21:15:05 2023"
 
 module vram_controller(
 	read_scanline,
@@ -226,14 +226,14 @@ DC4	b2v_inst10(
 
 assign	SYNTHESIZED_WIRE_2 = CMD_CURR_PREA & SYNTHESIZED_WIRE_0;
 
-	initial begin
-      if ($test$plusargs("trace") != 0) begin
-         $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-         $dumpfile("logs/vlt_dump.vcd");
-         $dumpvars();
-      end
-      $display("[%0t] Model running...\n", $time);
+initial begin
+    if ($test$plusargs("trace") != 0) begin
+        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+        $dumpfile("logs/vlt_dump.vcd");
+        $dumpvars();
     end
+    $display("[%0t] Model running...\n", $time);
+end
 
 assign	SYNTHESIZED_WIRE_0 =  ~CMD_LD;
 
@@ -340,7 +340,7 @@ assign	nPOWERON_REF_EXIT =  ~POWERON_REF_EXIT;
 REG2_INC_CL	b2v_inst3(
 	.CLK(CLK),
 	.INC(POWERON_STATE_UPDATE),
-	
+	.CL(L),
 	.DOUT(POWERON_CNT));
 
 
@@ -481,7 +481,7 @@ assign	nCMD_MRS_LAST =  ~SYNTHESIZED_WIRE_42;
 REG16_INC_CL	b2v_inst7(
 	.CLK(CLK),
 	.INC(POWERON_STATE_STABLE),
-	
+	.CL(L),
 	.DOUT(POWERON_STABLE_CNT));
 
 assign	OUT_NOP = CMD_CURR_NOP ? H : 1'bz;
