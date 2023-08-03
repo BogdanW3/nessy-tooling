@@ -34,16 +34,16 @@ VERILATOR_FLAGS += -Wno-fatal
 # Make waveforms
 VERILATOR_FLAGS += --trace
 # Check SystemVerilog assertions
-#VERILATOR_FLAGS += --assert
+VERILATOR_FLAGS += --assert
 # Generate coverage analysis
-#VERILATOR_FLAGS += --coverage
+VERILATOR_FLAGS += --coverage
 # Run Verilator in debug mode
 #VERILATOR_FLAGS += --debug
 # Add this trace to get a backtrace in gdb
 #VERILATOR_FLAGS += --gdbbt
 
 # Input files for Verilator
-VERILATOR_INPUT = -Iverilog/misc verilog/gpu/vram_controller.v sim_main.cpp -o test
+VERILATOR_INPUT =  -f input.vc -Iverilog/misc verilog/gpu/vram_controller.v sim_main.cpp
 
 ######################################################################
 default: run
@@ -70,8 +70,8 @@ run:
 
 #	@echo
 #	@echo "-- COVERAGE ----------------"
-#	@rm -rf logs/annotated
-#	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
+	@rm -rf logs/annotated
+	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
 
 	@echo
 	@echo "-- DONE --------------------"

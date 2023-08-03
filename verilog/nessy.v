@@ -1,21 +1,20 @@
-// Copyright (C) 2023  Intel Corporation. All rights reserved.
-// Your use of Intel Corporation's design tools, logic functions 
-// and other software and tools, and any partner logic 
+// Copyright (C) 1991-2013 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
 // functions, and any output files from any of the foregoing 
 // (including device programming or simulation files), and any 
 // associated documentation or information are expressly subject 
-// to the terms and conditions of the Intel Program License 
-// Subscription Agreement, the Intel Quartus Prime License Agreement,
-// the Intel FPGA IP License Agreement, or other applicable license
-// agreement, including, without limitation, that your use is for
-// the sole purpose of programming logic devices manufactured by
-// Intel and sold by Intel or its authorized distributors.  Please
-// refer to the applicable agreement for further details, at
-// https://fpgasoftware.intel.com/eula.
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
 
-// PROGRAM		"Quartus Prime"
-// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Wed Aug  2 20:56:25 2023"
+// PROGRAM		"Quartus II 64-Bit"
+// VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
+// CREATED		"Thu Aug 03 15:47:38 2023"
 
 module nessy(
 	CLK,
@@ -62,6 +61,19 @@ output wire	[3:0] VGA_B;
 output wire	[3:0] VGA_G;
 output wire	[3:0] VGA_R;
 
+wire	[15:0] A;
+wire	[7:0] D;
+wire	H;
+wire	L;
+wire	OUT0;
+wire	SYNTHESIZED_WIRE_0;
+wire	SYNTHESIZED_WIRE_1;
+wire	[7:0] SYNTHESIZED_WIRE_2;
+
+
+
+
+
 gpu	b2v_inst(
 	.CLK(CLK),
 	.SDRAM_DQ(SDRAM_DQ),
@@ -87,17 +99,30 @@ gpu	b2v_inst(
 
 REG8_INC_CL	b2v_inst3(
 	.CLK(CLK),
-	.INC(1),
-	.CL(0),
+	.INC(H),
+	.CL(L),
 	.DOUT(LED));
 
 
 kb_controller	b2v_inst4(
 	.PS2_CLK(PS2_CLK),
 	.PS2_DATA(PS2_DATA),
-	.CLK(CLK)
-	
-	
+	.CLK(CLK),
+	.INTA(SYNTHESIZED_WIRE_0),
+	.INTR(SYNTHESIZED_WIRE_1),
+	.Q(SYNTHESIZED_WIRE_2));
+
+
+kb_gamepad_bridge	b2v_inst5(
+	.CPU_OUT0(OUT0),
+	.KBINTR(SYNTHESIZED_WIRE_1),
+	.CLK(CLK),
+	.A(A),
+	.KEY(SYNTHESIZED_WIRE_2),
+	.KBINTA(SYNTHESIZED_WIRE_0)
 	);
+
+assign	H = 1;
+assign	L = 0;
 
 endmodule

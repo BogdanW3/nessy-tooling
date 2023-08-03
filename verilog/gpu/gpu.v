@@ -1,21 +1,20 @@
-// Copyright (C) 2023  Intel Corporation. All rights reserved.
-// Your use of Intel Corporation's design tools, logic functions 
-// and other software and tools, and any partner logic 
+// Copyright (C) 1991-2013 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
 // functions, and any output files from any of the foregoing 
 // (including device programming or simulation files), and any 
 // associated documentation or information are expressly subject 
-// to the terms and conditions of the Intel Program License 
-// Subscription Agreement, the Intel Quartus Prime License Agreement,
-// the Intel FPGA IP License Agreement, or other applicable license
-// agreement, including, without limitation, that your use is for
-// the sole purpose of programming logic devices manufactured by
-// Intel and sold by Intel or its authorized distributors.  Please
-// refer to the applicable agreement for further details, at
-// https://fpgasoftware.intel.com/eula.
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
 
-// PROGRAM		"Quartus Prime"
-// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Wed Aug  2 20:56:38 2023"
+// PROGRAM		"Quartus II 64-Bit"
+// VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
+// CREATED		"Thu Aug 03 15:58:50 2023"
 
 module gpu(
 	CLK,
@@ -59,6 +58,8 @@ output wire	[3:0] VGA_R;
 wire	[3:0] B;
 wire	DRAW;
 wire	[3:0] G;
+wire	H;
+wire	L;
 wire	[3:0] R;
 wire	[19:0] VRAM_A;
 wire	[15:0] VRAM_D;
@@ -121,11 +122,30 @@ vram_controller	b2v_inst(
 	);
 
 
-assign X_VIS = 16'd800;
-assign Y_BP  = 16'd665;
-assign X_FP  = 16'd856;
-assign X_SP  = 16'd976;
+CONSTX	b2v_inst1(
+	.data(X_VIS));
+	defparam	b2v_inst1.const = 800;
+	defparam	b2v_inst1.size = 16;
 
+
+
+
+CONSTX	b2v_inst12(
+	.data(Y_BP));
+	defparam	b2v_inst12.const = 665;
+	defparam	b2v_inst12.size = 16;
+
+
+CONSTX	b2v_inst2(
+	.data(X_FP));
+	defparam	b2v_inst2.const = 856;
+	defparam	b2v_inst2.size = 16;
+
+
+CONSTX	b2v_inst3(
+	.data(X_SP));
+	defparam	b2v_inst3.const = 976;
+	defparam	b2v_inst3.size = 16;
 
 
 CMPX	b2v_inst35(
@@ -165,7 +185,11 @@ CMPX	b2v_inst39(
 	);
 	defparam	b2v_inst39.size = 16;
 
-assign X_BP = 16'd1039;
+
+CONSTX	b2v_inst4(
+	.data(X_BP));
+	defparam	b2v_inst4.const = 1039;
+	defparam	b2v_inst4.size = 16;
 
 assign	VGA_HS = SYNTHESIZED_WIRE_2 & SYNTHESIZED_WIRE_3;
 
@@ -211,8 +235,11 @@ CMPX	b2v_inst47(
 
 assign	DRAW = X_DRAW & Y_DRAW;
 
-assign Y_VIS = 16'd600;
 
+CONSTX	b2v_inst5(
+	.data(Y_VIS));
+	defparam	b2v_inst5.const = 600;
+	defparam	b2v_inst5.size = 16;
 
 assign	VGA_R = R & GDFX_TEMP_SIGNAL_0;
 
@@ -229,7 +256,7 @@ assign	SYNTHESIZED_WIRE_8 = X_END & Y_END;
 
 REG16_INC_CL	b2v_inst6(
 	.CLK(CLK),
-	.INC(1),
+	.INC(H),
 	.CL(X_END),
 	.DOUT(X));
 
@@ -241,12 +268,21 @@ REG16_INC_CL	b2v_inst7(
 	.DOUT(Y));
 
 
-assign Y_FP = 16'd637;
-assign Y_SP = 16'd643;
+CONSTX	b2v_inst8(
+	.data(Y_FP));
+	defparam	b2v_inst8.const = 637;
+	defparam	b2v_inst8.size = 16;
 
+
+CONSTX	b2v_inst9(
+	.data(Y_SP));
+	defparam	b2v_inst9.const = 643;
+	defparam	b2v_inst9.size = 16;
 
 assign	B = 4'b0000;
 assign	G = 4'b0000;
+assign	H = 1;
+assign	L = 0;
 assign	R = 4'b0000;
 
 endmodule

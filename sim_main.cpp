@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
     // Randomization reset policy
     // May be overridden by commandArgs argument parsing
-    contextp->randReset(2);
+    contextp->randReset(0);
 
     // Verilator must compute traced signals
     contextp->traceEverOn(true);
@@ -88,11 +88,17 @@ int main(int argc, char** argv) {
         top->eval();
 
         // Read outputs
-        //VL_PRINTF("[%" PRId64 "] CLK=%x rstl=%x iquad=%" PRIx64 " -> oquad=%" PRIx64
-        //          " owide=%x_%08x_%08x\n",
-        //          contextp->time(), top->CLK, top->reset_l, top->in_quad, top->out_quad,
-        //          top->out_wide[2], top->out_wide[1], top->out_wide[0]);
+        VL_PRINTF("[%" PRId64 "] CLK=%x CKE=%x nCS=%x nRAS=%x nCAS=%x nWE=%x UDQM=%x LDQM=%x\n",
+                  contextp->time(), top->SDRAM_CLK, top->SDRAM_CKE, top->nSDRAM_CS, top->nSDRAM_RAS,
+                   top->nSDRAM_CAS, top->nSDRAM_WE,
+                     top->SDRAM_UDQM, top->SDRAM_LDQM
+                  );
+
+        if (contextp->time() > 200) {
+            break;
+        }
     }
+
 
     // Final model cleanup
     top->final();
