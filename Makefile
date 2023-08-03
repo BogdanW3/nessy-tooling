@@ -4,7 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=gpu/vram_controller
+TLE=misc/MX2x2
 
 SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))
@@ -44,7 +44,7 @@ VERILATOR_FLAGS += --coverage
 #VERILATOR_FLAGS += --gdbbt
 
 # Input files for Verilator
-VERILATOR_INPUT =  -f input.vc -Iverilog/misc verilog/${TLE}.v sim_main.cpp
+VERILATOR_INPUT =  -f input.vc -Iverilog/misc verilog/${TLE}.v tests/${TLE}/sim_main.cpp
 
 ######################################################################
 default: run

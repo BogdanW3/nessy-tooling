@@ -88,15 +88,12 @@ int main(int argc, char** argv) {
         top->eval();
 
         // Read outputs
-        VL_PRINTF("[%" PRId64 "] CLK=%x CKE=%x nCS=%x nRAS=%x nCAS=%x nWE=%x UDQM=%x LDQM=%x\n",
-                  contextp->time(), top->SDRAM_CLK, top->SDRAM_CKE, top->nSDRAM_CS, top->nSDRAM_RAS,
-                   top->nSDRAM_CAS, top->nSDRAM_WE,
-                     top->SDRAM_UDQM, top->SDRAM_LDQM
+        //if (top->nSDRAM_CS != 0 || top->nSDRAM_RAS != 1 || top->nSDRAM_CAS != 1 || top->nSDRAM_WE != 1)
+            VL_PRINTF("[%" PRId64 "] CLK=%x CKE=%x nCS=%x nRAS=%x nCAS=%x nWE=%x UDQM=%x LDQM=%x\n",
+                    contextp->time(), top->SDRAM_CLK, top->SDRAM_CKE, top->nSDRAM_CS, top->nSDRAM_RAS,
+                    top->nSDRAM_CAS, top->nSDRAM_WE,
+                        top->SDRAM_UDQM, top->SDRAM_LDQM
                   );
-
-        if (contextp->time() > 200) {
-            break;
-        }
     }
 
 
