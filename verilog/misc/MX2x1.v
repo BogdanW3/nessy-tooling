@@ -14,7 +14,7 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:46:51 2023"
+// CREATED		"Thu Aug 03 17:49:32 2023"
 
 module MX2x1(
 	D1,

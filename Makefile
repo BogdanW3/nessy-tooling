@@ -4,6 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
+TLE=gpu/vram_controller
 
 SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))
@@ -32,9 +33,9 @@ VERILATOR_FLAGS += -x-assign fast
 # Warn abount lint issues; may not want this on less solid designs
 VERILATOR_FLAGS += -Wno-fatal
 # Make waveforms
-VERILATOR_FLAGS += --trace
+#VERILATOR_FLAGS += --trace
 # Check SystemVerilog assertions
-VERILATOR_FLAGS += --assert
+#VERILATOR_FLAGS += --assert
 # Generate coverage analysis
 VERILATOR_FLAGS += --coverage
 # Run Verilator in debug mode
@@ -43,7 +44,7 @@ VERILATOR_FLAGS += --coverage
 #VERILATOR_FLAGS += --gdbbt
 
 # Input files for Verilator
-VERILATOR_INPUT =  -f input.vc -Iverilog/misc verilog/gpu/vram_controller.v sim_main.cpp
+VERILATOR_INPUT =  -f input.vc -Iverilog/misc verilog/${TLE}.v sim_main.cpp
 
 ######################################################################
 default: run
@@ -60,13 +61,13 @@ run:
 # 2. Or, run the make rules Verilator does:
 #	$(MAKE) -j -C obj_dir -f Vtop.mk
 # 3. Or, call a submakefile where we can override the rules ourselves:
-	$(MAKE) -j -C obj_dir -f ../Makefile_obj
+	$(MAKE) -j -C obj_dir -f ../Makefile_obj -E TLE=${TLE}
 
 	@echo
 	@echo "-- RUN ---------------------"
 	@rm -rf logs
 	@mkdir -p logs
-	obj_dir/Vvram_controller +trace
+	obj_dir/V${shell basename ${TLE}} +trace
 
 #	@echo
 #	@echo "-- COVERAGE ----------------"

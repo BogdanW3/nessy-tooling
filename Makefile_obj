@@ -11,11 +11,10 @@
 #
 #######################################################################
 
-.PHONY: default
-default: Vvram_controller
+default: V${shell basename ${TLE}}
 
 # Include the rules made by Verilator
-include Vvram_controller.mk
+include V${shell basename ${TLE}}.mk
 
 # Use OBJCACHE (ccache) if using gmake and its installed
 COMPILE.cc = $(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c

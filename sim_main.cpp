@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 
     // Set Vtop's input signals
     top->CLK = 0;
-    top->read_scanline= 0;
+    top->read_scanline = 0;
     top->write_pixel = 0;
    
 
