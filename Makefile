@@ -4,7 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=misc/MX2x2
+TLE=misc/REG16_INC_CL
 
 SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))

@@ -14,16 +14,16 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:47:34 2023"
+// CREATED		"Thu Aug 03 19:25:29 2023"
 
 module REG8_LD_SR(
 	CLK,
 	LD,
 	SR,
 	IR,
-	D,
+	DIN,
 	S,
-	Q
+	DOUT
 );
 
 
@@ -31,11 +31,11 @@ input wire	CLK;
 input wire	LD;
 input wire	SR;
 input wire	IR;
-input wire	[7:0] D;
+input wire	[7:0] DIN;
 output wire	S;
-output wire	[7:0] Q;
+output wire	[7:0] DOUT;
 
-wire	[7:0] Q_ALTERA_SYNTHESIZED;
+wire	[7:0] DOUT_ALTERA_SYNTHESIZED;
 wire	SYNTHESIZED_WIRE_0;
 
 
@@ -47,9 +47,9 @@ REG4_LD_SR	b2v_inst(
 	.LD(LD),
 	.SR(SR),
 	.IR(IR),
-	.D(D[7:4]),
+	.DIN(DIN[7:4]),
 	.S(SYNTHESIZED_WIRE_0),
-	.Q(Q_ALTERA_SYNTHESIZED[7:4]));
+	.DOUT(DOUT_ALTERA_SYNTHESIZED[7:4]));
 
 
 REG4_LD_SR	b2v_inst1(
@@ -57,11 +57,11 @@ REG4_LD_SR	b2v_inst1(
 	.LD(LD),
 	.SR(SR),
 	.IR(SYNTHESIZED_WIRE_0),
-	.D(D[3:0]),
+	.DIN(DIN[3:0]),
 	
-	.Q(Q_ALTERA_SYNTHESIZED[3:0]));
+	.DOUT(DOUT_ALTERA_SYNTHESIZED[3:0]));
 
-assign	S = Q_ALTERA_SYNTHESIZED[0];
-assign	Q = Q_ALTERA_SYNTHESIZED;
+assign	S = DOUT_ALTERA_SYNTHESIZED[0];
+assign	DOUT = DOUT_ALTERA_SYNTHESIZED;
 
 endmodule

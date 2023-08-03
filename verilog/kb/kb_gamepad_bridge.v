@@ -14,7 +14,7 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:46:28 2023"
+// CREATED		"Thu Aug 03 19:25:23 2023"
 
 module kb_gamepad_bridge(
 	KBINTR,
@@ -705,7 +705,7 @@ REG8_LD_SR	b2v_inst86(
 	.LD(OUT1),
 	.SR(CS),
 	
-	.D(GDFX_TEMP_SIGNAL_1),
+	.DIN(GDFX_TEMP_SIGNAL_1),
 	.S(P0)
 	);
 
@@ -715,7 +715,7 @@ REG8_LD_SR	b2v_inst87(
 	.LD(OUT1),
 	.SR(CS),
 	
-	.D(GDFX_TEMP_SIGNAL_2),
+	.DIN(GDFX_TEMP_SIGNAL_2),
 	.S(P1)
 	);
 
@@ -725,7 +725,7 @@ REG8_LD_SR	b2v_inst88(
 	.LD(OUT1),
 	.SR(CS),
 	
-	.D(GDFX_TEMP_SIGNAL_3),
+	.DIN(GDFX_TEMP_SIGNAL_3),
 	.S(P2)
 	);
 
@@ -735,7 +735,7 @@ REG8_LD_SR	b2v_inst89(
 	.LD(OUT1),
 	.SR(CS),
 	
-	.D(GDFX_TEMP_SIGNAL_4),
+	.DIN(GDFX_TEMP_SIGNAL_4),
 	.S(P3)
 	);
 

@@ -14,16 +14,16 @@
 
 // PROGRAM		"Quartus II 64-Bit"
 // VERSION		"Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
-// CREATED		"Thu Aug 03 15:47:22 2023"
+// CREATED		"Thu Aug 03 19:25:25 2023"
 
 module REG2_LD_SR(
 	CLK,
 	LD,
 	SR,
 	IR,
-	D,
+	DIN,
 	S,
-	Q
+	DOUT
 );
 
 
@@ -31,12 +31,12 @@ input wire	CLK;
 input wire	LD;
 input wire	SR;
 input wire	IR;
-input wire	[1:0] D;
+input wire	[1:0] DIN;
 output wire	S;
-output wire	[1:0] Q;
+output wire	[1:0] DOUT;
 
+reg	[1:0] DOUT_ALTERA_SYNTHESIZED;
 wire	E;
-reg	[1:0] Q_ALTERA_SYNTHESIZED;
 wire	SYNTHESIZED_WIRE_0;
 wire	SYNTHESIZED_WIRE_1;
 
@@ -48,7 +48,7 @@ always@(posedge CLK)
 begin
 if (E)
 	begin
-	Q_ALTERA_SYNTHESIZED[1] <= SYNTHESIZED_WIRE_0;
+	DOUT_ALTERA_SYNTHESIZED[1] <= SYNTHESIZED_WIRE_0;
 	end
 end
 
@@ -57,27 +57,27 @@ always@(posedge CLK)
 begin
 if (E)
 	begin
-	Q_ALTERA_SYNTHESIZED[0] <= SYNTHESIZED_WIRE_1;
+	DOUT_ALTERA_SYNTHESIZED[0] <= SYNTHESIZED_WIRE_1;
 	end
 end
 
 
 MX2x1	b2v_inst2(
 	.D1(IR),
-	.D0(D[1]),
+	.D0(DIN[1]),
 	.S0(SR),
 	.Q(SYNTHESIZED_WIRE_0));
 
 
 MX2x1	b2v_inst3(
-	.D1(Q_ALTERA_SYNTHESIZED[1]),
-	.D0(D[0]),
+	.D1(DOUT_ALTERA_SYNTHESIZED[1]),
+	.D0(DIN[0]),
 	.S0(SR),
 	.Q(SYNTHESIZED_WIRE_1));
 
 assign	E = SR | LD;
 
-assign	S = Q_ALTERA_SYNTHESIZED[0];
-assign	Q = Q_ALTERA_SYNTHESIZED;
+assign	S = DOUT_ALTERA_SYNTHESIZED[0];
+assign	DOUT = DOUT_ALTERA_SYNTHESIZED;
 
 endmodule
