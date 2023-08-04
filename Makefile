@@ -4,7 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=gpu/vram_controller
+TLE=gpu/gpu
 
 default: verilog run
 

@@ -15,60 +15,45 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Fri Aug  4 22:06:30 2023"
+// CREATED		"Fri Aug  4 21:44:31 2023"
 
-module CMP2(
+module ADD2(
+	Cin,
 	A,
 	B,
-	G,
-	E,
-	L
+	Cout,
+	Q
 );
 
 
+input wire	Cin;
 input wire	[1:0] A;
 input wire	[1:0] B;
-output wire	G;
-output wire	E;
-output wire	L;
+output wire	Cout;
+output wire	[1:0] Q;
 
-wire	E_ALTERA_SYNTHESIZED0;
-wire	E_ALTERA_SYNTHESIZED1;
-wire	G_ALTERA_SYNTHESIZED0;
-wire	G_ALTERA_SYNTHESIZED1;
-wire	L_ALTERA_SYNTHESIZED0;
-wire	L_ALTERA_SYNTHESIZED1;
+wire	[1:0] Q_ALTERA_SYNTHESIZED;
 wire	SYNTHESIZED_WIRE_0;
-wire	SYNTHESIZED_WIRE_1;
 
 
 
 
-assign	G = SYNTHESIZED_WIRE_0 | G_ALTERA_SYNTHESIZED1;
 
-
-CMP1	b2v_inst1(
-	.A(A[1]),
-	.B(B[1]),
-	.G(G_ALTERA_SYNTHESIZED1),
-	.E(E_ALTERA_SYNTHESIZED1),
-	.L(L_ALTERA_SYNTHESIZED1));
-
-
-CMP1	b2v_inst2(
+ADD1	b2v_inst(
 	.A(A[0]),
 	.B(B[0]),
-	.G(G_ALTERA_SYNTHESIZED0),
-	.E(E_ALTERA_SYNTHESIZED0),
-	.L(L_ALTERA_SYNTHESIZED0));
+	.Cin(Cin),
+	.Q(Q_ALTERA_SYNTHESIZED[0]),
+	.Cout(SYNTHESIZED_WIRE_0));
 
-assign	SYNTHESIZED_WIRE_0 = E_ALTERA_SYNTHESIZED1 & G_ALTERA_SYNTHESIZED0;
 
-assign	L = SYNTHESIZED_WIRE_1 | L_ALTERA_SYNTHESIZED1;
+ADD1	b2v_inst1(
+	.A(A[1]),
+	.B(B[1]),
+	.Cin(SYNTHESIZED_WIRE_0),
+	.Q(Q_ALTERA_SYNTHESIZED[1]),
+	.Cout(Cout));
 
-assign	SYNTHESIZED_WIRE_1 = E_ALTERA_SYNTHESIZED1 & L_ALTERA_SYNTHESIZED0;
-
-assign	E = E_ALTERA_SYNTHESIZED1 & E_ALTERA_SYNTHESIZED0;
-
+assign	Q = Q_ALTERA_SYNTHESIZED;
 
 endmodule

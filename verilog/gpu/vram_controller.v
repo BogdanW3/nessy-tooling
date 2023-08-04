@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:13 2023"
+// CREATED		"Fri Aug  4 21:38:21 2023"
 
 module vram_controller(
 	read_scanline,
@@ -79,9 +79,6 @@ wire	[3:0] CMD_CURRENT;
 wire	[3:0] CMD_DESL;
 wire	CMD_DONE;
 wire	CMD_LD;
-wire	CMD_LD_INIT;
-wire	CMD_LD_POWERON1;
-reg	CMD_LD_STATE_UPDATE;
 wire	[3:0] CMD_MRS;
 wire	[1:0] CMD_MRS_CNT;
 wire	[3:0] CMD_NEXT;
@@ -157,21 +154,23 @@ wire	SYNTHESIZED_WIRE_41;
 wire	SYNTHESIZED_WIRE_42;
 wire	SYNTHESIZED_WIRE_28;
 wire	SYNTHESIZED_WIRE_29;
-reg	SRFF_inst20;
 wire	SYNTHESIZED_WIRE_32;
-wire	SYNTHESIZED_WIRE_34;
+reg	SRFF_inst20;
+wire	SYNTHESIZED_WIRE_33;
 wire	SYNTHESIZED_WIRE_35;
+reg	DFF_inst30;
 
 assign	SDRAM_CLK = CLK;
+wire	[15:0] GDFX_TEMP_SIGNAL_16;
 wire	[3:0] GDFX_TEMP_SIGNAL_4;
 wire	[3:0] GDFX_TEMP_SIGNAL_5;
 wire	[3:0] GDFX_TEMP_SIGNAL_6;
 wire	[3:0] GDFX_TEMP_SIGNAL_8;
-wire	[3:0] GDFX_TEMP_SIGNAL_16;
+wire	[3:0] GDFX_TEMP_SIGNAL_17;
 wire	[3:0] GDFX_TEMP_SIGNAL_2;
 wire	[3:0] GDFX_TEMP_SIGNAL_3;
+wire	[3:0] GDFX_TEMP_SIGNAL_20;
 wire	[3:0] GDFX_TEMP_SIGNAL_19;
-wire	[3:0] GDFX_TEMP_SIGNAL_18;
 wire	[3:0] GDFX_TEMP_SIGNAL_7;
 wire	[3:0] GDFX_TEMP_SIGNAL_0;
 wire	[3:0] GDFX_TEMP_SIGNAL_1;
@@ -182,18 +181,19 @@ wire	[3:0] GDFX_TEMP_SIGNAL_13;
 wire	[3:0] GDFX_TEMP_SIGNAL_9;
 wire	[3:0] GDFX_TEMP_SIGNAL_14;
 wire	[3:0] GDFX_TEMP_SIGNAL_15;
-wire	[3:0] GDFX_TEMP_SIGNAL_17;
+wire	[3:0] GDFX_TEMP_SIGNAL_18;
 
 
+assign	GDFX_TEMP_SIGNAL_16 = {L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L};
 assign	GDFX_TEMP_SIGNAL_4 = {H,H,H,H};
 assign	GDFX_TEMP_SIGNAL_5 = {H,H,H,H};
 assign	GDFX_TEMP_SIGNAL_6 = {H,H,H,H};
 assign	GDFX_TEMP_SIGNAL_8 = {L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_16 = {L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_17 = {L,L,L,L};
 assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,H};
 assign	GDFX_TEMP_SIGNAL_3 = {L,L,L,H};
-assign	GDFX_TEMP_SIGNAL_19 = {H,L,H,H};
-assign	GDFX_TEMP_SIGNAL_18 = {H,L,L,H};
+assign	GDFX_TEMP_SIGNAL_20 = {H,L,H,H};
+assign	GDFX_TEMP_SIGNAL_19 = {H,L,L,H};
 assign	GDFX_TEMP_SIGNAL_7 = {H,L,L,L};
 assign	GDFX_TEMP_SIGNAL_0 = {L,H,H,H};
 assign	GDFX_TEMP_SIGNAL_1 = {L,H,H,L};
@@ -204,7 +204,7 @@ assign	GDFX_TEMP_SIGNAL_13 = {L,H,L,L};
 assign	GDFX_TEMP_SIGNAL_9 = {L,L,H,H};
 assign	GDFX_TEMP_SIGNAL_14 = {L,L,H,L};
 assign	GDFX_TEMP_SIGNAL_15 = {L,L,H,L};
-assign	GDFX_TEMP_SIGNAL_17 = {L,L,H,L};
+assign	GDFX_TEMP_SIGNAL_18 = {L,L,H,L};
 
 assign	POWERON_REF_EXIT = POWERON_REF_CNT[3] & CMD_DONE;
 
@@ -227,14 +227,7 @@ DC4	b2v_inst10(
 
 assign	SYNTHESIZED_WIRE_2 = CMD_CURR_PREA & SYNTHESIZED_WIRE_0;
 
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
+
 
 assign	SYNTHESIZED_WIRE_0 =  ~CMD_LD;
 
@@ -335,6 +328,14 @@ MX2x4	b2v_inst27(
 	.D1_(ACTIVE_CMD),
 	.Q(CMD_NEXT));
 
+
+CMP16	b2v_inst28(
+	.A(POWERON_STABLE_CNT),
+	.B(GDFX_TEMP_SIGNAL_16),
+	
+	.E(SYNTHESIZED_WIRE_32)
+	);
+
 assign	nPOWERON_REF_EXIT =  ~POWERON_REF_EXIT;
 
 
@@ -348,7 +349,7 @@ REG2_INC_CL	b2v_inst3(
 always@(posedge CLK)
 begin
 	begin
-	CMD_LD_STATE_UPDATE <= SYNTHESIZED_WIRE_11;
+	DFF_inst30 <= SYNTHESIZED_WIRE_11;
 	end
 end
 
@@ -357,7 +358,7 @@ assign	SYNTHESIZED_WIRE_11 = POWERON_STATE_UPDATE | POWERON_STATE_UPDATE;
 assign	POWERON_PREA_EXIT = H;
 
 
-assign	CMD_LD_POWERON1 = POWERON_REF_DONE_TRIG & nPOWERON_REF_EXIT;
+assign	SYNTHESIZED_WIRE_35 = POWERON_REF_DONE_TRIG & nPOWERON_REF_EXIT;
 
 assign	nPOWERON_FINISHED =  ~POWERON_FINISHED;
 
@@ -365,10 +366,10 @@ assign	OUT_SELF = L;
 
 
 
-assign	CMD_NOP = GDFX_TEMP_SIGNAL_16;
+assign	CMD_NOP = GDFX_TEMP_SIGNAL_17;
 
 
-assign	CMD_MRS = GDFX_TEMP_SIGNAL_17;
+assign	CMD_MRS = GDFX_TEMP_SIGNAL_18;
 
 
 
@@ -379,11 +380,11 @@ assign	ACTIVE_CMD = CMD_NOP;
 
 
 
-assign	CMD_PREA = GDFX_TEMP_SIGNAL_18;
+assign	CMD_PREA = GDFX_TEMP_SIGNAL_19;
 
 
 
-assign	CMD_REF = GDFX_TEMP_SIGNAL_19;
+assign	CMD_REF = GDFX_TEMP_SIGNAL_20;
 
 
 
@@ -478,6 +479,8 @@ assign	SYNTHESIZED_WIRE_13 = CMD_CURR_MRS & nCMD_MRS_LAST;
 
 assign	nCMD_MRS_LAST =  ~SYNTHESIZED_WIRE_42;
 
+assign	CMD_LD = SYNTHESIZED_WIRE_32 ? H : 1'bz;
+
 
 REG16_INC_CL	b2v_inst7(
 	.CLK(CLK),
@@ -491,10 +494,10 @@ assign	OUT_NOP = CMD_CURR_NOP ? H : 1'bz;
 DC2	b2v_inst71(
 	.D0(SRFF_inst20),
 	.E(CMD_CURR_PRE),
-	.Q1(SYNTHESIZED_WIRE_32),
+	.Q1(SYNTHESIZED_WIRE_33),
 	.Q0(SYNTHESIZED_WIRE_40));
 
-assign	OUT_NOP = SYNTHESIZED_WIRE_32 ? H : 1'bz;
+assign	OUT_NOP = SYNTHESIZED_WIRE_33 ? H : 1'bz;
 
 assign	CMD_DONE = SYNTHESIZED_WIRE_40 ? H : 1'bz;
 
@@ -543,13 +546,9 @@ REG12_LD_CL	b2v_inst82(
 assign	OUT_DESL = L;
 
 
-assign	SYNTHESIZED_WIRE_34 = ~(POWERON_STABLE_CNT[15] | POWERON_STABLE_CNT[13] | POWERON_STABLE_CNT[14] | POWERON_STABLE_CNT[12] | POWERON_STABLE_CNT[10] | POWERON_STABLE_CNT[11] | POWERON_STABLE_CNT[9] | POWERON_STABLE_CNT[8]);
+assign	CMD_LD = SYNTHESIZED_WIRE_35 ? H : 1'bz;
 
-assign	SYNTHESIZED_WIRE_35 = ~(POWERON_STABLE_CNT[7] | POWERON_STABLE_CNT[5] | POWERON_STABLE_CNT[6] | POWERON_STABLE_CNT[4] | POWERON_STABLE_CNT[2] | POWERON_STABLE_CNT[3] | POWERON_STABLE_CNT[1] | POWERON_STABLE_CNT[0]);
-
-assign	CMD_LD_INIT = SYNTHESIZED_WIRE_34 & SYNTHESIZED_WIRE_35;
-
-assign	CMD_LD = CMD_LD_STATE_UPDATE | CMD_LD_POWERON1 | CMD_LD_INIT | L | L | L | L | L | L | L | L | L;
+assign	CMD_LD = DFF_inst30 ? H : 1'bz;
 
 
 DC16	b2v_inst9(
