@@ -15,10 +15,11 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:16 2023"
+// CREATED		"Tue Aug  8 16:04:51 2023"
 
 module kb_gamepad_bridge(
 	KBINTR,
+	RD,
 	CLK,
 	OUT0,
 	ADDR,
@@ -29,6 +30,7 @@ module kb_gamepad_bridge(
 
 
 input wire	KBINTR;
+input wire	RD;
 input wire	CLK;
 input wire	OUT0;
 input wire	[15:0] ADDR;
@@ -37,16 +39,13 @@ output wire	KBINTA;
 output wire	[7:0] DATA;
 
 reg	A;
-wire	A1;
-wire	A14;
-wire	A2;
-wire	A4;
 reg	BRK;
 wire	CS;
 reg	D;
 reg	DOWN;
 reg	E;
 reg	F;
+wire	H;
 reg	I;
 reg	J;
 reg	K;
@@ -86,7 +85,7 @@ reg	KP9;
 wire	L;
 reg	LEFT;
 reg	LL;
-wire	[15:0] nA;
+wire	[15:0] nADDR;
 wire	nBRK;
 wire	[7:0] nKEY;
 reg	O;
@@ -98,6 +97,7 @@ wire	[7:0] PDAT;
 reg	Q;
 reg	R;
 reg	RCTRL;
+wire	READ;
 reg	RIGHT;
 reg	RSHIFT;
 reg	S;
@@ -162,24 +162,25 @@ wire	SYNTHESIZED_WIRE_54;
 
 assign	KBINTA = KBINTR;
 assign	SYNTHESIZED_WIRE_52 = 1;
+wire	[7:0] GDFX_TEMP_SIGNAL_0;
 wire	[5:0] GDFX_TEMP_SIGNAL_6;
 wire	[1:0] GDFX_TEMP_SIGNAL_4;
 wire	[1:0] GDFX_TEMP_SIGNAL_5;
 wire	[7:0] GDFX_TEMP_SIGNAL_3;
 wire	[7:0] GDFX_TEMP_SIGNAL_2;
-wire	[7:0] GDFX_TEMP_SIGNAL_0;
 wire	[7:0] GDFX_TEMP_SIGNAL_1;
 
 
+assign	GDFX_TEMP_SIGNAL_0 = {D,A,S,W,F,R,E,Q};
 assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,L,L};
 assign	GDFX_TEMP_SIGNAL_4 = {P2,P0};
 assign	GDFX_TEMP_SIGNAL_5 = {P3,P1};
 assign	GDFX_TEMP_SIGNAL_3 = {LL,J,K,I,L,L,O,U};
 assign	GDFX_TEMP_SIGNAL_2 = {RIGHT,LEFT,DOWN,UP,L,L,RSHIFT,RCTRL};
-assign	GDFX_TEMP_SIGNAL_0 = {D,A,S,W,F,R,E,Q};
 assign	GDFX_TEMP_SIGNAL_1 = {KP6,KP4,KP5,KP8,L,L,KP9,KP7};
 
 assign	KEYBREAK = KEY[7] & KEY[5] & KEY[6] & KEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & nKEY[3];
+
 
 assign	KEYS = nKEY[7] & nKEY[5] & nKEY[6] & KEY[4] & KEY[1] & nKEY[2] & KEY[0] & KEY[3];
 
@@ -230,9 +231,12 @@ assign	KEYKP5 = nKEY[7] & KEY[5] & KEY[6] & KEY[4] & KEY[1] & nKEY[2] & KEY[0] &
 
 assign	KEYKP4 = nKEY[7] & KEY[5] & KEY[6] & nKEY[4] & KEY[1] & nKEY[2] & KEY[0] & KEY[3];
 
+
 assign	KEYKP6 = nKEY[7] & KEY[5] & KEY[6] & KEY[4] & nKEY[1] & KEY[2] & nKEY[0] & nKEY[3];
 
-assign	nA =  ~ADDR;
+assign	nADDR =  ~ADDR;
+
+assign	READ = RD & CS;
 
 assign	nBRK =  ~BRK;
 
@@ -666,7 +670,7 @@ DC2	b2v_inst85(
 REG8_LD_SR	b2v_inst86(
 	.CLK(CLK),
 	.LD(OUT0),
-	.SR(CS),
+	.SR(READ),
 	.IR(L),
 	.DIN(GDFX_TEMP_SIGNAL_0),
 	.S(P0)
@@ -676,7 +680,7 @@ REG8_LD_SR	b2v_inst86(
 REG8_LD_SR	b2v_inst87(
 	.CLK(CLK),
 	.LD(OUT0),
-	.SR(CS),
+	.SR(READ),
 	.IR(L),
 	.DIN(GDFX_TEMP_SIGNAL_1),
 	.S(P1)
@@ -686,7 +690,7 @@ REG8_LD_SR	b2v_inst87(
 REG8_LD_SR	b2v_inst88(
 	.CLK(CLK),
 	.LD(OUT0),
-	.SR(CS),
+	.SR(READ),
 	.IR(L),
 	.DIN(GDFX_TEMP_SIGNAL_2),
 	.S(P2)
@@ -696,7 +700,7 @@ REG8_LD_SR	b2v_inst88(
 REG8_LD_SR	b2v_inst89(
 	.CLK(CLK),
 	.LD(OUT0),
-	.SR(CS),
+	.SR(READ),
 	.IR(L),
 	.DIN(GDFX_TEMP_SIGNAL_3),
 	.S(P3)
@@ -723,12 +727,14 @@ assign	DATA[0] = CS ? PDAT[0] : 1'bz;
 assign	PDAT[7:2] = GDFX_TEMP_SIGNAL_6;
 
 
-assign	SYNTHESIZED_WIRE_53 = SYNTHESIZED_WIRE_52 & A2 & A1 & nA[3] & nA[6] & nA[5] & nA[7] & A4;
+assign	SYNTHESIZED_WIRE_53 = SYNTHESIZED_WIRE_52 & ADDR[2] & ADDR[1] & nADDR[3] & nADDR[6] & nADDR[5] & nADDR[7] & ADDR[4];
 
-assign	SYNTHESIZED_WIRE_54 = nA[8] & nA[10] & nA[9] & nA[11] & A14 & nA[13] & nA[15] & nA[12];
+assign	SYNTHESIZED_WIRE_54 = nADDR[8] & nADDR[10] & nADDR[9] & nADDR[11] & ADDR[14] & nADDR[13] & nADDR[15] & nADDR[12];
 
 
 assign	CS = SYNTHESIZED_WIRE_53 & SYNTHESIZED_WIRE_54;
 
+assign	H = 1;
+assign	L = 0;
 
 endmodule

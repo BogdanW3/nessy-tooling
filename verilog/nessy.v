@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Fri Aug  4 21:44:35 2023"
+// CREATED		"Tue Aug  8 16:04:53 2023"
 
 module nessy(
 	CLK,
@@ -70,17 +70,28 @@ wire	L;
 wire	nNMI;
 wire	OUT0;
 wire	RAM_nCS;
+wire	RD;
+wire	WR;
 wire	SYNTHESIZED_WIRE_0;
 wire	SYNTHESIZED_WIRE_1;
 wire	SYNTHESIZED_WIRE_2;
 wire	[7:0] SYNTHESIZED_WIRE_3;
 
 
-
+initial begin
+    if ($test$plusargs("trace") != 0) begin
+        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+        $dumpfile("logs/vlt_dump.vcd");
+        $dumpvars();
+    end
+    $display("[%0t] Model running...\n", $time);
+end
 
 
 gpu	b2v_inst(
 	.nCS(GPU_nCS),
+	.RD(RD),
+	.WR(WR),
 	.CLK(CLK),
 	.A(A[2:0]),
 	.D(D),
@@ -122,6 +133,7 @@ kb_controller	b2v_inst4(
 
 kb_gamepad_bridge	b2v_inst5(
 	.KBINTR(SYNTHESIZED_WIRE_2),
+	.RD(RD),
 	.CLK(CLK),
 	.OUT0(OUT0),
 	.ADDR(A),
@@ -132,20 +144,16 @@ kb_gamepad_bridge	b2v_inst5(
 
 
 cpu	b2v_inst9(
+	.CLK(CLK),
 	.nNMI(nNMI),
-	.A(A),
 	.D(D),
-	.OUT0(OUT0)
-	
+	.RD(RD),
+	.WR(WR),
+	.OUT0(OUT0),
+	.A(A)
 	);
 
-
-REG8_INC_CL	b2v_test_reg-remove(
-	.CLK(CLK),
-	.INC(H),
-	.CL(L),
-	.DOUT(LED));
-
+assign	LED = D;
 assign	H = 1;
 assign	L = 0;
 

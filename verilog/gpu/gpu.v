@@ -15,11 +15,13 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Fri Aug  4 22:38:20 2023"
+// CREATED		"Tue Aug  8 16:04:49 2023"
 
 module gpu(
 	CLK,
 	nCS,
+	RD,
+	WR,
 	A,
 	SDRAM_CLK,
 	SDRAM_CKE,
@@ -44,6 +46,8 @@ module gpu(
 
 input wire	CLK;
 input wire	nCS;
+input wire	RD;
+input wire	WR;
 input wire	[2:0] A;
 output wire	SDRAM_CLK;
 output wire	SDRAM_CKE;
@@ -74,11 +78,12 @@ wire	noX;
 wire	[3:0] R;
 wire	[11:0] TMPADDR;
 wire	VBLANK_START;
-wire	[19:0] VRAM_A;
 wire	[15:0] VRAM_D;
 wire	VRAM_READ;
 wire	VRAM_START;
 wire	VRAM_WRITE;
+wire	[9:0] VRAM_X;
+wire	[9:0] VRAM_Y;
 wire	WRITE;
 wire	[15:0] X;
 wire	[15:0] X_BP;
@@ -128,7 +133,7 @@ assign	SYNTHESIZED_WIRE_24 = 0;
 assign	SYNTHESIZED_WIRE_20 = 0;
 wire	[15:0] GDFX_TEMP_SIGNAL_2;
 wire	[15:0] GDFX_TEMP_SIGNAL_0;
-wire	[7:0] GDFX_TEMP_SIGNAL_13;
+wire	[7:0] GDFX_TEMP_SIGNAL_10;
 wire	[15:0] GDFX_TEMP_SIGNAL_6;
 wire	[15:0] GDFX_TEMP_SIGNAL_5;
 wire	[15:0] GDFX_TEMP_SIGNAL_4;
@@ -137,14 +142,11 @@ wire	[15:0] GDFX_TEMP_SIGNAL_1;
 wire	[15:0] GDFX_TEMP_SIGNAL_9;
 wire	[15:0] GDFX_TEMP_SIGNAL_8;
 wire	[15:0] GDFX_TEMP_SIGNAL_7;
-wire	[3:0] GDFX_TEMP_SIGNAL_10;
-wire	[3:0] GDFX_TEMP_SIGNAL_11;
-wire	[3:0] GDFX_TEMP_SIGNAL_12;
 
 
 assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,L,L,L,H,L,L,H,L,H,L,H,H,H};
 assign	GDFX_TEMP_SIGNAL_0 = {L,L,L,L,L,H,L,L,L,L,L,L,H,H,L,H};
-assign	GDFX_TEMP_SIGNAL_13 = {L,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_10 = {L,L,L,L,L,L,L,L};
 assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,L,L,H,L,H,L,L,H,H,L,L,H};
 assign	GDFX_TEMP_SIGNAL_5 = {L,L,L,L,L,L,H,L,H,L,L,L,L,L,H,H};
 assign	GDFX_TEMP_SIGNAL_4 = {L,L,L,L,L,L,H,L,L,H,H,H,H,H,L,H};
@@ -153,9 +155,6 @@ assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,H,L,L,L,L,L,L,H,H,H,H};
 assign	GDFX_TEMP_SIGNAL_9 = {L,L,L,L,L,L,H,H,H,H,L,H,L,L,L,L};
 assign	GDFX_TEMP_SIGNAL_8 = {L,L,L,L,L,L,H,H,L,H,L,H,H,L,L,L};
 assign	GDFX_TEMP_SIGNAL_7 = {L,L,L,L,L,L,H,H,L,L,H,L,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_10 = {DRAW,DRAW,DRAW,DRAW};
-assign	GDFX_TEMP_SIGNAL_11 = {DRAW,DRAW,DRAW,DRAW};
-assign	GDFX_TEMP_SIGNAL_12 = {DRAW,DRAW,DRAW,DRAW};
 
 assign	X_NEXTLINE = GDFX_TEMP_SIGNAL_0;
 
@@ -193,9 +192,10 @@ vram_controller	b2v_inst(
 	.start(VRAM_START),
 	.read_scanline(VRAM_READ),
 	.write_pixel(VRAM_WRITE),
-	.A(VRAM_A),
 	.D(VRAM_D),
 	.SDRAM_DQ(SDRAM_DQ),
+	.X(VRAM_X),
+	.Y(VRAM_Y),
 	.SDRAM_CLK(SDRAM_CLK),
 	.SDRAM_CKE(SDRAM_CKE),
 	.nSDRAM_CS(nSDRAM_CS),
@@ -204,6 +204,8 @@ vram_controller	b2v_inst(
 	.nSDRAM_WE(nSDRAM_WE),
 	.SDRAM_UDQM(SDRAM_UDQM),
 	.SDRAM_LDQM(SDRAM_LDQM),
+	
+	
 	.SDRAM_A(SDRAM_A),
 	.SDRAM_BA(SDRAM_BA)
 	);
@@ -295,19 +297,12 @@ CMP16	b2v_inst26(
 	
 	.L(SYNTHESIZED_WIRE_17));
 
-assign	VRAM_A[9:0] = TMPADDR[9:0];
+assign	VRAM_Y = TMPADDR[9:0];
 
 
-assign	VRAM_A[19:10] = X_WR[9:0];
+assign	VRAM_X = X_WR[9:0];
 
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
+
 
 REG16_INC_CL	b2v_inst29(
 	.CLK(CLK),
@@ -355,26 +350,45 @@ assign	VRAM_READ = SYNTHESIZED_WIRE_8 & SYNTHESIZED_WIRE_9;
 
 assign	SYNTHESIZED_WIRE_9 = SYNTHESIZED_WIRE_10 | Y_END;
 
+assign	R = VRAM_D[11:8];
+
+
 assign	SYNTHESIZED_WIRE_14 = SYNTHESIZED_WIRE_11 | SYNTHESIZED_WIRE_12;
+
+assign	G = VRAM_D[7:4];
+
+
+assign	VRAM_WRITE = L;
+
 
 assign	VGA_HS = SYNTHESIZED_WIRE_13 & SYNTHESIZED_WIRE_14;
 
 assign	SYNTHESIZED_WIRE_18 = SYNTHESIZED_WIRE_15 | SYNTHESIZED_WIRE_16;
 
+assign	B = VRAM_D[3:0];
+
+
+assign	VGA_B[3] = DRAW ? B[3] : 1'bz;
+assign	VGA_B[2] = DRAW ? B[2] : 1'bz;
+assign	VGA_B[1] = DRAW ? B[1] : 1'bz;
+assign	VGA_B[0] = DRAW ? B[0] : 1'bz;
+
+assign	VGA_G[3] = DRAW ? G[3] : 1'bz;
+assign	VGA_G[2] = DRAW ? G[2] : 1'bz;
+assign	VGA_G[1] = DRAW ? G[1] : 1'bz;
+assign	VGA_G[0] = DRAW ? G[0] : 1'bz;
+
+assign	VGA_R[3] = DRAW ? R[3] : 1'bz;
+assign	VGA_R[2] = DRAW ? R[2] : 1'bz;
+assign	VGA_R[1] = DRAW ? R[1] : 1'bz;
+assign	VGA_R[0] = DRAW ? R[0] : 1'bz;
+
 assign	VGA_VS = SYNTHESIZED_WIRE_17 & SYNTHESIZED_WIRE_18;
+
 
 assign	DRAW = X_DRAW & Y_DRAW;
 
-assign	VGA_R = R & GDFX_TEMP_SIGNAL_10;
-
-assign	VGA_G = G & GDFX_TEMP_SIGNAL_11;
-
-assign	VGA_B = B & GDFX_TEMP_SIGNAL_12;
-
 assign	SYNTHESIZED_WIRE_19 = X_END & Y_END;
-
-
-
 
 
 
@@ -408,14 +422,14 @@ MX2x12	b2v_inst9(
 	.D1_(Y_NEXT[11:0]),
 	.Q(TMPADDR));
 
-assign	D[7] = L ? GDFX_TEMP_SIGNAL_13[7] : 1'bz;
-assign	D[6] = L ? GDFX_TEMP_SIGNAL_13[6] : 1'bz;
-assign	D[5] = L ? GDFX_TEMP_SIGNAL_13[5] : 1'bz;
-assign	D[4] = L ? GDFX_TEMP_SIGNAL_13[4] : 1'bz;
-assign	D[3] = L ? GDFX_TEMP_SIGNAL_13[3] : 1'bz;
-assign	D[2] = L ? GDFX_TEMP_SIGNAL_13[2] : 1'bz;
-assign	D[1] = L ? GDFX_TEMP_SIGNAL_13[1] : 1'bz;
-assign	D[0] = L ? GDFX_TEMP_SIGNAL_13[0] : 1'bz;
+assign	D[7] = L ? GDFX_TEMP_SIGNAL_10[7] : 1'bz;
+assign	D[6] = L ? GDFX_TEMP_SIGNAL_10[6] : 1'bz;
+assign	D[5] = L ? GDFX_TEMP_SIGNAL_10[5] : 1'bz;
+assign	D[4] = L ? GDFX_TEMP_SIGNAL_10[4] : 1'bz;
+assign	D[3] = L ? GDFX_TEMP_SIGNAL_10[3] : 1'bz;
+assign	D[2] = L ? GDFX_TEMP_SIGNAL_10[2] : 1'bz;
+assign	D[1] = L ? GDFX_TEMP_SIGNAL_10[1] : 1'bz;
+assign	D[0] = L ? GDFX_TEMP_SIGNAL_10[0] : 1'bz;
 
 
 always@(posedge CLK)
@@ -432,10 +446,7 @@ if (A_STATUSREG)
 	end
 end
 
-assign	B = 4'b0000;
-assign	G = 4'b0000;
 assign	H = 1;
 assign	L = 0;
-assign	R = 4'b0000;
 
 endmodule
