@@ -15,23 +15,23 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:14 2023"
+// CREATED		"Wed Aug  9 16:26:28 2023"
 
 module kb_controller(
-	PS2_CLK,
-	PS2_DATA,
-	CLK,
 	INTA,
+	CLK,
 	INTR,
+	PS2_DATA,
+	PS2_CLK,
 	Q
 );
 
 
-input wire	PS2_CLK;
-input wire	PS2_DATA;
-input wire	CLK;
 input wire	INTA;
+input wire	CLK;
 output wire	INTR;
+inout wire	PS2_DATA;
+inout wire	PS2_CLK;
 output wire	[7:0] Q;
 
 reg	D0;
@@ -42,8 +42,10 @@ reg	D4;
 reg	D5;
 reg	D6;
 reg	D7;
+wire	H;
 wire	idle;
 wire	KBCLK;
+wire	L;
 wire	LD;
 reg	parity;
 reg	[7:0] Q_ALTERA_SYNTHESIZED;
@@ -56,22 +58,20 @@ reg	tick5;
 reg	tick6;
 reg	tick7;
 reg	tick8;
-wire	tick9;
+reg	tick9;
 reg	VALID;
-reg	DFF_inst20;
 wire	SYNTHESIZED_WIRE_0;
-wire	SYNTHESIZED_WIRE_1;
-wire	SYNTHESIZED_WIRE_5;
 wire	SYNTHESIZED_WIRE_4;
+wire	SYNTHESIZED_WIRE_3;
 reg	DFF_inst38;
 
-assign	SYNTHESIZED_WIRE_5 = 0;
+assign	SYNTHESIZED_WIRE_4 = 0;
 
 
 
 
 kb_debouncer	b2v_inst(
-	.D(PS2_CLK),
+	
 	.CLK(CLK),
 	.Q(KBCLK));
 
@@ -83,13 +83,11 @@ begin
 	end
 end
 
-assign	tick9 = DFF_inst20 & SYNTHESIZED_WIRE_0;
-
 
 always@(posedge KBCLK)
 begin
 	begin
-	tick0 <= SYNTHESIZED_WIRE_1;
+	tick0 <= SYNTHESIZED_WIRE_0;
 	end
 end
 
@@ -169,14 +167,12 @@ end
 always@(posedge KBCLK)
 begin
 	begin
-	DFF_inst20 <= tick8;
+	tick9 <= tick8;
 	end
 end
 
 
-assign	SYNTHESIZED_WIRE_0 =  ~VALID;
-
-assign	SYNTHESIZED_WIRE_4 =  ~PS2_DATA;
+assign	SYNTHESIZED_WIRE_3 = ;
 
 
 always@(posedge CLK)
@@ -270,7 +266,7 @@ begin
 	VALID <= ~VALID & LD | VALID & ~INTA;
 end
 
-assign	idle = ~(tick9 | tick8 | tick7 | tick5 | tick6 | tick4 | tick2 | tick3 | tick1 | SYNTHESIZED_WIRE_5 | tick0 | SYNTHESIZED_WIRE_5);
+assign	idle = ~(tick9 | tick8 | tick7 | tick5 | tick6 | tick4 | tick2 | tick3 | tick1 | SYNTHESIZED_WIRE_4 | tick0 | SYNTHESIZED_WIRE_4);
 
 
 always@(posedge KBCLK)
@@ -279,8 +275,6 @@ begin
 	DFF_inst38 <= PS2_DATA;
 	end
 end
-
-assign	SYNTHESIZED_WIRE_1 = SYNTHESIZED_WIRE_4 & DFF_inst38 & idle;
 
 
 always@(posedge KBCLK)
@@ -307,12 +301,16 @@ begin
 end
 
 
+
+
 always@(posedge KBCLK)
 begin
 	begin
 	D2 <= D3;
 	end
 end
+
+assign	SYNTHESIZED_WIRE_0 = SYNTHESIZED_WIRE_3 & DFF_inst38 & idle;
 
 
 always@(posedge KBCLK)
@@ -332,5 +330,7 @@ end
 
 assign	INTR = VALID;
 assign	Q = Q_ALTERA_SYNTHESIZED;
+assign	H = 1;
+assign	L = 0;
 
 endmodule

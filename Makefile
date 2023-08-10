@@ -68,7 +68,7 @@ run:
 	@echo "-- RUN ---------------------"
 	@rm -rf logs
 	@mkdir -p logs
-	obj_dir/V${shell basename ${TLE}}.exe +trace
+	obj_dir/V${shell basename ${TLE}} +trace
 
 	@echo
 	@echo "-- COVERAGE ----------------"

@@ -15,12 +15,10 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Tue Aug  8 16:04:53 2023"
+// CREATED		"Wed Aug  9 16:26:37 2023"
 
 module nessy(
 	CLK,
-	PS2_DATA,
-	PS2_CLK,
 	SDRAM_CKE,
 	nSDRAM_CS,
 	nSDRAM_RAS,
@@ -31,6 +29,8 @@ module nessy(
 	VGA_VS,
 	VGA_HS,
 	SDRAM_CLK,
+	PS2_DATA,
+	PS2_CLK,
 	LED,
 	SDRAM_A,
 	SDRAM_BA,
@@ -42,8 +42,6 @@ module nessy(
 
 
 input wire	CLK;
-input wire	PS2_DATA;
-input wire	PS2_CLK;
 output wire	SDRAM_CKE;
 output wire	nSDRAM_CS;
 output wire	nSDRAM_RAS;
@@ -54,6 +52,8 @@ output wire	SDRAM_LDQM;
 output wire	VGA_VS;
 output wire	VGA_HS;
 output wire	SDRAM_CLK;
+inout wire	PS2_DATA;
+inout wire	PS2_CLK;
 output wire	[7:0] LED;
 output wire	[11:0] SDRAM_A;
 output wire	[1:0] SDRAM_BA;
@@ -78,14 +78,7 @@ wire	SYNTHESIZED_WIRE_2;
 wire	[7:0] SYNTHESIZED_WIRE_3;
 
 
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
+
 
 
 gpu	b2v_inst(
@@ -120,18 +113,27 @@ assign	GPU_nCS = A[14] | SYNTHESIZED_WIRE_0 | A[15];
 
 assign	SYNTHESIZED_WIRE_0 =  ~A[13];
 
+initial begin
+    if ($test$plusargs("trace") != 0) begin
+        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+        $dumpfile("logs/vlt_dump.vcd");
+        $dumpvars();
+    end
+    $display("[%0t] Model running...\n", $time);
+end
 
-
-kb_controller	b2v_inst4(
-	.PS2_CLK(PS2_CLK),
-	.PS2_DATA(PS2_DATA),
+kb_controller_set3_wip	b2v_inst3(
 	.CLK(CLK),
 	.INTA(SYNTHESIZED_WIRE_1),
+	.PS2_CLK(PS2_CLK),
+	.PS2_DATA(PS2_DATA),
 	.INTR(SYNTHESIZED_WIRE_2),
+	
+	
 	.Q(SYNTHESIZED_WIRE_3));
 
 
-kb_gamepad_bridge	b2v_inst5(
+kb_gamepad_bridge_set3_wip	b2v_inst4(
 	.KBINTR(SYNTHESIZED_WIRE_2),
 	.RD(RD),
 	.CLK(CLK),

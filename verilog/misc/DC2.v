@@ -15,18 +15,18 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug  3 23:56:30 2023"
+// CREATED		"Wed Aug  9 16:26:33 2023"
 
 module DC2(
-	E,
 	D0,
+	E,
 	Q0,
 	Q1
 );
 
 
-input wire	E;
 input wire	D0;
+input wire	E;
 output wire	Q0;
 output wire	Q1;
 

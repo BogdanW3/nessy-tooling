@@ -15,9 +15,9 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Wed Aug  9 16:26:30 2023"
+// CREATED		"Wed Aug  9 16:26:32 2023"
 
-module kb_gamepad_bridge(
+module kb_gamepad_bridge_set3_wip(
 	KBINTR,
 	RD,
 	CLK,
@@ -73,7 +73,6 @@ wire	KEYRCTRL;
 wire	KEYRIGHT;
 wire	KEYRSHIFT;
 wire	KEYS;
-wire	KEYSPEC;
 wire	KEYU;
 wire	KEYUP;
 wire	KEYW;
@@ -102,8 +101,6 @@ wire	READ;
 reg	RIGHT;
 reg	RSHIFT;
 reg	S;
-reg	SPEC;
-reg	SPECBRK;
 reg	U;
 reg	UP;
 reg	W;
@@ -187,73 +184,21 @@ assign	KEYBREAK = KEY[7] & KEY[5] & KEY[6] & KEY[4] & nKEY[1] & nKEY[2] & nKEY[0
 
 assign	KEYS = nKEY[7] & nKEY[5] & nKEY[6] & KEY[4] & KEY[1] & nKEY[2] & KEY[0] & KEY[3];
 
-
-always@(posedge CLK)
-begin
-if (KBINTR)
-	begin
-	UP <= ~UP & SYNTHESIZED_WIRE_0 | UP & ~SYNTHESIZED_WIRE_1;
-	end
-end
-
-assign	SYNTHESIZED_WIRE_0 = SPEC & KEYUP;
-
-assign	SYNTHESIZED_WIRE_1 = SPECBRK & BRK & KEYUP;
-
-
-always@(posedge CLK)
-begin
-if (KBINTR)
-	begin
-	DOWN <= ~DOWN & SYNTHESIZED_WIRE_2 | DOWN & ~SYNTHESIZED_WIRE_3;
-	end
-end
-
-assign	SYNTHESIZED_WIRE_2 = SPEC & KEYDOWN;
-
-assign	SYNTHESIZED_WIRE_3 = SPECBRK & BRK & KEYDOWN;
-
-
-always@(posedge CLK)
-begin
-if (KBINTR)
-	begin
-	LEFT <= ~LEFT & SYNTHESIZED_WIRE_4 | LEFT & ~SYNTHESIZED_WIRE_5;
-	end
-end
-
-assign	SYNTHESIZED_WIRE_4 = SPEC & KEYLEFT;
-
-assign	SYNTHESIZED_WIRE_5 = SPECBRK & BRK & KEYLEFT;
-
-
-always@(posedge CLK)
-begin
-if (KBINTR)
-	begin
-	RIGHT <= ~RIGHT & SYNTHESIZED_WIRE_6 | RIGHT & ~SYNTHESIZED_WIRE_7;
-	end
-end
-
 assign	KEYA = nKEY[7] & nKEY[5] & nKEY[6] & KEY[4] & nKEY[1] & KEY[2] & nKEY[0] & KEY[3];
-
-assign	SYNTHESIZED_WIRE_6 = SPEC & KEYRIGHT;
-
-assign	SYNTHESIZED_WIRE_7 = SPECBRK & BRK & KEYRIGHT;
 
 assign	KEYD = nKEY[7] & KEY[5] & nKEY[6] & nKEY[4] & KEY[1] & nKEY[2] & KEY[0] & nKEY[3];
 
-assign	KEYRCTRL = nKEY[7] & nKEY[5] & nKEY[6] & KEY[4] & nKEY[1] & KEY[2] & KEY[0] & KEY[3];
+assign	KEYRCTRL = nKEY[7] & nKEY[5] & KEY[6] & KEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & KEY[3];
 
 assign	KEYRSHIFT = nKEY[7] & nKEY[5] & KEY[6] & KEY[4] & nKEY[1] & nKEY[2] & KEY[0] & KEY[3];
 
-assign	KEYUP = nKEY[7] & nKEY[5] & KEY[6] & nKEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & KEY[3];
+assign	KEYUP = nKEY[7] & KEY[5] & KEY[6] & nKEY[4] & KEY[1] & nKEY[2] & KEY[0] & nKEY[3];
 
-assign	KEYDOWN = nKEY[7] & nKEY[5] & KEY[6] & KEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & nKEY[3];
+assign	KEYDOWN = nKEY[7] & KEY[5] & KEY[6] & nKEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & nKEY[3];
 
-assign	KEYLEFT = nKEY[7] & nKEY[5] & KEY[6] & nKEY[4] & KEY[1] & nKEY[2] & KEY[0] & KEY[3];
+assign	KEYLEFT = nKEY[7] & KEY[5] & KEY[6] & nKEY[4] & nKEY[1] & nKEY[2] & KEY[0] & nKEY[3];
 
-assign	KEYRIGHT = nKEY[7] & nKEY[5] & KEY[6] & nKEY[4] & nKEY[1] & KEY[2] & KEY[0] & KEY[3];
+assign	KEYRIGHT = nKEY[7] & KEY[5] & KEY[6] & nKEY[4] & KEY[1] & nKEY[2] & nKEY[0] & KEY[3];
 
 assign	KEYO = nKEY[7] & nKEY[5] & KEY[6] & nKEY[4] & nKEY[1] & KEY[2] & nKEY[0] & nKEY[3];
 
@@ -300,7 +245,7 @@ always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	W <= ~W & SYNTHESIZED_WIRE_8 | W & ~SYNTHESIZED_WIRE_9;
+	W <= ~W & SYNTHESIZED_WIRE_0 | W & ~SYNTHESIZED_WIRE_1;
 	end
 end
 
@@ -308,15 +253,15 @@ end
 DC2	b2v_inst35(
 	.D0(nBRK),
 	.E(KEYW),
-	.Q1(SYNTHESIZED_WIRE_8),
-	.Q0(SYNTHESIZED_WIRE_9));
+	.Q1(SYNTHESIZED_WIRE_0),
+	.Q0(SYNTHESIZED_WIRE_1));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	R <= ~R & SYNTHESIZED_WIRE_10 | R & ~SYNTHESIZED_WIRE_11;
+	R <= ~R & SYNTHESIZED_WIRE_2 | R & ~SYNTHESIZED_WIRE_3;
 	end
 end
 
@@ -324,15 +269,15 @@ end
 DC2	b2v_inst37(
 	.D0(nBRK),
 	.E(KEYR),
-	.Q1(SYNTHESIZED_WIRE_10),
-	.Q0(SYNTHESIZED_WIRE_11));
+	.Q1(SYNTHESIZED_WIRE_2),
+	.Q0(SYNTHESIZED_WIRE_3));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	Q <= ~Q & SYNTHESIZED_WIRE_12 | Q & ~SYNTHESIZED_WIRE_13;
+	Q <= ~Q & SYNTHESIZED_WIRE_4 | Q & ~SYNTHESIZED_WIRE_5;
 	end
 end
 
@@ -340,8 +285,8 @@ end
 DC2	b2v_inst39(
 	.D0(nBRK),
 	.E(KEYQ),
-	.Q1(SYNTHESIZED_WIRE_12),
-	.Q0(SYNTHESIZED_WIRE_13));
+	.Q1(SYNTHESIZED_WIRE_4),
+	.Q0(SYNTHESIZED_WIRE_5));
 
 assign	nKEY =  ~KEY;
 
@@ -350,7 +295,7 @@ always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	E <= ~E & SYNTHESIZED_WIRE_14 | E & ~SYNTHESIZED_WIRE_15;
+	E <= ~E & SYNTHESIZED_WIRE_6 | E & ~SYNTHESIZED_WIRE_7;
 	end
 end
 
@@ -358,15 +303,15 @@ end
 DC2	b2v_inst41(
 	.D0(nBRK),
 	.E(KEYE),
-	.Q1(SYNTHESIZED_WIRE_14),
-	.Q0(SYNTHESIZED_WIRE_15));
+	.Q1(SYNTHESIZED_WIRE_6),
+	.Q0(SYNTHESIZED_WIRE_7));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	S <= ~S & SYNTHESIZED_WIRE_16 | S & ~SYNTHESIZED_WIRE_17;
+	S <= ~S & SYNTHESIZED_WIRE_8 | S & ~SYNTHESIZED_WIRE_9;
 	end
 end
 
@@ -374,15 +319,15 @@ end
 DC2	b2v_inst43(
 	.D0(nBRK),
 	.E(KEYS),
-	.Q1(SYNTHESIZED_WIRE_16),
-	.Q0(SYNTHESIZED_WIRE_17));
+	.Q1(SYNTHESIZED_WIRE_8),
+	.Q0(SYNTHESIZED_WIRE_9));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	A <= ~A & SYNTHESIZED_WIRE_18 | A & ~SYNTHESIZED_WIRE_19;
+	A <= ~A & SYNTHESIZED_WIRE_10 | A & ~SYNTHESIZED_WIRE_11;
 	end
 end
 
@@ -390,15 +335,15 @@ end
 DC2	b2v_inst45(
 	.D0(nBRK),
 	.E(KEYA),
-	.Q1(SYNTHESIZED_WIRE_18),
-	.Q0(SYNTHESIZED_WIRE_19));
+	.Q1(SYNTHESIZED_WIRE_10),
+	.Q0(SYNTHESIZED_WIRE_11));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	F <= ~F & SYNTHESIZED_WIRE_20 | F & ~SYNTHESIZED_WIRE_21;
+	F <= ~F & SYNTHESIZED_WIRE_12 | F & ~SYNTHESIZED_WIRE_13;
 	end
 end
 
@@ -406,15 +351,15 @@ end
 DC2	b2v_inst47(
 	.D0(nBRK),
 	.E(KEYF),
-	.Q1(SYNTHESIZED_WIRE_20),
-	.Q0(SYNTHESIZED_WIRE_21));
+	.Q1(SYNTHESIZED_WIRE_12),
+	.Q0(SYNTHESIZED_WIRE_13));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	D <= ~D & SYNTHESIZED_WIRE_22 | D & ~SYNTHESIZED_WIRE_23;
+	D <= ~D & SYNTHESIZED_WIRE_14 | D & ~SYNTHESIZED_WIRE_15;
 	end
 end
 
@@ -422,8 +367,8 @@ end
 DC2	b2v_inst49(
 	.D0(nBRK),
 	.E(KEYD),
-	.Q1(SYNTHESIZED_WIRE_22),
-	.Q0(SYNTHESIZED_WIRE_23));
+	.Q1(SYNTHESIZED_WIRE_14),
+	.Q0(SYNTHESIZED_WIRE_15));
 
 assign	KEYQ = nKEY[7] & nKEY[5] & nKEY[6] & KEY[4] & nKEY[1] & KEY[2] & KEY[0] & nKEY[3];
 
@@ -432,7 +377,7 @@ always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	KP8 <= ~KP8 & SYNTHESIZED_WIRE_24 | KP8 & ~SYNTHESIZED_WIRE_25;
+	KP8 <= ~KP8 & SYNTHESIZED_WIRE_16 | KP8 & ~SYNTHESIZED_WIRE_17;
 	end
 end
 
@@ -440,15 +385,15 @@ end
 DC2	b2v_inst51(
 	.D0(nBRK),
 	.E(KEYKP8),
-	.Q1(SYNTHESIZED_WIRE_24),
-	.Q0(SYNTHESIZED_WIRE_25));
+	.Q1(SYNTHESIZED_WIRE_16),
+	.Q0(SYNTHESIZED_WIRE_17));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	KP7 <= ~KP7 & SYNTHESIZED_WIRE_26 | KP7 & ~SYNTHESIZED_WIRE_27;
+	KP7 <= ~KP7 & SYNTHESIZED_WIRE_18 | KP7 & ~SYNTHESIZED_WIRE_19;
 	end
 end
 
@@ -456,15 +401,15 @@ end
 DC2	b2v_inst53(
 	.D0(nBRK),
 	.E(KEYKP7),
-	.Q1(SYNTHESIZED_WIRE_26),
-	.Q0(SYNTHESIZED_WIRE_27));
+	.Q1(SYNTHESIZED_WIRE_18),
+	.Q0(SYNTHESIZED_WIRE_19));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	KP4 <= ~KP4 & SYNTHESIZED_WIRE_28 | KP4 & ~SYNTHESIZED_WIRE_29;
+	KP4 <= ~KP4 & SYNTHESIZED_WIRE_20 | KP4 & ~SYNTHESIZED_WIRE_21;
 	end
 end
 
@@ -472,15 +417,15 @@ end
 DC2	b2v_inst55(
 	.D0(nBRK),
 	.E(KEYKP4),
-	.Q1(SYNTHESIZED_WIRE_28),
-	.Q0(SYNTHESIZED_WIRE_29));
+	.Q1(SYNTHESIZED_WIRE_20),
+	.Q0(SYNTHESIZED_WIRE_21));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	KP9 <= ~KP9 & SYNTHESIZED_WIRE_30 | KP9 & ~SYNTHESIZED_WIRE_31;
+	KP9 <= ~KP9 & SYNTHESIZED_WIRE_22 | KP9 & ~SYNTHESIZED_WIRE_23;
 	end
 end
 
@@ -488,15 +433,15 @@ end
 DC2	b2v_inst57(
 	.D0(nBRK),
 	.E(KEYKP9),
-	.Q1(SYNTHESIZED_WIRE_30),
-	.Q0(SYNTHESIZED_WIRE_31));
+	.Q1(SYNTHESIZED_WIRE_22),
+	.Q0(SYNTHESIZED_WIRE_23));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	KP6 <= ~KP6 & SYNTHESIZED_WIRE_32 | KP6 & ~SYNTHESIZED_WIRE_33;
+	KP6 <= ~KP6 & SYNTHESIZED_WIRE_24 | KP6 & ~SYNTHESIZED_WIRE_25;
 	end
 end
 
@@ -504,8 +449,8 @@ end
 DC2	b2v_inst59(
 	.D0(nBRK),
 	.E(KEYKP6),
-	.Q1(SYNTHESIZED_WIRE_32),
-	.Q0(SYNTHESIZED_WIRE_33));
+	.Q1(SYNTHESIZED_WIRE_24),
+	.Q0(SYNTHESIZED_WIRE_25));
 
 assign	KEYE = nKEY[7] & KEY[5] & nKEY[6] & nKEY[4] & nKEY[1] & KEY[2] & nKEY[0] & nKEY[3];
 
@@ -514,7 +459,7 @@ always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	KP5 <= ~KP5 & SYNTHESIZED_WIRE_34 | KP5 & ~SYNTHESIZED_WIRE_35;
+	KP5 <= ~KP5 & SYNTHESIZED_WIRE_26 | KP5 & ~SYNTHESIZED_WIRE_27;
 	end
 end
 
@@ -522,15 +467,15 @@ end
 DC2	b2v_inst61(
 	.D0(nBRK),
 	.E(KEYKP5),
-	.Q1(SYNTHESIZED_WIRE_34),
-	.Q0(SYNTHESIZED_WIRE_35));
+	.Q1(SYNTHESIZED_WIRE_26),
+	.Q0(SYNTHESIZED_WIRE_27));
 
 
 always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	RSHIFT <= ~RSHIFT & SYNTHESIZED_WIRE_36 | RSHIFT & ~SYNTHESIZED_WIRE_37;
+	RSHIFT <= ~RSHIFT & SYNTHESIZED_WIRE_28 | RSHIFT & ~SYNTHESIZED_WIRE_29;
 	end
 end
 
@@ -538,6 +483,72 @@ end
 DC2	b2v_inst63(
 	.D0(nBRK),
 	.E(KEYRSHIFT),
+	.Q1(SYNTHESIZED_WIRE_28),
+	.Q0(SYNTHESIZED_WIRE_29));
+
+
+always@(posedge CLK)
+begin
+if (KBINTR)
+	begin
+	RCTRL <= ~RCTRL & SYNTHESIZED_WIRE_30 | RCTRL & ~SYNTHESIZED_WIRE_31;
+	end
+end
+
+
+DC2	b2v_inst65(
+	.D0(nBRK),
+	.E(KEYRCTRL),
+	.Q1(SYNTHESIZED_WIRE_30),
+	.Q0(SYNTHESIZED_WIRE_31));
+
+
+always@(posedge CLK)
+begin
+if (KBINTR)
+	begin
+	DOWN <= ~DOWN & SYNTHESIZED_WIRE_32 | DOWN & ~SYNTHESIZED_WIRE_33;
+	end
+end
+
+
+DC2	b2v_inst67(
+	.D0(nBRK),
+	.E(KEYDOWN),
+	.Q1(SYNTHESIZED_WIRE_32),
+	.Q0(SYNTHESIZED_WIRE_33));
+
+
+always@(posedge CLK)
+begin
+if (KBINTR)
+	begin
+	UP <= ~UP & SYNTHESIZED_WIRE_34 | UP & ~SYNTHESIZED_WIRE_35;
+	end
+end
+
+
+DC2	b2v_inst69(
+	.D0(nBRK),
+	.E(KEYUP),
+	.Q1(SYNTHESIZED_WIRE_34),
+	.Q0(SYNTHESIZED_WIRE_35));
+
+assign	KEYR = nKEY[7] & KEY[5] & nKEY[6] & nKEY[4] & nKEY[1] & KEY[2] & KEY[0] & KEY[3];
+
+
+always@(posedge CLK)
+begin
+if (KBINTR)
+	begin
+	RIGHT <= ~RIGHT & SYNTHESIZED_WIRE_36 | RIGHT & ~SYNTHESIZED_WIRE_37;
+	end
+end
+
+
+DC2	b2v_inst71(
+	.D0(nBRK),
+	.E(KEYRIGHT),
 	.Q1(SYNTHESIZED_WIRE_36),
 	.Q0(SYNTHESIZED_WIRE_37));
 
@@ -546,15 +557,16 @@ always@(posedge CLK)
 begin
 if (KBINTR)
 	begin
-	RCTRL <= ~RCTRL & SYNTHESIZED_WIRE_38 | RCTRL & ~SYNTHESIZED_WIRE_39;
+	LEFT <= ~LEFT & SYNTHESIZED_WIRE_38 | LEFT & ~SYNTHESIZED_WIRE_39;
 	end
 end
 
-assign	SYNTHESIZED_WIRE_38 = SPEC & KEYRCTRL;
 
-assign	KEYSPEC = KEY[7] & KEY[5] & KEY[6] & nKEY[4] & nKEY[1] & nKEY[2] & nKEY[0] & nKEY[3];
-
-assign	KEYR = nKEY[7] & KEY[5] & nKEY[6] & nKEY[4] & nKEY[1] & KEY[2] & KEY[0] & KEY[3];
+DC2	b2v_inst73(
+	.D0(nBRK),
+	.E(KEYLEFT),
+	.Q1(SYNTHESIZED_WIRE_38),
+	.Q0(SYNTHESIZED_WIRE_39));
 
 
 always@(posedge CLK)
@@ -697,15 +709,6 @@ REG8_LD_SR	b2v_inst89(
 assign	KEYW = nKEY[7] & nKEY[5] & nKEY[6] & KEY[4] & nKEY[1] & KEY[2] & KEY[0] & KEY[3];
 
 
-always@(posedge CLK)
-begin
-if (KBINTR)
-	begin
-	SPEC <= KEYSPEC;
-	end
-end
-
-
 MX2x2	b2v_inst91(
 	.S0(ADDR[0]),
 	.D0_(GDFX_TEMP_SIGNAL_4),
@@ -730,17 +733,6 @@ assign	SYNTHESIZED_WIRE_54 = nADDR[8] & nADDR[10] & nADDR[9] & nADDR[11] & ADDR[
 
 
 assign	CS = SYNTHESIZED_WIRE_53 & SYNTHESIZED_WIRE_54;
-
-
-always@(posedge CLK)
-begin
-if (KBINTR)
-	begin
-	SPECBRK <= SPEC;
-	end
-end
-
-assign	SYNTHESIZED_WIRE_39 = SPECBRK & BRK & KEYRCTRL;
 
 assign	H = 1;
 assign	L = 0;

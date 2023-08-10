@@ -12,7 +12,7 @@
 #include <verilated.h>
 
 // Include model header, generated from Verilating "top.v"
-#include "Vnessy.h"
+#include "Vkb_controller_set3_wip.h"
 
 // Legacy function required only so linking works on Cygwin and MSVC++
 double sc_time_stamp() { return 0; }
@@ -55,12 +55,10 @@ int main(int argc, char** argv) {
     // Construct the Verilated model, from Vtop.h generated from Verilating "top.v".
     // Using unique_ptr is similar to "Vtop* top = new Vtop" then deleting at end.
     // "TOP" will be the hierarchical name of the module.
-    const std::unique_ptr<Vnessy> top{new Vnessy{contextp.get(), "TOP"}};
+    const std::unique_ptr<Vkb_controller_set3_wip> top{new Vkb_controller_set3_wip{contextp.get(), "TOP"}};
 
     // Set Vtop's input signals
     top->CLK = 0;
-
-    top->SDRAM_DQ = 0xAF0C;
 
     // Simulate until $finish
     while (!contextp->gotFinish()) {
@@ -79,11 +77,6 @@ int main(int argc, char** argv) {
 
         // Toggle a fast (time/2 period) clock
         top->CLK = !top->CLK;
-        
-        top->SDRAM_DQ = 0xAF0C;
-
-        top->PS2_CLK = 1;
-        top->PS2_DATA = 1;
 
         // Evaluate model
         // (If you have multiple models being simulated in the same
@@ -99,7 +92,7 @@ int main(int argc, char** argv) {
                         top->SDRAM_UDQM, top->SDRAM_LDQM
                   );*/
 
-        if (contextp->time() > 20600 /*basically enough for 10 lines*/ * 70)
+        if (contextp->time() > 20600 /*basically enough for 10 lines*/ * 700)
             break;
     }
 
