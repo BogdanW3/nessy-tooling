@@ -15,53 +15,53 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:54:33 2023"
+// CREATED		"Sat Aug 12 22:54:34 2023"
 
-module MX4x1(
+module MX4x16(
 	S1,
 	S0,
-	D3,
-	D2,
-	D1,
-	D0,
-	Q
+	D0_,
+	D1_,
+	D2_,
+	D3_,
+	Q_
 );
 
 
 input wire	S1;
 input wire	S0;
-input wire	D3;
-input wire	D2;
-input wire	D1;
-input wire	D0;
-output wire	Q;
+input wire	[15:0] D0_;
+input wire	[15:0] D1_;
+input wire	[15:0] D2_;
+input wire	[15:0] D3_;
+output wire	[15:0] Q_;
 
-wire	SYNTHESIZED_WIRE_0;
-wire	SYNTHESIZED_WIRE_1;
-
-
+wire	[15:0] SYNTHESIZED_WIRE_0;
+wire	[15:0] SYNTHESIZED_WIRE_1;
 
 
 
-MX2x1	b2v_inst(
-	.D1(D3),
-	.D0(D2),
+
+
+MX2x16	b2v_inst(
 	.S0(S0),
-	.Q(SYNTHESIZED_WIRE_0));
-
-
-MX2x1	b2v_inst1(
-	.D1(D1),
-	.D0(D0),
-	.S0(S0),
+	.D0_(D2_),
+	.D1_(D3_),
 	.Q(SYNTHESIZED_WIRE_1));
 
 
-MX2x1	b2v_inst2(
-	.D1(SYNTHESIZED_WIRE_0),
-	.D0(SYNTHESIZED_WIRE_1),
+MX2x16	b2v_inst1(
+	.S0(S0),
+	.D0_(D0_),
+	.D1_(D1_),
+	.Q(SYNTHESIZED_WIRE_0));
+
+
+MX2x16	b2v_inst2(
 	.S0(S1),
-	.Q(Q));
+	.D0_(SYNTHESIZED_WIRE_0),
+	.D1_(SYNTHESIZED_WIRE_1),
+	.Q(Q_));
 
 
 endmodule

@@ -15,53 +15,54 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:54:33 2023"
+// CREATED		"Sat Aug 12 22:54:50 2023"
 
-module MX4x1(
-	S1,
-	S0,
-	D3,
-	D2,
-	D1,
-	D0,
-	Q
+module REG4_LD_INC_CL(
+	CLK,
+	LD,
+	CL,
+	INC,
+	DIN,
+	DOUT
 );
 
 
-input wire	S1;
-input wire	S0;
-input wire	D3;
-input wire	D2;
-input wire	D1;
-input wire	D0;
-output wire	Q;
+input wire	CLK;
+input wire	LD;
+input wire	CL;
+input wire	INC;
+input wire	[3:0] DIN;
+output wire	[3:0] DOUT;
 
+wire	[3:0] DOUT_ALTERA_SYNTHESIZED;
+wire	LOWMAX;
 wire	SYNTHESIZED_WIRE_0;
-wire	SYNTHESIZED_WIRE_1;
 
 
 
 
 
-MX2x1	b2v_inst(
-	.D1(D3),
-	.D0(D2),
-	.S0(S0),
-	.Q(SYNTHESIZED_WIRE_0));
+REG2_LD_INC_CL	b2v_inst(
+	.CLK(CLK),
+	.LD(LD),
+	.INC(INC),
+	.CL(CL),
+	.DIN(DIN[1:0]),
+	.DOUT(DOUT_ALTERA_SYNTHESIZED[1:0]));
 
 
-MX2x1	b2v_inst1(
-	.D1(D1),
-	.D0(D0),
-	.S0(S0),
-	.Q(SYNTHESIZED_WIRE_1));
+REG2_LD_INC_CL	b2v_inst2(
+	.CLK(CLK),
+	.LD(LD),
+	.INC(SYNTHESIZED_WIRE_0),
+	.CL(CL),
+	.DIN(DIN[3:2]),
+	.DOUT(DOUT_ALTERA_SYNTHESIZED[3:2]));
 
+assign	SYNTHESIZED_WIRE_0 = INC & LOWMAX;
 
-MX2x1	b2v_inst2(
-	.D1(SYNTHESIZED_WIRE_0),
-	.D0(SYNTHESIZED_WIRE_1),
-	.S0(S1),
-	.Q(Q));
+assign	LOWMAX = DOUT_ALTERA_SYNTHESIZED[1] & DOUT_ALTERA_SYNTHESIZED[0];
 
+assign	DOUT = DOUT_ALTERA_SYNTHESIZED;
 
 endmodule

@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Wed Aug  9 18:11:01 2023"
+// CREATED		"Sat Aug 12 22:53:56 2023"
 
 module kb_controller_set3_wip(
 	INTA,
@@ -347,18 +347,10 @@ assign	SYNTHESIZED_WIRE_2 = SRFF_inst10 & SYNTHESIZED_WIRE_6;
 
 assign	SYNTHESIZED_WIRE_5 =  ~BOOTCMD0;
 
-assign	PS2_CLK = SYNTHESIZED_WIRE_7 ? L : 1'b1;
+assign	PS2_CLK = SYNTHESIZED_WIRE_7 ? L : 1'bz;
 
 assign	SYNTHESIZED_WIRE_8 =  ~BOOTUP_STABLE_DONE;
 
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
 
 always@(posedge CLK)
 begin
@@ -379,7 +371,7 @@ RisingEdge	b2v_inst46(
 	.CLK(CLK),
 	.Q(SYNTHESIZED_WIRE_9));
 
-assign	PS2_DATA = SYNTHESIZED_WIRE_10 ? L : 1'b1;
+assign	PS2_DATA = SYNTHESIZED_WIRE_10 ? L : 1'bz;
 
 
 always@(posedge CLK)

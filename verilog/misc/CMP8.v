@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Fri Aug  4 22:06:32 2023"
+// CREATED		"Sat Aug 12 22:54:15 2023"
 
 module CMP8(
 	A,

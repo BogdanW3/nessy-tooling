@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Wed Aug  9 16:26:30 2023"
+// CREATED		"Sat Aug 12 22:53:58 2023"
 
 module kb_gamepad_bridge(
 	KBINTR,
