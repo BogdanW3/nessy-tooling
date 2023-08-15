@@ -4,7 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=nessy
+TLE=gpu/pixel_buffer
 
 default: verilog run
 
@@ -40,7 +40,7 @@ VERILATOR_FLAGS += --trace
 # Check SystemVerilog assertions
 #VERILATOR_FLAGS += --assert
 # Generate coverage analysis
-VERILATOR_FLAGS += --coverage
+#VERILATOR_FLAGS += --coverage
 # Run Verilator in debug mode
 #VERILATOR_FLAGS += --debug
 # Add this trace to get a backtrace in gdb
@@ -62,7 +62,7 @@ run:
 # 2. Or, run the make rules Verilator does:
 #	$(MAKE) -j -C obj_dir -f Vtop.mk
 # 3. Or, call a submakefile where we can override the rules ourselves:
-	$(MAKE) -j -C obj_dir -f ../Makefile_obj -E TLE=${TLE}
+	$(MAKE) -j4 -C obj_dir -f ../Makefile_obj -E TLE=${TLE}
 
 	@echo
 	@echo "-- RUN ---------------------"
@@ -70,10 +70,10 @@ run:
 	@mkdir -p logs
 	obj_dir/V${shell basename ${TLE}} +trace
 
-	@echo
-	@echo "-- COVERAGE ----------------"
-	@rm -rf logs/annotated
-	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
+#	@echo
+#	@echo "-- COVERAGE ----------------"
+#	@rm -rf logs/annotated
+#	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
 
 	@echo
 	@echo "-- DONE --------------------"

@@ -1,4 +1,4 @@
-// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Copyright (C) 2022  Intel Corporation. All rights reserved.
 // Your use of Intel Corporation's design tools, logic functions 
 // and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
@@ -14,8 +14,8 @@
 // https://fpgasoftware.intel.com/eula.
 
 // PROGRAM		"Quartus Prime"
-// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:53:54 2023"
+// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
+// CREATED		"Tue Aug 15 17:09:28 2023"
 
 module vram_controller(
 	read_scanline,
@@ -253,6 +253,10 @@ assign	SDRAM_CLK = CLK;
 assign	SYNTHESIZED_WIRE_66 = 0;
 assign	SYNTHESIZED_WIRE_67 = 0;
 assign	SYNTHESIZED_WIRE_43 = 0;
+wire	[15:0] GDFX_TEMP_SIGNAL_1;
+wire	[15:0] GDFX_TEMP_SIGNAL_4;
+wire	[15:0] GDFX_TEMP_SIGNAL_6;
+wire	[15:0] GDFX_TEMP_SIGNAL_18;
 wire	[7:0] GDFX_TEMP_SIGNAL_0;
 wire	[11:0] GDFX_TEMP_SIGNAL_12;
 wire	[15:0] GDFX_TEMP_SIGNAL_7;
@@ -296,12 +300,12 @@ wire	[3:0] GDFX_TEMP_SIGNAL_38;
 wire	[3:0] GDFX_TEMP_SIGNAL_33;
 wire	[3:0] GDFX_TEMP_SIGNAL_34;
 wire	[3:0] GDFX_TEMP_SIGNAL_37;
-wire	[15:0] GDFX_TEMP_SIGNAL_1;
-wire	[15:0] GDFX_TEMP_SIGNAL_4;
-wire	[15:0] GDFX_TEMP_SIGNAL_6;
-wire	[15:0] GDFX_TEMP_SIGNAL_18;
 
 
+assign	GDFX_TEMP_SIGNAL_1 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
+assign	GDFX_TEMP_SIGNAL_4 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
+assign	GDFX_TEMP_SIGNAL_6 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
+assign	GDFX_TEMP_SIGNAL_18 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
 assign	GDFX_TEMP_SIGNAL_0 = {H,H,L,L,L,L,H,H};
 assign	GDFX_TEMP_SIGNAL_12 = {L,H,L,L,L,L,L,L,L,L,L,L};
 assign	GDFX_TEMP_SIGNAL_7 = {L,L,L,L,L,L,H,L,L,H,L,H,H,L,L,L};
@@ -345,10 +349,6 @@ assign	GDFX_TEMP_SIGNAL_38 = {L,L,H,H};
 assign	GDFX_TEMP_SIGNAL_33 = {L,L,H,L};
 assign	GDFX_TEMP_SIGNAL_34 = {L,L,H,L};
 assign	GDFX_TEMP_SIGNAL_37 = {L,L,H,L};
-assign	GDFX_TEMP_SIGNAL_1 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
-assign	GDFX_TEMP_SIGNAL_4 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
-assign	GDFX_TEMP_SIGNAL_6 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
-assign	GDFX_TEMP_SIGNAL_18 = {X15,X14,X13,X12,X11,X10,X[9],X[8],X[7],X[6],X[5],X[4],X[3],X[2],X[1],X[0]};
 
 
 CMP8	b2v_CMP195(
@@ -1174,5 +1174,14 @@ assign	READY = READY_ALTERA_SYNTHESIZED;
 assign	SDRAM_BA = SDRAM_BA_ALTERA_SYNTHESIZED;
 assign	H = 1;
 assign	L = 0;
+
+initial begin
+    if ($test$plusargs("trace") != 0) begin
+        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+        $dumpfile("logs/vlt_dump.vcd");
+        $dumpvars();
+    end
+    $display("[%0t] Model running...\n", $time);
+end
 
 endmodule

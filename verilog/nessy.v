@@ -1,4 +1,4 @@
-// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Copyright (C) 2022  Intel Corporation. All rights reserved.
 // Your use of Intel Corporation's design tools, logic functions 
 // and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
@@ -14,8 +14,8 @@
 // https://fpgasoftware.intel.com/eula.
 
 // PROGRAM		"Quartus Prime"
-// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:54:58 2023"
+// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
+// CREATED		"Tue Aug 15 19:24:51 2023"
 
 module nessy(
 	CLK,
@@ -113,16 +113,9 @@ assign	GPU_nCS = A[14] | SYNTHESIZED_WIRE_0 | A[15];
 
 assign	SYNTHESIZED_WIRE_0 =  ~A[13];
 
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
 
-kb_controller_set3_wip	b2v_inst3(
+
+kb_controller_set3_wip	b2v_inst5(
 	.CLK(CLK),
 	.INTA(SYNTHESIZED_WIRE_1),
 	.PS2_CLK(PS2_CLK),
@@ -133,7 +126,7 @@ kb_controller_set3_wip	b2v_inst3(
 	.Q(SYNTHESIZED_WIRE_3));
 
 
-kb_gamepad_bridge_set3_wip	b2v_inst4(
+kb_gamepad_bridge_set3_wip	b2v_inst6(
 	.KBINTR(SYNTHESIZED_WIRE_2),
 	.RD(RD),
 	.CLK(CLK),

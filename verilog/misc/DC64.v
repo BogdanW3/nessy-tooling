@@ -1,4 +1,4 @@
-// Copyright (C) 2023  Intel Corporation. All rights reserved.
+// Copyright (C) 2022  Intel Corporation. All rights reserved.
 // Your use of Intel Corporation's design tools, logic functions 
 // and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
@@ -14,8 +14,8 @@
 // https://fpgasoftware.intel.com/eula.
 
 // PROGRAM		"Quartus Prime"
-// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:54:22 2023"
+// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
+// CREATED		"Tue Aug 15 19:24:44 2023"
 
 module DC64(
 	E,

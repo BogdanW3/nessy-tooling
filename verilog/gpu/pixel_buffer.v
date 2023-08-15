@@ -1,0 +1,1509 @@
+// Copyright (C) 2022  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
+
+// PROGRAM		"Quartus Prime"
+// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
+// CREATED		"Tue Aug 15 19:24:48 2023"
+
+module pixel_buffer(
+	PUSH,
+	POP,
+	CLK,
+	DIN,
+	nBUFF_FULL,
+	nBUFF_EMPTY,
+	DOUT
+);
+
+
+input wire	PUSH;
+input wire	POP;
+input wire	CLK;
+input wire	[31:0] DIN;
+output wire	nBUFF_FULL;
+output wire	nBUFF_EMPTY;
+output wire	[31:0] DOUT;
+
+wire	H;
+wire	L;
+wire	PUSH0;
+wire	PUSH1;
+wire	PUSH10;
+wire	PUSH11;
+wire	PUSH12;
+wire	PUSH13;
+wire	PUSH14;
+wire	PUSH15;
+wire	PUSH16;
+wire	PUSH17;
+wire	PUSH18;
+wire	PUSH19;
+wire	PUSH2;
+wire	PUSH20;
+wire	PUSH21;
+wire	PUSH22;
+wire	PUSH23;
+wire	PUSH24;
+wire	PUSH25;
+wire	PUSH26;
+wire	PUSH27;
+wire	PUSH28;
+wire	PUSH29;
+wire	PUSH3;
+wire	PUSH30;
+wire	PUSH31;
+wire	PUSH32;
+wire	PUSH33;
+wire	PUSH34;
+wire	PUSH35;
+wire	PUSH36;
+wire	PUSH37;
+wire	PUSH38;
+wire	PUSH39;
+wire	PUSH4;
+wire	PUSH40;
+wire	PUSH41;
+wire	PUSH42;
+wire	PUSH43;
+wire	PUSH44;
+wire	PUSH45;
+wire	PUSH46;
+wire	PUSH47;
+wire	PUSH48;
+wire	PUSH49;
+wire	PUSH5;
+wire	PUSH50;
+wire	PUSH51;
+wire	PUSH52;
+wire	PUSH53;
+wire	PUSH54;
+wire	PUSH55;
+wire	PUSH56;
+wire	PUSH57;
+wire	PUSH58;
+wire	PUSH59;
+wire	PUSH6;
+wire	PUSH60;
+wire	PUSH61;
+wire	PUSH62;
+wire	PUSH63;
+wire	PUSH7;
+wire	PUSH8;
+wire	PUSH9;
+wire	[31:0] Q0_;
+wire	[31:0] Q10_;
+wire	[31:0] Q11_;
+wire	[31:0] Q12_;
+wire	[31:0] Q13_;
+wire	[31:0] Q14_;
+wire	[31:0] Q15_;
+wire	[31:0] Q16_;
+wire	[31:0] Q17_;
+wire	[31:0] Q18_;
+wire	[31:0] Q19_;
+wire	[31:0] Q1_;
+wire	[31:0] Q20_;
+wire	[31:0] Q21_;
+wire	[31:0] Q22_;
+wire	[31:0] Q23_;
+wire	[31:0] Q24_;
+wire	[31:0] Q25_;
+wire	[31:0] Q26_;
+wire	[31:0] Q27_;
+wire	[31:0] Q28_;
+wire	[31:0] Q29_;
+wire	[31:0] Q2_;
+wire	[31:0] Q30_;
+wire	[31:0] Q31_;
+wire	[31:0] Q32_;
+wire	[31:0] Q33_;
+wire	[31:0] Q34_;
+wire	[31:0] Q35_;
+wire	[31:0] Q36_;
+wire	[31:0] Q37_;
+wire	[31:0] Q38_;
+wire	[31:0] Q39_;
+wire	[31:0] Q3_;
+wire	[31:0] Q40_;
+wire	[31:0] Q41_;
+wire	[31:0] Q42_;
+wire	[31:0] Q43_;
+wire	[31:0] Q44_;
+wire	[31:0] Q45_;
+wire	[31:0] Q46_;
+wire	[31:0] Q47_;
+wire	[31:0] Q48_;
+wire	[31:0] Q49_;
+wire	[31:0] Q4_;
+wire	[31:0] Q50_;
+wire	[31:0] Q51_;
+wire	[31:0] Q52_;
+wire	[31:0] Q53_;
+wire	[31:0] Q54_;
+wire	[31:0] Q55_;
+wire	[31:0] Q56_;
+wire	[31:0] Q57_;
+wire	[31:0] Q58_;
+wire	[31:0] Q59_;
+wire	[31:0] Q5_;
+wire	[31:0] Q60_;
+wire	[31:0] Q61_;
+wire	[31:0] Q62_;
+wire	[31:0] Q63_;
+wire	[31:0] Q6_;
+wire	[31:0] Q7_;
+wire	[31:0] Q8_;
+wire	[31:0] Q9_;
+wire	[7:0] TAIL;
+wire	SYNTHESIZED_WIRE_0;
+wire	[31:0] SYNTHESIZED_WIRE_1;
+wire	SYNTHESIZED_WIRE_2;
+wire	[31:0] SYNTHESIZED_WIRE_3;
+wire	SYNTHESIZED_WIRE_4;
+wire	[31:0] SYNTHESIZED_WIRE_5;
+wire	SYNTHESIZED_WIRE_6;
+wire	[31:0] SYNTHESIZED_WIRE_7;
+wire	SYNTHESIZED_WIRE_8;
+wire	[31:0] SYNTHESIZED_WIRE_9;
+wire	SYNTHESIZED_WIRE_10;
+wire	[31:0] SYNTHESIZED_WIRE_11;
+wire	SYNTHESIZED_WIRE_12;
+wire	[31:0] SYNTHESIZED_WIRE_13;
+wire	SYNTHESIZED_WIRE_14;
+wire	[31:0] SYNTHESIZED_WIRE_15;
+wire	SYNTHESIZED_WIRE_16;
+wire	[31:0] SYNTHESIZED_WIRE_17;
+wire	SYNTHESIZED_WIRE_18;
+wire	[31:0] SYNTHESIZED_WIRE_19;
+wire	SYNTHESIZED_WIRE_20;
+wire	[31:0] SYNTHESIZED_WIRE_21;
+wire	SYNTHESIZED_WIRE_22;
+wire	[31:0] SYNTHESIZED_WIRE_23;
+wire	SYNTHESIZED_WIRE_24;
+wire	[31:0] SYNTHESIZED_WIRE_25;
+wire	SYNTHESIZED_WIRE_26;
+wire	[31:0] SYNTHESIZED_WIRE_27;
+wire	SYNTHESIZED_WIRE_28;
+wire	[31:0] SYNTHESIZED_WIRE_29;
+wire	SYNTHESIZED_WIRE_30;
+wire	[31:0] SYNTHESIZED_WIRE_31;
+wire	SYNTHESIZED_WIRE_32;
+wire	[31:0] SYNTHESIZED_WIRE_33;
+wire	SYNTHESIZED_WIRE_34;
+wire	[31:0] SYNTHESIZED_WIRE_35;
+wire	SYNTHESIZED_WIRE_36;
+wire	[31:0] SYNTHESIZED_WIRE_37;
+wire	SYNTHESIZED_WIRE_38;
+wire	[31:0] SYNTHESIZED_WIRE_39;
+wire	SYNTHESIZED_WIRE_40;
+wire	[31:0] SYNTHESIZED_WIRE_41;
+wire	SYNTHESIZED_WIRE_42;
+wire	[31:0] SYNTHESIZED_WIRE_43;
+wire	SYNTHESIZED_WIRE_44;
+wire	[31:0] SYNTHESIZED_WIRE_45;
+wire	SYNTHESIZED_WIRE_46;
+wire	[31:0] SYNTHESIZED_WIRE_47;
+wire	SYNTHESIZED_WIRE_48;
+wire	[31:0] SYNTHESIZED_WIRE_49;
+wire	SYNTHESIZED_WIRE_50;
+wire	[31:0] SYNTHESIZED_WIRE_51;
+wire	SYNTHESIZED_WIRE_52;
+wire	[31:0] SYNTHESIZED_WIRE_53;
+wire	SYNTHESIZED_WIRE_54;
+wire	[31:0] SYNTHESIZED_WIRE_55;
+wire	SYNTHESIZED_WIRE_56;
+wire	[31:0] SYNTHESIZED_WIRE_57;
+wire	SYNTHESIZED_WIRE_58;
+wire	[31:0] SYNTHESIZED_WIRE_59;
+wire	SYNTHESIZED_WIRE_60;
+wire	[31:0] SYNTHESIZED_WIRE_61;
+wire	SYNTHESIZED_WIRE_62;
+wire	[31:0] SYNTHESIZED_WIRE_63;
+wire	SYNTHESIZED_WIRE_64;
+wire	[31:0] SYNTHESIZED_WIRE_65;
+wire	SYNTHESIZED_WIRE_66;
+wire	[31:0] SYNTHESIZED_WIRE_67;
+wire	SYNTHESIZED_WIRE_68;
+wire	[31:0] SYNTHESIZED_WIRE_69;
+wire	SYNTHESIZED_WIRE_70;
+wire	[31:0] SYNTHESIZED_WIRE_71;
+wire	[0:31] SYNTHESIZED_WIRE_72;
+wire	SYNTHESIZED_WIRE_73;
+wire	[31:0] SYNTHESIZED_WIRE_74;
+wire	SYNTHESIZED_WIRE_75;
+wire	[31:0] SYNTHESIZED_WIRE_76;
+wire	SYNTHESIZED_WIRE_77;
+wire	[31:0] SYNTHESIZED_WIRE_78;
+wire	SYNTHESIZED_WIRE_79;
+wire	[31:0] SYNTHESIZED_WIRE_80;
+wire	SYNTHESIZED_WIRE_81;
+wire	[31:0] SYNTHESIZED_WIRE_82;
+wire	SYNTHESIZED_WIRE_83;
+wire	[31:0] SYNTHESIZED_WIRE_84;
+wire	SYNTHESIZED_WIRE_85;
+wire	[31:0] SYNTHESIZED_WIRE_86;
+wire	SYNTHESIZED_WIRE_87;
+wire	[31:0] SYNTHESIZED_WIRE_88;
+wire	SYNTHESIZED_WIRE_89;
+wire	[31:0] SYNTHESIZED_WIRE_90;
+wire	SYNTHESIZED_WIRE_91;
+wire	[31:0] SYNTHESIZED_WIRE_92;
+wire	SYNTHESIZED_WIRE_93;
+wire	[31:0] SYNTHESIZED_WIRE_94;
+wire	SYNTHESIZED_WIRE_95;
+wire	[31:0] SYNTHESIZED_WIRE_96;
+wire	SYNTHESIZED_WIRE_97;
+wire	[31:0] SYNTHESIZED_WIRE_98;
+wire	SYNTHESIZED_WIRE_99;
+wire	[31:0] SYNTHESIZED_WIRE_100;
+wire	SYNTHESIZED_WIRE_101;
+wire	[31:0] SYNTHESIZED_WIRE_102;
+wire	SYNTHESIZED_WIRE_103;
+wire	[31:0] SYNTHESIZED_WIRE_104;
+wire	SYNTHESIZED_WIRE_105;
+wire	[31:0] SYNTHESIZED_WIRE_106;
+wire	SYNTHESIZED_WIRE_107;
+wire	[31:0] SYNTHESIZED_WIRE_108;
+wire	SYNTHESIZED_WIRE_109;
+wire	[31:0] SYNTHESIZED_WIRE_110;
+wire	SYNTHESIZED_WIRE_111;
+wire	[31:0] SYNTHESIZED_WIRE_112;
+wire	SYNTHESIZED_WIRE_113;
+wire	[31:0] SYNTHESIZED_WIRE_114;
+wire	SYNTHESIZED_WIRE_115;
+wire	[31:0] SYNTHESIZED_WIRE_116;
+wire	SYNTHESIZED_WIRE_117;
+wire	[31:0] SYNTHESIZED_WIRE_118;
+wire	SYNTHESIZED_WIRE_119;
+wire	[31:0] SYNTHESIZED_WIRE_120;
+wire	SYNTHESIZED_WIRE_121;
+wire	[31:0] SYNTHESIZED_WIRE_122;
+wire	SYNTHESIZED_WIRE_123;
+wire	[31:0] SYNTHESIZED_WIRE_124;
+wire	SYNTHESIZED_WIRE_125;
+wire	[31:0] SYNTHESIZED_WIRE_126;
+wire	SYNTHESIZED_WIRE_127;
+wire	[31:0] SYNTHESIZED_WIRE_128;
+
+assign	SYNTHESIZED_WIRE_72 = 1;
+wire	[7:0] GDFX_TEMP_SIGNAL_1;
+wire	[7:0] GDFX_TEMP_SIGNAL_0;
+
+
+assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_0 = {L,H,L,L,L,L,L,L};
+
+
+
+
+REG32_LD_CL	b2v_inst10(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_0),
+	
+	.DIN(SYNTHESIZED_WIRE_1),
+	.DOUT(Q2_));
+
+
+REG32_LD_CL	b2v_inst100(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_2),
+	
+	.DIN(SYNTHESIZED_WIRE_3),
+	.DOUT(Q33_));
+
+assign	SYNTHESIZED_WIRE_2 = POP | PUSH33;
+
+
+MX2x32	b2v_inst102(
+	.S0(PUSH33),
+	.D0_(Q34_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_3));
+
+
+REG32_LD_CL	b2v_inst103(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_4),
+	
+	.DIN(SYNTHESIZED_WIRE_5),
+	.DOUT(Q32_));
+
+assign	SYNTHESIZED_WIRE_4 = POP | PUSH32;
+
+
+MX2x32	b2v_inst105(
+	.S0(PUSH32),
+	.D0_(Q33_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_5));
+
+
+REG32_LD_CL	b2v_inst106(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_6),
+	
+	.DIN(SYNTHESIZED_WIRE_7),
+	.DOUT(Q34_));
+
+assign	SYNTHESIZED_WIRE_6 = POP | PUSH34;
+
+
+MX2x32	b2v_inst108(
+	.S0(PUSH34),
+	.D0_(Q35_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_7));
+
+
+REG32_LD_CL	b2v_inst109(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_8),
+	
+	.DIN(SYNTHESIZED_WIRE_9),
+	.DOUT(Q35_));
+
+assign	SYNTHESIZED_WIRE_0 = POP | PUSH2;
+
+assign	SYNTHESIZED_WIRE_8 = POP | PUSH35;
+
+
+MX2x32	b2v_inst111(
+	.S0(PUSH35),
+	.D0_(Q36_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_9));
+
+
+REG32_LD_CL	b2v_inst112(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_10),
+	
+	.DIN(SYNTHESIZED_WIRE_11),
+	.DOUT(Q37_));
+
+assign	SYNTHESIZED_WIRE_10 = POP | PUSH37;
+
+
+MX2x32	b2v_inst114(
+	.S0(PUSH37),
+	.D0_(Q38_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_11));
+
+
+REG32_LD_CL	b2v_inst115(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_12),
+	
+	.DIN(SYNTHESIZED_WIRE_13),
+	.DOUT(Q36_));
+
+assign	SYNTHESIZED_WIRE_12 = POP | PUSH36;
+
+
+MX2x32	b2v_inst117(
+	.S0(PUSH36),
+	.D0_(Q37_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_13));
+
+
+REG32_LD_CL	b2v_inst118(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_14),
+	
+	.DIN(SYNTHESIZED_WIRE_15),
+	.DOUT(Q38_));
+
+assign	SYNTHESIZED_WIRE_14 = POP | PUSH38;
+
+
+MX2x32	b2v_inst12(
+	.S0(PUSH2),
+	.D0_(Q3_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_1));
+
+
+MX2x32	b2v_inst120(
+	.S0(PUSH38),
+	.D0_(Q39_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_15));
+
+
+REG32_LD_CL	b2v_inst121(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_16),
+	
+	.DIN(SYNTHESIZED_WIRE_17),
+	.DOUT(Q39_));
+
+assign	SYNTHESIZED_WIRE_16 = POP | PUSH39;
+
+
+MX2x32	b2v_inst123(
+	.S0(PUSH39),
+	.D0_(Q40_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_17));
+
+
+REG32_LD_CL	b2v_inst124(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_18),
+	
+	.DIN(SYNTHESIZED_WIRE_19),
+	.DOUT(Q41_));
+
+assign	SYNTHESIZED_WIRE_18 = POP | PUSH41;
+
+
+MX2x32	b2v_inst126(
+	.S0(PUSH41),
+	.D0_(Q42_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_19));
+
+
+REG32_LD_CL	b2v_inst127(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_20),
+	
+	.DIN(SYNTHESIZED_WIRE_21),
+	.DOUT(Q40_));
+
+assign	SYNTHESIZED_WIRE_20 = POP | PUSH40;
+
+
+MX2x32	b2v_inst129(
+	.S0(PUSH40),
+	.D0_(Q41_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_21));
+
+
+REG32_LD_CL	b2v_inst13(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_22),
+	
+	.DIN(SYNTHESIZED_WIRE_23),
+	.DOUT(Q3_));
+
+
+REG32_LD_CL	b2v_inst130(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_24),
+	
+	.DIN(SYNTHESIZED_WIRE_25),
+	.DOUT(Q42_));
+
+assign	SYNTHESIZED_WIRE_24 = POP | PUSH42;
+
+
+MX2x32	b2v_inst132(
+	.S0(PUSH42),
+	.D0_(Q43_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_25));
+
+
+REG32_LD_CL	b2v_inst133(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_26),
+	
+	.DIN(SYNTHESIZED_WIRE_27),
+	.DOUT(Q43_));
+
+assign	SYNTHESIZED_WIRE_26 = POP | PUSH43;
+
+
+MX2x32	b2v_inst135(
+	.S0(PUSH43),
+	.D0_(Q44_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_27));
+
+
+REG32_LD_CL	b2v_inst136(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_28),
+	
+	.DIN(SYNTHESIZED_WIRE_29),
+	.DOUT(Q45_));
+
+assign	SYNTHESIZED_WIRE_28 = POP | PUSH45;
+
+
+MX2x32	b2v_inst138(
+	.S0(PUSH45),
+	.D0_(Q46_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_29));
+
+
+REG32_LD_CL	b2v_inst139(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_30),
+	
+	.DIN(SYNTHESIZED_WIRE_31),
+	.DOUT(Q44_));
+
+assign	SYNTHESIZED_WIRE_22 = POP | PUSH3;
+
+assign	SYNTHESIZED_WIRE_30 = POP | PUSH44;
+
+
+MX2x32	b2v_inst141(
+	.S0(PUSH44),
+	.D0_(Q45_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_31));
+
+
+REG32_LD_CL	b2v_inst142(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_32),
+	
+	.DIN(SYNTHESIZED_WIRE_33),
+	.DOUT(Q46_));
+
+assign	SYNTHESIZED_WIRE_32 = POP | PUSH46;
+
+
+MX2x32	b2v_inst144(
+	.S0(PUSH46),
+	.D0_(Q47_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_33));
+
+
+REG32_LD_CL	b2v_inst145(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_34),
+	
+	.DIN(SYNTHESIZED_WIRE_35),
+	.DOUT(Q47_));
+
+assign	SYNTHESIZED_WIRE_34 = POP | PUSH47;
+
+
+MX2x32	b2v_inst147(
+	.S0(PUSH47),
+	.D0_(Q48_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_35));
+
+
+REG32_LD_CL	b2v_inst148(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_36),
+	
+	.DIN(SYNTHESIZED_WIRE_37),
+	.DOUT(Q49_));
+
+assign	SYNTHESIZED_WIRE_36 = POP | PUSH49;
+
+
+MX2x32	b2v_inst15(
+	.S0(PUSH3),
+	.D0_(Q4_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_23));
+
+
+MX2x32	b2v_inst150(
+	.S0(PUSH49),
+	.D0_(Q50_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_37));
+
+
+REG32_LD_CL	b2v_inst151(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_38),
+	
+	.DIN(SYNTHESIZED_WIRE_39),
+	.DOUT(Q48_));
+
+assign	SYNTHESIZED_WIRE_38 = POP | PUSH48;
+
+
+MX2x32	b2v_inst153(
+	.S0(PUSH48),
+	.D0_(Q49_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_39));
+
+
+REG32_LD_CL	b2v_inst154(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_40),
+	
+	.DIN(SYNTHESIZED_WIRE_41),
+	.DOUT(Q50_));
+
+assign	SYNTHESIZED_WIRE_40 = POP | PUSH50;
+
+
+MX2x32	b2v_inst156(
+	.S0(PUSH50),
+	.D0_(Q51_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_41));
+
+
+REG32_LD_CL	b2v_inst157(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_42),
+	
+	.DIN(SYNTHESIZED_WIRE_43),
+	.DOUT(Q51_));
+
+assign	SYNTHESIZED_WIRE_42 = POP | PUSH51;
+
+
+MX2x32	b2v_inst159(
+	.S0(PUSH51),
+	.D0_(Q52_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_43));
+
+
+REG32_LD_CL	b2v_inst16(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_44),
+	
+	.DIN(SYNTHESIZED_WIRE_45),
+	.DOUT(Q5_));
+
+
+REG32_LD_CL	b2v_inst160(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_46),
+	
+	.DIN(SYNTHESIZED_WIRE_47),
+	.DOUT(Q53_));
+
+assign	SYNTHESIZED_WIRE_46 = POP | PUSH53;
+
+
+MX2x32	b2v_inst162(
+	.S0(PUSH53),
+	.D0_(Q54_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_47));
+
+
+REG32_LD_CL	b2v_inst163(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_48),
+	
+	.DIN(SYNTHESIZED_WIRE_49),
+	.DOUT(Q52_));
+
+assign	SYNTHESIZED_WIRE_48 = POP | PUSH52;
+
+
+MX2x32	b2v_inst165(
+	.S0(PUSH52),
+	.D0_(Q53_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_49));
+
+
+REG32_LD_CL	b2v_inst166(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_50),
+	
+	.DIN(SYNTHESIZED_WIRE_51),
+	.DOUT(Q54_));
+
+assign	SYNTHESIZED_WIRE_50 = POP | PUSH54;
+
+
+MX2x32	b2v_inst168(
+	.S0(PUSH54),
+	.D0_(Q55_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_51));
+
+
+REG32_LD_CL	b2v_inst169(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_52),
+	
+	.DIN(SYNTHESIZED_WIRE_53),
+	.DOUT(Q55_));
+
+assign	SYNTHESIZED_WIRE_44 = POP | PUSH5;
+
+assign	SYNTHESIZED_WIRE_52 = POP | PUSH55;
+
+
+MX2x32	b2v_inst171(
+	.S0(PUSH55),
+	.D0_(Q56_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_53));
+
+
+REG32_LD_CL	b2v_inst172(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_54),
+	
+	.DIN(SYNTHESIZED_WIRE_55),
+	.DOUT(Q57_));
+
+assign	SYNTHESIZED_WIRE_54 = POP | PUSH57;
+
+
+MX2x32	b2v_inst174(
+	.S0(PUSH57),
+	.D0_(Q58_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_55));
+
+
+REG32_LD_CL	b2v_inst175(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_56),
+	
+	.DIN(SYNTHESIZED_WIRE_57),
+	.DOUT(Q56_));
+
+assign	SYNTHESIZED_WIRE_56 = POP | PUSH56;
+
+
+MX2x32	b2v_inst177(
+	.S0(PUSH56),
+	.D0_(Q57_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_57));
+
+
+REG32_LD_CL	b2v_inst178(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_58),
+	
+	.DIN(SYNTHESIZED_WIRE_59),
+	.DOUT(Q58_));
+
+assign	SYNTHESIZED_WIRE_58 = POP | PUSH58;
+
+
+MX2x32	b2v_inst18(
+	.S0(PUSH5),
+	.D0_(Q6_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_45));
+
+
+MX2x32	b2v_inst180(
+	.S0(PUSH58),
+	.D0_(Q59_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_59));
+
+
+REG32_LD_CL	b2v_inst181(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_60),
+	
+	.DIN(SYNTHESIZED_WIRE_61),
+	.DOUT(Q59_));
+
+assign	SYNTHESIZED_WIRE_60 = POP | PUSH59;
+
+
+MX2x32	b2v_inst183(
+	.S0(PUSH59),
+	.D0_(Q60_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_61));
+
+
+REG32_LD_CL	b2v_inst184(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_62),
+	
+	.DIN(SYNTHESIZED_WIRE_63),
+	.DOUT(Q61_));
+
+assign	SYNTHESIZED_WIRE_62 = POP | PUSH61;
+
+
+MX2x32	b2v_inst186(
+	.S0(PUSH61),
+	.D0_(Q62_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_63));
+
+
+REG32_LD_CL	b2v_inst187(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_64),
+	
+	.DIN(SYNTHESIZED_WIRE_65),
+	.DOUT(Q60_));
+
+assign	SYNTHESIZED_WIRE_64 = POP | PUSH60;
+
+
+MX2x32	b2v_inst189(
+	.S0(PUSH60),
+	.D0_(Q61_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_65));
+
+
+REG32_LD_CL	b2v_inst19(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_66),
+	
+	.DIN(SYNTHESIZED_WIRE_67),
+	.DOUT(Q4_));
+
+
+REG32_LD_CL	b2v_inst190(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_68),
+	
+	.DIN(SYNTHESIZED_WIRE_69),
+	.DOUT(Q62_));
+
+assign	SYNTHESIZED_WIRE_68 = POP | PUSH62;
+
+
+MX2x32	b2v_inst192(
+	.S0(PUSH62),
+	.D0_(Q63_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_69));
+
+
+REG32_LD_CL	b2v_inst193(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_70),
+	
+	.DIN(SYNTHESIZED_WIRE_71),
+	.DOUT(Q63_));
+
+assign	SYNTHESIZED_WIRE_70 = POP | PUSH63;
+
+
+MX2x32	b2v_inst195(
+	.S0(PUSH63),
+	.D0_(SYNTHESIZED_WIRE_72),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_71));
+
+
+CMP8	b2v_inst196(
+	.A(TAIL),
+	.B(GDFX_TEMP_SIGNAL_0),
+	
+	
+	.L(nBUFF_FULL));
+
+
+CMP8	b2v_inst198(
+	.A(TAIL),
+	.B(GDFX_TEMP_SIGNAL_1),
+	.G(nBUFF_EMPTY)
+	
+	);
+
+
+REG8_INC_DEC	b2v_inst199(
+	.CLK(CLK),
+	.INC(PUSH),
+	.DEC(POP),
+	.DOUT(TAIL));
+
+
+assign	SYNTHESIZED_WIRE_66 = POP | PUSH4;
+
+
+MX2x32	b2v_inst21(
+	.S0(PUSH4),
+	.D0_(Q5_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_67));
+
+
+REG32_LD_CL	b2v_inst22(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_73),
+	
+	.DIN(SYNTHESIZED_WIRE_74),
+	.DOUT(Q6_));
+
+assign	SYNTHESIZED_WIRE_73 = POP | PUSH6;
+
+
+MX2x32	b2v_inst24(
+	.S0(PUSH6),
+	.D0_(Q7_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_74));
+
+
+REG32_LD_CL	b2v_inst25(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_75),
+	
+	.DIN(SYNTHESIZED_WIRE_76),
+	.DOUT(Q7_));
+
+assign	SYNTHESIZED_WIRE_75 = POP | PUSH7;
+
+
+MX2x32	b2v_inst27(
+	.S0(PUSH7),
+	.D0_(Q8_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_76));
+
+
+REG32_LD_CL	b2v_inst28(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_77),
+	
+	.DIN(SYNTHESIZED_WIRE_78),
+	.DOUT(Q9_));
+
+assign	SYNTHESIZED_WIRE_77 = POP | PUSH9;
+
+
+DC64	b2v_inst3(
+	.D5(TAIL[5]),
+	.D4(TAIL[4]),
+	.D3(TAIL[3]),
+	.D2(TAIL[2]),
+	.D1(TAIL[1]),
+	.D0(TAIL[0]),
+	.E(PUSH),
+	.Q63(PUSH63),
+	.Q62(PUSH62),
+	.Q61(PUSH61),
+	.Q60(PUSH60),
+	.Q59(PUSH59),
+	.Q58(PUSH58),
+	.Q57(PUSH57),
+	.Q56(PUSH56),
+	.Q55(PUSH55),
+	.Q54(PUSH54),
+	.Q53(PUSH53),
+	.Q52(PUSH52),
+	.Q51(PUSH51),
+	.Q50(PUSH50),
+	.Q49(PUSH49),
+	.Q48(PUSH48),
+	.Q47(PUSH47),
+	.Q46(PUSH46),
+	.Q45(PUSH45),
+	.Q44(PUSH44),
+	.Q43(PUSH43),
+	.Q42(PUSH42),
+	.Q41(PUSH41),
+	.Q40(PUSH40),
+	.Q39(PUSH39),
+	.Q38(PUSH38),
+	.Q37(PUSH37),
+	.Q36(PUSH36),
+	.Q35(PUSH35),
+	.Q34(PUSH34),
+	.Q33(PUSH33),
+	.Q32(PUSH32),
+	.Q31(PUSH31),
+	.Q30(PUSH30),
+	.Q29(PUSH29),
+	.Q28(PUSH28),
+	.Q27(PUSH27),
+	.Q26(PUSH26),
+	.Q25(PUSH25),
+	.Q24(PUSH24),
+	.Q23(PUSH23),
+	.Q22(PUSH22),
+	.Q21(PUSH21),
+	.Q20(PUSH20),
+	.Q19(PUSH19),
+	.Q18(PUSH18),
+	.Q17(PUSH17),
+	.Q16(PUSH16),
+	.Q15(PUSH15),
+	.Q14(PUSH14),
+	.Q13(PUSH13),
+	.Q12(PUSH12),
+	.Q11(PUSH11),
+	.Q10(PUSH10),
+	.Q9(PUSH9),
+	.Q8(PUSH8),
+	.Q7(PUSH7),
+	.Q6(PUSH6),
+	.Q5(PUSH5),
+	.Q4(PUSH4),
+	.Q3(PUSH3),
+	.Q2(PUSH2),
+	.Q1(PUSH1),
+	.Q0(PUSH0));
+
+
+MX2x32	b2v_inst30(
+	.S0(PUSH9),
+	.D0_(Q10_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_78));
+
+
+REG32_LD_CL	b2v_inst31(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_79),
+	
+	.DIN(SYNTHESIZED_WIRE_80),
+	.DOUT(Q8_));
+
+assign	SYNTHESIZED_WIRE_79 = POP | PUSH8;
+
+
+MX2x32	b2v_inst33(
+	.S0(PUSH8),
+	.D0_(Q9_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_80));
+
+
+REG32_LD_CL	b2v_inst34(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_81),
+	
+	.DIN(SYNTHESIZED_WIRE_82),
+	.DOUT(Q10_));
+
+assign	SYNTHESIZED_WIRE_81 = POP | PUSH10;
+
+
+MX2x32	b2v_inst36(
+	.S0(PUSH10),
+	.D0_(Q11_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_82));
+
+
+REG32_LD_CL	b2v_inst37(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_83),
+	
+	.DIN(SYNTHESIZED_WIRE_84),
+	.DOUT(Q11_));
+
+assign	SYNTHESIZED_WIRE_83 = POP | PUSH11;
+
+
+MX2x32	b2v_inst39(
+	.S0(PUSH11),
+	.D0_(Q12_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_84));
+
+assign	SYNTHESIZED_WIRE_99 = POP | PUSH1;
+
+
+REG32_LD_CL	b2v_inst40(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_85),
+	
+	.DIN(SYNTHESIZED_WIRE_86),
+	.DOUT(Q13_));
+
+assign	SYNTHESIZED_WIRE_85 = POP | PUSH13;
+
+
+MX2x32	b2v_inst42(
+	.S0(PUSH13),
+	.D0_(Q14_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_86));
+
+
+REG32_LD_CL	b2v_inst43(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_87),
+	
+	.DIN(SYNTHESIZED_WIRE_88),
+	.DOUT(Q12_));
+
+assign	SYNTHESIZED_WIRE_87 = POP | PUSH12;
+
+
+MX2x32	b2v_inst45(
+	.S0(PUSH12),
+	.D0_(Q13_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_88));
+
+
+REG32_LD_CL	b2v_inst46(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_89),
+	
+	.DIN(SYNTHESIZED_WIRE_90),
+	.DOUT(Q14_));
+
+assign	SYNTHESIZED_WIRE_89 = POP | PUSH14;
+
+
+MX2x32	b2v_inst48(
+	.S0(PUSH14),
+	.D0_(Q15_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_90));
+
+
+REG32_LD_CL	b2v_inst49(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_91),
+	
+	.DIN(SYNTHESIZED_WIRE_92),
+	.DOUT(Q15_));
+
+assign	SYNTHESIZED_WIRE_115 = POP | PUSH0;
+
+assign	SYNTHESIZED_WIRE_91 = POP | PUSH15;
+
+
+MX2x32	b2v_inst51(
+	.S0(PUSH15),
+	.D0_(Q16_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_92));
+
+
+REG32_LD_CL	b2v_inst52(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_93),
+	
+	.DIN(SYNTHESIZED_WIRE_94),
+	.DOUT(Q17_));
+
+assign	SYNTHESIZED_WIRE_93 = POP | PUSH17;
+
+
+MX2x32	b2v_inst54(
+	.S0(PUSH17),
+	.D0_(Q18_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_94));
+
+
+REG32_LD_CL	b2v_inst55(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_95),
+	
+	.DIN(SYNTHESIZED_WIRE_96),
+	.DOUT(Q16_));
+
+assign	SYNTHESIZED_WIRE_95 = POP | PUSH16;
+
+
+MX2x32	b2v_inst57(
+	.S0(PUSH16),
+	.D0_(Q17_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_96));
+
+
+REG32_LD_CL	b2v_inst58(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_97),
+	
+	.DIN(SYNTHESIZED_WIRE_98),
+	.DOUT(Q18_));
+
+assign	SYNTHESIZED_WIRE_97 = POP | PUSH18;
+
+
+REG32_LD_CL	b2v_inst6(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_99),
+	
+	.DIN(SYNTHESIZED_WIRE_100),
+	.DOUT(Q1_));
+
+
+MX2x32	b2v_inst60(
+	.S0(PUSH18),
+	.D0_(Q19_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_98));
+
+
+REG32_LD_CL	b2v_inst61(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_101),
+	
+	.DIN(SYNTHESIZED_WIRE_102),
+	.DOUT(Q19_));
+
+assign	SYNTHESIZED_WIRE_101 = POP | PUSH19;
+
+
+MX2x32	b2v_inst63(
+	.S0(PUSH19),
+	.D0_(Q20_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_102));
+
+
+REG32_LD_CL	b2v_inst64(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_103),
+	
+	.DIN(SYNTHESIZED_WIRE_104),
+	.DOUT(Q21_));
+
+assign	SYNTHESIZED_WIRE_103 = POP | PUSH21;
+
+
+MX2x32	b2v_inst66(
+	.S0(PUSH21),
+	.D0_(Q22_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_104));
+
+
+REG32_LD_CL	b2v_inst67(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_105),
+	
+	.DIN(SYNTHESIZED_WIRE_106),
+	.DOUT(Q20_));
+
+assign	SYNTHESIZED_WIRE_105 = POP | PUSH20;
+
+
+MX2x32	b2v_inst69(
+	.S0(PUSH20),
+	.D0_(Q21_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_106));
+
+
+MX2x32	b2v_inst7(
+	.S0(PUSH1),
+	.D0_(Q2_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_100));
+
+
+REG32_LD_CL	b2v_inst70(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_107),
+	
+	.DIN(SYNTHESIZED_WIRE_108),
+	.DOUT(Q22_));
+
+assign	SYNTHESIZED_WIRE_107 = POP | PUSH22;
+
+
+MX2x32	b2v_inst72(
+	.S0(PUSH22),
+	.D0_(Q23_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_108));
+
+
+REG32_LD_CL	b2v_inst73(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_109),
+	
+	.DIN(SYNTHESIZED_WIRE_110),
+	.DOUT(Q23_));
+
+assign	SYNTHESIZED_WIRE_109 = POP | PUSH23;
+
+
+MX2x32	b2v_inst75(
+	.S0(PUSH23),
+	.D0_(Q24_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_110));
+
+
+REG32_LD_CL	b2v_inst76(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_111),
+	
+	.DIN(SYNTHESIZED_WIRE_112),
+	.DOUT(Q25_));
+
+assign	SYNTHESIZED_WIRE_111 = POP | PUSH25;
+
+
+MX2x32	b2v_inst78(
+	.S0(PUSH25),
+	.D0_(Q26_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_112));
+
+
+REG32_LD_CL	b2v_inst79(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_113),
+	
+	.DIN(SYNTHESIZED_WIRE_114),
+	.DOUT(Q24_));
+
+
+REG32_LD_CL	b2v_inst8(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_115),
+	
+	.DIN(SYNTHESIZED_WIRE_116),
+	.DOUT(Q0_));
+
+assign	SYNTHESIZED_WIRE_113 = POP | PUSH24;
+
+
+MX2x32	b2v_inst81(
+	.S0(PUSH24),
+	.D0_(Q25_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_114));
+
+
+REG32_LD_CL	b2v_inst82(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_117),
+	
+	.DIN(SYNTHESIZED_WIRE_118),
+	.DOUT(Q26_));
+
+assign	SYNTHESIZED_WIRE_117 = POP | PUSH26;
+
+
+MX2x32	b2v_inst84(
+	.S0(PUSH26),
+	.D0_(Q27_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_118));
+
+
+REG32_LD_CL	b2v_inst85(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_119),
+	
+	.DIN(SYNTHESIZED_WIRE_120),
+	.DOUT(Q27_));
+
+assign	SYNTHESIZED_WIRE_119 = POP | PUSH27;
+
+
+MX2x32	b2v_inst87(
+	.S0(PUSH27),
+	.D0_(Q28_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_120));
+
+
+REG32_LD_CL	b2v_inst88(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_121),
+	
+	.DIN(SYNTHESIZED_WIRE_122),
+	.DOUT(Q29_));
+
+assign	SYNTHESIZED_WIRE_121 = POP | PUSH29;
+
+
+MX2x32	b2v_inst9(
+	.S0(PUSH0),
+	.D0_(Q1_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_116));
+
+
+MX2x32	b2v_inst90(
+	.S0(PUSH29),
+	.D0_(Q30_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_122));
+
+
+REG32_LD_CL	b2v_inst91(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_123),
+	
+	.DIN(SYNTHESIZED_WIRE_124),
+	.DOUT(Q28_));
+
+assign	SYNTHESIZED_WIRE_123 = POP | PUSH28;
+
+
+MX2x32	b2v_inst93(
+	.S0(PUSH28),
+	.D0_(Q29_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_124));
+
+
+REG32_LD_CL	b2v_inst94(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_125),
+	
+	.DIN(SYNTHESIZED_WIRE_126),
+	.DOUT(Q30_));
+
+assign	SYNTHESIZED_WIRE_125 = POP | PUSH30;
+
+
+MX2x32	b2v_inst96(
+	.S0(PUSH30),
+	.D0_(Q31_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_126));
+
+
+REG32_LD_CL	b2v_inst97(
+	.CLK(CLK),
+	.LD(SYNTHESIZED_WIRE_127),
+	
+	.DIN(SYNTHESIZED_WIRE_128),
+	.DOUT(Q31_));
+
+assign	SYNTHESIZED_WIRE_127 = POP | PUSH31;
+
+
+MX2x32	b2v_inst99(
+	.S0(PUSH31),
+	.D0_(Q32_),
+	.D1_(DIN),
+	.Q(SYNTHESIZED_WIRE_128));
+
+assign	DOUT = Q0_;
+assign	H = 1;
+assign	L = 0;
+
+initial begin
+    if ($test$plusargs("trace") != 0) begin
+        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+        $dumpfile("logs/vlt_dump.vcd");
+        $dumpvars();
+    end
+    $display("[%0t] Model running...\n", $time);
+end
+
+endmodule
