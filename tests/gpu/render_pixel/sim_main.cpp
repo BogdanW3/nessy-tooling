@@ -28,17 +28,18 @@ int main(int argc, char** argv) {
 
     const std::unique_ptr<Vrender_pixel> instance{new Vrender_pixel{ctx.get(), "render_pixel"}};
 
+	
     instance->CLK = 0;
-	instance->DIN = 0b1000;
-	instance->LD = true;
-	instance->BG = false;
-	//Evaluacija kombinacione logike na ulazu komponente;
-    ctx->timeInc(1);
 
 	int i = 0;
     // Simulate until $finish
     while (!ctx->gotFinish()) {
 		switch(i) {
+			case 0:
+				instance->DIN = 0b1000;
+				instance->LD = true;
+				instance->BG = false;
+				break;
 			case 1:
 				instance->DIN = 0b1001;
 				instance->LD = true;
