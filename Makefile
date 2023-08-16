@@ -4,7 +4,7 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=gpu/pixel_buffer
+TLE=gpu/render_pixel
 
 default: verilog run
 
