@@ -1,4 +1,4 @@
-// Copyright (C) 2022  Intel Corporation. All rights reserved.
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
 // Your use of Intel Corporation's design tools, logic functions 
 // and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
@@ -14,8 +14,8 @@
 // https://fpgasoftware.intel.com/eula.
 
 // PROGRAM		"Quartus Prime"
-// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
-// CREATED		"Tue Aug 15 19:24:45 2023"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Sun Aug 20 16:56:15 2023"
 
 module gpu(
 	CLK,
@@ -77,14 +77,12 @@ wire	BG4;
 wire	BG5;
 wire	BG6;
 wire	BG7;
-wire	BR1;
-wire	BR2;
-wire	BR5;
-wire	BR6;
+wire	[7:0] BR;
 wire	[31:0] BUFF_DATA1_;
 wire	[31:0] BUFF_DATA2_;
 wire	[31:0] BUFF_DATA5_;
 wire	[31:0] BUFF_DATA6_;
+wire	[15:0] COLOUR;
 wire	CS;
 wire	DRAW;
 wire	[3:0] G;
@@ -123,7 +121,6 @@ wire	WR4;
 wire	WR5;
 wire	WR6;
 wire	WR7;
-reg	writ_tmp;
 wire	WRITE;
 wire	[15:0] X;
 wire	[15:0] X_BP;
@@ -134,6 +131,8 @@ wire	[15:0] X_NEXTLINE;
 wire	[15:0] X_SP;
 wire	[15:0] X_VIS;
 wire	[15:0] X_WR;
+wire	[15:0] X_WRITE;
+wire	X_WRITESAFE;
 wire	[15:0] Y;
 wire	[15:0] Y_BP;
 wire	Y_DRAW;
@@ -148,7 +147,7 @@ wire	SYNTHESIZED_WIRE_0;
 wire	[0:11] SYNTHESIZED_WIRE_1;
 reg	SRFF_NMI_occured;
 reg	DFFE_NMI_output;
-wire	SYNTHESIZED_WIRE_2;
+wire	[7:0] SYNTHESIZED_WIRE_2;
 wire	SYNTHESIZED_WIRE_3;
 wire	SYNTHESIZED_WIRE_4;
 wire	SYNTHESIZED_WIRE_5;
@@ -156,10 +155,10 @@ wire	SYNTHESIZED_WIRE_6;
 wire	SYNTHESIZED_WIRE_7;
 wire	SYNTHESIZED_WIRE_8;
 wire	SYNTHESIZED_WIRE_9;
-wire	SYNTHESIZED_WIRE_44;
-wire	SYNTHESIZED_WIRE_45;
-wire	SYNTHESIZED_WIRE_46;
-wire	SYNTHESIZED_WIRE_13;
+wire	SYNTHESIZED_WIRE_10;
+wire	SYNTHESIZED_WIRE_49;
+wire	SYNTHESIZED_WIRE_50;
+wire	SYNTHESIZED_WIRE_51;
 wire	SYNTHESIZED_WIRE_14;
 wire	SYNTHESIZED_WIRE_15;
 wire	SYNTHESIZED_WIRE_16;
@@ -174,82 +173,91 @@ wire	SYNTHESIZED_WIRE_24;
 wire	SYNTHESIZED_WIRE_25;
 wire	[0:15] SYNTHESIZED_WIRE_26;
 wire	SYNTHESIZED_WIRE_27;
-wire	[3:0] SYNTHESIZED_WIRE_28;
-wire	SYNTHESIZED_WIRE_47;
-wire	SYNTHESIZED_WIRE_36;
-wire	SYNTHESIZED_WIRE_37;
+wire	SYNTHESIZED_WIRE_28;
+wire	SYNTHESIZED_WIRE_29;
+wire	SYNTHESIZED_WIRE_30;
+wire	SYNTHESIZED_WIRE_52;
 wire	SYNTHESIZED_WIRE_38;
-wire	[0:15] SYNTHESIZED_WIRE_39;
-wire	[11:0] SYNTHESIZED_WIRE_40;
+wire	SYNTHESIZED_WIRE_39;
+wire	SYNTHESIZED_WIRE_40;
 wire	SYNTHESIZED_WIRE_41;
-wire	SYNTHESIZED_WIRE_42;
+wire	[0:15] SYNTHESIZED_WIRE_42;
 wire	SYNTHESIZED_WIRE_43;
+wire	SYNTHESIZED_WIRE_44;
+wire	[11:0] SYNTHESIZED_WIRE_45;
+wire	SYNTHESIZED_WIRE_46;
+wire	SYNTHESIZED_WIRE_47;
+wire	SYNTHESIZED_WIRE_48;
 
 assign	SYNTHESIZED_WIRE_1 = 0;
-assign	SYNTHESIZED_WIRE_9 = 0;
-assign	SYNTHESIZED_WIRE_25 = 1;
+assign	SYNTHESIZED_WIRE_10 = 0;
 assign	SYNTHESIZED_WIRE_26 = 0;
-assign	SYNTHESIZED_WIRE_47 = 0;
-assign	SYNTHESIZED_WIRE_39 = 0;
-wire	[15:0] GDFX_TEMP_SIGNAL_10;
-wire	[15:0] GDFX_TEMP_SIGNAL_11;
+assign	SYNTHESIZED_WIRE_52 = 0;
+assign	SYNTHESIZED_WIRE_42 = 0;
 wire	[15:0] GDFX_TEMP_SIGNAL_0;
-wire	[3:0] GDFX_TEMP_SIGNAL_12;
-wire	[15:0] GDFX_TEMP_SIGNAL_2;
-wire	[7:0] GDFX_TEMP_SIGNAL_13;
+wire	[15:0] GDFX_TEMP_SIGNAL_13;
+wire	[15:0] GDFX_TEMP_SIGNAL_11;
+wire	[15:0] GDFX_TEMP_SIGNAL_12;
+wire	[15:0] GDFX_TEMP_SIGNAL_1;
+wire	[15:0] GDFX_TEMP_SIGNAL_3;
+wire	[7:0] GDFX_TEMP_SIGNAL_14;
+wire	[15:0] GDFX_TEMP_SIGNAL_7;
 wire	[15:0] GDFX_TEMP_SIGNAL_6;
 wire	[15:0] GDFX_TEMP_SIGNAL_5;
 wire	[15:0] GDFX_TEMP_SIGNAL_4;
-wire	[15:0] GDFX_TEMP_SIGNAL_3;
-wire	[15:0] GDFX_TEMP_SIGNAL_1;
+wire	[15:0] GDFX_TEMP_SIGNAL_2;
+wire	[15:0] GDFX_TEMP_SIGNAL_10;
 wire	[15:0] GDFX_TEMP_SIGNAL_9;
 wire	[15:0] GDFX_TEMP_SIGNAL_8;
-wire	[15:0] GDFX_TEMP_SIGNAL_7;
 
 
-assign	GDFX_TEMP_SIGNAL_10 = {L,L,L,L,L,L,L,H,H,L,L,H,L,H,L,L};
-assign	GDFX_TEMP_SIGNAL_11 = {L,L,L,L,L,L,L,L,L,L,H,L,L,L,H,H};
-assign	GDFX_TEMP_SIGNAL_0 = {L,L,L,L,L,H,L,L,L,L,L,L,H,L,L,L};
-assign	GDFX_TEMP_SIGNAL_12 = {L,H,H,L};
-assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,L,L,L,H,L,L,H,L,H,L,H,H,H};
-assign	GDFX_TEMP_SIGNAL_13 = {L,L,L,L,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,L,L,H,L,H,L,L,H,H,L,L,H};
-assign	GDFX_TEMP_SIGNAL_5 = {L,L,L,L,L,L,H,L,H,L,L,L,L,L,H,H};
-assign	GDFX_TEMP_SIGNAL_4 = {L,L,L,L,L,L,H,L,L,H,H,H,H,H,L,H};
-assign	GDFX_TEMP_SIGNAL_3 = {L,L,L,L,L,L,H,L,L,H,L,H,H,L,L,L};
-assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,H,L,L,L,L,L,L,H,H,H,H};
-assign	GDFX_TEMP_SIGNAL_9 = {L,L,L,L,L,L,H,H,H,H,L,H,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_8 = {L,L,L,L,L,L,H,H,L,H,L,H,H,L,L,L};
-assign	GDFX_TEMP_SIGNAL_7 = {L,L,L,L,L,L,H,H,L,L,H,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_0 = {L,L,L,L,L,H,L,L,L,L,L,L,L,L,H,H};
+assign	GDFX_TEMP_SIGNAL_13 = {L,L,L,L,PIXEL_OUT[11:0]};
+assign	GDFX_TEMP_SIGNAL_11 = {L,L,L,L,L,L,PIXEL_OUT[31:22]};
+assign	GDFX_TEMP_SIGNAL_12 = {L,L,L,L,L,L,PIXEL_OUT[21:12]};
+assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,H,L,L,L,L,L,L,H,L,L,L};
+assign	GDFX_TEMP_SIGNAL_3 = {L,L,L,L,L,L,H,L,L,H,L,H,L,H,H,H};
+assign	GDFX_TEMP_SIGNAL_14 = {L,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_7 = {L,L,L,L,L,L,H,L,H,L,L,H,H,L,L,H};
+assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,L,L,H,L,H,L,L,L,L,L,H,H};
+assign	GDFX_TEMP_SIGNAL_5 = {L,L,L,L,L,L,H,L,L,H,H,H,H,H,L,H};
+assign	GDFX_TEMP_SIGNAL_4 = {L,L,L,L,L,L,H,L,L,H,L,H,H,L,L,L};
+assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,L,L,H,L,L,L,L,L,L,H,H,H,H};
+assign	GDFX_TEMP_SIGNAL_10 = {L,L,L,L,L,L,H,H,H,H,L,H,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_9 = {L,L,L,L,L,L,H,H,L,H,L,H,H,L,L,L};
+assign	GDFX_TEMP_SIGNAL_8 = {L,L,L,L,L,L,H,H,L,L,H,L,L,L,L,L};
 
-assign	X_NEXTLINE = GDFX_TEMP_SIGNAL_0;
-
-
-assign	X_BP = GDFX_TEMP_SIGNAL_1;
+assign	X_WRITE = GDFX_TEMP_SIGNAL_0;
 
 
-assign	Y_PREDRAW = GDFX_TEMP_SIGNAL_2;
+assign	X_NEXTLINE = GDFX_TEMP_SIGNAL_1;
 
 
-assign	Y_VIS = GDFX_TEMP_SIGNAL_3;
+assign	X_BP = GDFX_TEMP_SIGNAL_2;
 
 
-assign	Y_FP = GDFX_TEMP_SIGNAL_4;
+assign	Y_PREDRAW = GDFX_TEMP_SIGNAL_3;
 
 
-assign	Y_SP = GDFX_TEMP_SIGNAL_5;
+assign	Y_VIS = GDFX_TEMP_SIGNAL_4;
 
 
-assign	Y_BP = GDFX_TEMP_SIGNAL_6;
+assign	Y_FP = GDFX_TEMP_SIGNAL_5;
 
 
-assign	X_VIS = GDFX_TEMP_SIGNAL_7;
+assign	Y_SP = GDFX_TEMP_SIGNAL_6;
 
 
-assign	X_FP = GDFX_TEMP_SIGNAL_8;
+assign	Y_BP = GDFX_TEMP_SIGNAL_7;
 
 
-assign	X_SP = GDFX_TEMP_SIGNAL_9;
+assign	X_VIS = GDFX_TEMP_SIGNAL_8;
+
+
+assign	X_FP = GDFX_TEMP_SIGNAL_9;
+
+
+assign	X_SP = GDFX_TEMP_SIGNAL_10;
 
 
 
@@ -280,7 +288,7 @@ MX2x12	b2v_inst1(
 	.S0(SYNTHESIZED_WIRE_0),
 	.D0_(SYNTHESIZED_WIRE_1),
 	.D1_(Y_NEXTTMP[11:0]),
-	.Q(SYNTHESIZED_WIRE_40));
+	.Q(SYNTHESIZED_WIRE_45));
 
 
 
@@ -311,17 +319,36 @@ CMP16	b2v_inst16(
 	
 	.L(X_DRAW));
 
-assign	SYNTHESIZED_WIRE_41 = noX & VBLANK_START;
+assign	SYNTHESIZED_WIRE_46 = noX & VBLANK_START;
 
-assign	SYNTHESIZED_WIRE_42 = noX & Y_END;
+assign	SYNTHESIZED_WIRE_47 = noX & Y_END;
+
+assign	GPU_REQ = WRITE & VRAM_READY;
 
 
 CMP16	b2v_inst2(
 	.A(X),
 	.B(X_NEXTLINE),
 	
-	.E(SYNTHESIZED_WIRE_14)
+	.E(SYNTHESIZED_WIRE_15)
 	);
+
+
+CMP16	b2v_inst20(
+	.A(X),
+	.B(X_WRITE),
+	
+	.E(SYNTHESIZED_WIRE_44),
+	.L(SYNTHESIZED_WIRE_43));
+
+assign	D[7] = RD0 ? SYNTHESIZED_WIRE_2[7] : 1'bz;
+assign	D[6] = RD0 ? SYNTHESIZED_WIRE_2[6] : 1'bz;
+assign	D[5] = RD0 ? SYNTHESIZED_WIRE_2[5] : 1'bz;
+assign	D[4] = RD0 ? SYNTHESIZED_WIRE_2[4] : 1'bz;
+assign	D[3] = RD0 ? SYNTHESIZED_WIRE_2[3] : 1'bz;
+assign	D[2] = RD0 ? SYNTHESIZED_WIRE_2[2] : 1'bz;
+assign	D[1] = RD0 ? SYNTHESIZED_WIRE_2[1] : 1'bz;
+assign	D[0] = RD0 ? SYNTHESIZED_WIRE_2[0] : 1'bz;
 
 
 CMP16	b2v_inst22(
@@ -335,16 +362,16 @@ CMP16	b2v_inst22(
 CMP16	b2v_inst23(
 	.A(X),
 	.B(X_FP),
-	.G(SYNTHESIZED_WIRE_18),
-	.E(SYNTHESIZED_WIRE_17)
+	.G(SYNTHESIZED_WIRE_19),
+	.E(SYNTHESIZED_WIRE_18)
 	);
 
 
 CMP16	b2v_inst24(
 	.A(Y),
 	.B(Y_FP),
-	.G(SYNTHESIZED_WIRE_22),
-	.E(SYNTHESIZED_WIRE_21)
+	.G(SYNTHESIZED_WIRE_23),
+	.E(SYNTHESIZED_WIRE_22)
 	);
 
 
@@ -353,7 +380,7 @@ CMP16	b2v_inst25(
 	.B(X_SP),
 	
 	
-	.L(SYNTHESIZED_WIRE_19));
+	.L(SYNTHESIZED_WIRE_20));
 
 
 CMP16	b2v_inst26(
@@ -361,13 +388,15 @@ CMP16	b2v_inst26(
 	.B(Y_SP),
 	
 	
-	.L(SYNTHESIZED_WIRE_23));
+	.L(SYNTHESIZED_WIRE_24));
 
 assign	VRAM_Y = TMPADDR[9:0];
 
 
 assign	VRAM_X = X_WR[9:0];
 
+
+assign	VRAM_WRITE = POP;
 
 
 
@@ -376,7 +405,7 @@ CMP16	b2v_inst3(
 	.B(Y_PREDRAW),
 	
 	
-	.L(SYNTHESIZED_WIRE_16));
+	.L(SYNTHESIZED_WIRE_17));
 
 
 pixel_buffer	b2v_inst30(
@@ -385,30 +414,30 @@ pixel_buffer	b2v_inst30(
 	.CLK(CLK),
 	.DIN(PIXEL_IN),
 	.nBUFF_FULL(nBUFF_FULL),
-	.nBUFF_EMPTY(nBUFF_EMPTY)
-	);
+	.nBUFF_EMPTY(nBUFF_EMPTY),
+	.DOUT(PIXEL_OUT));
 
 
 CD8	b2v_inst31(
-	.D7(SYNTHESIZED_WIRE_2),
-	.D6(SYNTHESIZED_WIRE_3),
-	.D5(SYNTHESIZED_WIRE_4),
-	.D4(SYNTHESIZED_WIRE_5),
-	.D3(SYNTHESIZED_WIRE_6),
-	.D2(SYNTHESIZED_WIRE_7),
-	.D1(SYNTHESIZED_WIRE_8),
-	.D0(SYNTHESIZED_WIRE_9),
-	.Q2(SYNTHESIZED_WIRE_44),
-	.Q1(SYNTHESIZED_WIRE_45),
-	.Q0(SYNTHESIZED_WIRE_46),
-	.W(SYNTHESIZED_WIRE_13));
+	.D7(SYNTHESIZED_WIRE_3),
+	.D6(SYNTHESIZED_WIRE_4),
+	.D5(SYNTHESIZED_WIRE_5),
+	.D4(SYNTHESIZED_WIRE_6),
+	.D3(SYNTHESIZED_WIRE_7),
+	.D2(SYNTHESIZED_WIRE_8),
+	.D1(SYNTHESIZED_WIRE_9),
+	.D0(SYNTHESIZED_WIRE_10),
+	.Q2(SYNTHESIZED_WIRE_49),
+	.Q1(SYNTHESIZED_WIRE_50),
+	.Q0(SYNTHESIZED_WIRE_51),
+	.W(SYNTHESIZED_WIRE_14));
 
 
 DC8	b2v_inst32(
-	.D2(SYNTHESIZED_WIRE_44),
-	.D1(SYNTHESIZED_WIRE_45),
-	.D0(SYNTHESIZED_WIRE_46),
-	.E(SYNTHESIZED_WIRE_13),
+	.D2(SYNTHESIZED_WIRE_49),
+	.D1(SYNTHESIZED_WIRE_50),
+	.D0(SYNTHESIZED_WIRE_51),
+	.E(SYNTHESIZED_WIRE_14),
 	.Q7(BG7),
 	.Q6(BG6),
 	.Q5(BG5),
@@ -418,27 +447,27 @@ DC8	b2v_inst32(
 	.Q1(BG1)
 	);
 
-assign	VRAM_READ = SYNTHESIZED_WIRE_14 & VRAM_READY & SYNTHESIZED_WIRE_15;
+assign	VRAM_READ = SYNTHESIZED_WIRE_15 & VRAM_READY & SYNTHESIZED_WIRE_16;
 
 assign	SYNTHESIZED_WIRE_0 =  ~Y_END;
 
 
-assign	SYNTHESIZED_WIRE_15 = SYNTHESIZED_WIRE_16 | Y_END;
+assign	SYNTHESIZED_WIRE_16 = SYNTHESIZED_WIRE_17 | Y_END;
 
 assign	R = VRAM_D[11:8];
 
 
-assign	SYNTHESIZED_WIRE_20 = SYNTHESIZED_WIRE_17 | SYNTHESIZED_WIRE_18;
+assign	SYNTHESIZED_WIRE_21 = SYNTHESIZED_WIRE_18 | SYNTHESIZED_WIRE_19;
 
 assign	G = VRAM_D[7:4];
 
 
-assign	X_WR = GDFX_TEMP_SIGNAL_10;
+assign	X_WR = GDFX_TEMP_SIGNAL_11;
 
 
-assign	VGA_HS = SYNTHESIZED_WIRE_19 & SYNTHESIZED_WIRE_20;
+assign	VGA_HS = SYNTHESIZED_WIRE_20 & SYNTHESIZED_WIRE_21;
 
-assign	SYNTHESIZED_WIRE_24 = SYNTHESIZED_WIRE_21 | SYNTHESIZED_WIRE_22;
+assign	SYNTHESIZED_WIRE_25 = SYNTHESIZED_WIRE_22 | SYNTHESIZED_WIRE_23;
 
 assign	B = VRAM_D[3:0];
 
@@ -458,20 +487,30 @@ assign	VGA_R[2] = DRAW ? R[2] : 1'bz;
 assign	VGA_R[1] = DRAW ? R[1] : 1'bz;
 assign	VGA_R[0] = DRAW ? R[0] : 1'bz;
 
-assign	VGA_VS = SYNTHESIZED_WIRE_23 & SYNTHESIZED_WIRE_24;
+assign	VGA_VS = SYNTHESIZED_WIRE_24 & SYNTHESIZED_WIRE_25;
 
+assign	VRAM_D[15] = VRAM_WRITE ? COLOUR[15] : 1'bz;
+assign	VRAM_D[14] = VRAM_WRITE ? COLOUR[14] : 1'bz;
+assign	VRAM_D[13] = VRAM_WRITE ? COLOUR[13] : 1'bz;
+assign	VRAM_D[12] = VRAM_WRITE ? COLOUR[12] : 1'bz;
+assign	VRAM_D[11] = VRAM_WRITE ? COLOUR[11] : 1'bz;
+assign	VRAM_D[10] = VRAM_WRITE ? COLOUR[10] : 1'bz;
+assign	VRAM_D[9] = VRAM_WRITE ? COLOUR[9] : 1'bz;
+assign	VRAM_D[8] = VRAM_WRITE ? COLOUR[8] : 1'bz;
+assign	VRAM_D[7] = VRAM_WRITE ? COLOUR[7] : 1'bz;
+assign	VRAM_D[6] = VRAM_WRITE ? COLOUR[6] : 1'bz;
+assign	VRAM_D[5] = VRAM_WRITE ? COLOUR[5] : 1'bz;
+assign	VRAM_D[4] = VRAM_WRITE ? COLOUR[4] : 1'bz;
+assign	VRAM_D[3] = VRAM_WRITE ? COLOUR[3] : 1'bz;
+assign	VRAM_D[2] = VRAM_WRITE ? COLOUR[2] : 1'bz;
+assign	VRAM_D[1] = VRAM_WRITE ? COLOUR[1] : 1'bz;
+assign	VRAM_D[0] = VRAM_WRITE ? COLOUR[0] : 1'bz;
 
-assign	Y_WR = GDFX_TEMP_SIGNAL_11;
+assign	Y_WR = GDFX_TEMP_SIGNAL_12;
 
 
 assign	DRAW = X_DRAW & Y_DRAW;
 
-
-
-always@(posedge CLK)
-begin
-	writ_tmp <= ~writ_tmp & VBLANK_START | writ_tmp & ~VRAM_READ;
-end
 
 
 CMP16	b2v_inst51(
@@ -481,30 +520,20 @@ CMP16	b2v_inst51(
 	.E(noX)
 	);
 
+assign	SYNTHESIZED_WIRE_27 =  ~X_DRAW;
 
-REG4_INC_CL	b2v_inst52(
-	.CLK(CLK),
-	.INC(writ_tmp),
-	.CL(SYNTHESIZED_WIRE_27),
-	.DOUT(SYNTHESIZED_WIRE_28));
+assign	SYNTHESIZED_WIRE_29 = SYNTHESIZED_WIRE_27 & X_WRITESAFE;
 
-assign	SYNTHESIZED_WIRE_27 = VRAM_WRITE | VRAM_READ;
+assign	SYNTHESIZED_WIRE_38 = X_END & Y_END;
 
-assign	SYNTHESIZED_WIRE_36 = X_END & Y_END;
+assign	WRITE = SYNTHESIZED_WIRE_28 | SYNTHESIZED_WIRE_29;
 
+assign	SYNTHESIZED_WIRE_28 = ~(Y_DRAW | SYNTHESIZED_WIRE_30);
 
 
-CMP4	b2v_inst56(
-	.A(SYNTHESIZED_WIRE_28),
-	.B(GDFX_TEMP_SIGNAL_12),
-	
-	.E(VRAM_WRITE)
-	);
+assign	SYNTHESIZED_WIRE_6 = SYNTHESIZED_WIRE_52 & SYNTHESIZED_WIRE_52;
 
-
-assign	SYNTHESIZED_WIRE_5 = SYNTHESIZED_WIRE_47 & SYNTHESIZED_WIRE_47;
-
-assign	SYNTHESIZED_WIRE_6 = SYNTHESIZED_WIRE_47 & SYNTHESIZED_WIRE_47;
+assign	SYNTHESIZED_WIRE_7 = SYNTHESIZED_WIRE_52 & SYNTHESIZED_WIRE_52;
 
 
 REG16_INC_CL	b2v_inst6(
@@ -513,24 +542,24 @@ REG16_INC_CL	b2v_inst6(
 	.CL(X_END),
 	.DOUT(X));
 
-assign	SYNTHESIZED_WIRE_4 = nBUFF_FULL & BR5;
+assign	SYNTHESIZED_WIRE_5 = nBUFF_FULL & BR[5];
 
-assign	SYNTHESIZED_WIRE_7 = nBUFF_FULL & BR2;
+assign	SYNTHESIZED_WIRE_8 = nBUFF_FULL & BR[2];
 
-assign	SYNTHESIZED_WIRE_8 = nBUFF_FULL & BR1;
+assign	SYNTHESIZED_WIRE_9 = nBUFF_FULL & BR[1];
 
 
-assign	SYNTHESIZED_WIRE_3 = nBUFF_FULL & BR6;
+assign	SYNTHESIZED_WIRE_4 = nBUFF_FULL & BR[6];
 
-assign	SYNTHESIZED_WIRE_2 = nBUFF_EMPTY & GPU_REQ;
+assign	SYNTHESIZED_WIRE_3 = nBUFF_EMPTY & GPU_REQ;
 
 assign	PUSH = BG6 | BG4 | BG5 | BG3 | BG2 | BG1;
 
 
 MX8x32	b2v_inst67(
-	.S2(SYNTHESIZED_WIRE_44),
-	.S1(SYNTHESIZED_WIRE_45),
-	.S0(SYNTHESIZED_WIRE_46),
+	.S2(SYNTHESIZED_WIRE_49),
+	.S1(SYNTHESIZED_WIRE_50),
+	.S0(SYNTHESIZED_WIRE_51),
 	
 	.D1_(BUFF_DATA1_),
 	.D2_(BUFF_DATA2_),
@@ -541,20 +570,23 @@ MX8x32	b2v_inst67(
 	
 	.Q_(PIXEL_IN));
 
+assign	COLOUR = GDFX_TEMP_SIGNAL_13;
+
+
 
 render_pixel	b2v_inst69(
 	.LD(WR1),
 	.BG(BG1),
 	.CLK(CLK),
 	.DIN(D),
-	.BR(BR1),
+	.BR(BR[1]),
 	.DOUT(BUFF_DATA1_));
 
 
 REG16_INC_CL	b2v_inst7(
 	.CLK(CLK),
 	.INC(X_END),
-	.CL(SYNTHESIZED_WIRE_36),
+	.CL(SYNTHESIZED_WIRE_38),
 	.DOUT(Y));
 
 
@@ -563,7 +595,7 @@ render_pixel	b2v_inst70(
 	.BG(BG2),
 	.CLK(CLK),
 	.DIN(D),
-	.BR(BR2),
+	.BR(BR[2]),
 	.DOUT(BUFF_DATA2_));
 
 
@@ -571,7 +603,7 @@ DC8	b2v_inst71(
 	.D2(A[2]),
 	.D1(A[1]),
 	.D0(A[0]),
-	.E(SYNTHESIZED_WIRE_37),
+	.E(SYNTHESIZED_WIRE_39),
 	
 	.Q6(WR6),
 	.Q5(WR5),
@@ -583,14 +615,14 @@ DC8	b2v_inst71(
 
 assign	CS =  ~nCS;
 
-assign	SYNTHESIZED_WIRE_37 = CS & WR;
+assign	SYNTHESIZED_WIRE_39 = CS & WR;
 
 
 DC8	b2v_inst74(
 	.D2(A[2]),
 	.D1(A[1]),
 	.D0(A[0]),
-	.E(SYNTHESIZED_WIRE_38),
+	.E(SYNTHESIZED_WIRE_40),
 	
 	
 	
@@ -600,7 +632,7 @@ DC8	b2v_inst74(
 	
 	.Q0(RD0));
 
-assign	SYNTHESIZED_WIRE_38 = CS & RD;
+assign	SYNTHESIZED_WIRE_40 = CS & RD;
 
 
 render_rect	b2v_inst76(
@@ -608,7 +640,7 @@ render_rect	b2v_inst76(
 	.BG(BG5),
 	.CLK(CLK),
 	.DIN(D),
-	.BR(BR5),
+	.BR(BR[5]),
 	.DOUT(BUFF_DATA5_));
 
 
@@ -617,48 +649,56 @@ render_rect	b2v_inst77(
 	.BG(BG6),
 	.CLK(CLK),
 	.DIN(D),
-	.BR(BR6),
+	.BR(BR[6]),
 	.DOUT(BUFF_DATA6_));
 
 assign	POP = BG7;
 
 
+assign	SYNTHESIZED_WIRE_30 = ~(SYNTHESIZED_WIRE_41 & Y_END);
+
 
 ADD16	b2v_inst8(
 	.Cin(H),
 	.A(Y),
-	.B(SYNTHESIZED_WIRE_39),
+	.B(SYNTHESIZED_WIRE_42),
 	
 	.Q(Y_NEXTTMP));
 
-assign	SYNTHESIZED_WIRE_43 = CS & RD0;
+assign	SYNTHESIZED_WIRE_48 = CS & RD0;
+
+assign	SYNTHESIZED_WIRE_41 =  ~X_WRITESAFE;
+
+assign	SYNTHESIZED_WIRE_2 =  ~BR;
+
+assign	X_WRITESAFE = SYNTHESIZED_WIRE_43 | SYNTHESIZED_WIRE_44;
 
 
 MX2x12	b2v_inst9(
 	.S0(VRAM_READ),
 	.D0_(Y_WR[11:0]),
-	.D1_(SYNTHESIZED_WIRE_40),
+	.D1_(SYNTHESIZED_WIRE_45),
 	.Q(TMPADDR));
 
-assign	D[7] = L ? GDFX_TEMP_SIGNAL_13[7] : 1'bz;
-assign	D[6] = L ? GDFX_TEMP_SIGNAL_13[6] : 1'bz;
-assign	D[5] = L ? GDFX_TEMP_SIGNAL_13[5] : 1'bz;
-assign	D[4] = L ? GDFX_TEMP_SIGNAL_13[4] : 1'bz;
-assign	D[3] = L ? GDFX_TEMP_SIGNAL_13[3] : 1'bz;
-assign	D[2] = L ? GDFX_TEMP_SIGNAL_13[2] : 1'bz;
-assign	D[1] = L ? GDFX_TEMP_SIGNAL_13[1] : 1'bz;
-assign	D[0] = L ? GDFX_TEMP_SIGNAL_13[0] : 1'bz;
+assign	D[7] = L ? GDFX_TEMP_SIGNAL_14[7] : 1'bz;
+assign	D[6] = L ? GDFX_TEMP_SIGNAL_14[6] : 1'bz;
+assign	D[5] = L ? GDFX_TEMP_SIGNAL_14[5] : 1'bz;
+assign	D[4] = L ? GDFX_TEMP_SIGNAL_14[4] : 1'bz;
+assign	D[3] = L ? GDFX_TEMP_SIGNAL_14[3] : 1'bz;
+assign	D[2] = L ? GDFX_TEMP_SIGNAL_14[2] : 1'bz;
+assign	D[1] = L ? GDFX_TEMP_SIGNAL_14[1] : 1'bz;
+assign	D[0] = L ? GDFX_TEMP_SIGNAL_14[0] : 1'bz;
 
 
 always@(posedge CLK)
 begin
-	SRFF_NMI_occured <= ~SRFF_NMI_occured & SYNTHESIZED_WIRE_41 | SRFF_NMI_occured & ~SYNTHESIZED_WIRE_42;
+	SRFF_NMI_occured <= ~SRFF_NMI_occured & SYNTHESIZED_WIRE_46 | SRFF_NMI_occured & ~SYNTHESIZED_WIRE_47;
 end
 
 
 always@(posedge CLK)
 begin
-if (SYNTHESIZED_WIRE_43)
+if (SYNTHESIZED_WIRE_48)
 	begin
 	DFFE_NMI_output <= D[7];
 	end

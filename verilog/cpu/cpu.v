@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:53:51 2023"
+// CREATED		"Sun Aug 20 16:56:03 2023"
 
 module cpu(
 	nNMI,
@@ -36,177 +36,389 @@ output wire	WR;
 output wire	[15:0] A;
 inout wire	[7:0] D;
 
+reg	end5;
+reg	end6;
+wire	fail;
+reg	five_1;
+reg	five_10;
+reg	five_11;
+reg	five_2;
+reg	five_3;
+reg	five_4;
+reg	five_5;
+reg	five_6;
+reg	five_7;
+reg	five_8;
+reg	five_9;
 wire	H;
-wire	KBDOUT;
-reg	KBEND;
-wire	KBRESET;
-wire	KBSR;
-wire	KBTEST;
-wire	[7:0] KBTESTDELAY;
 wire	L;
-reg	OUT_ALTERA_SYNTHESIZED0;
-reg	DFF_KB7;
+wire	NMI;
+wire	RD_ALTERA_SYNTHESIZED;
+reg	RDSTATUS;
+reg	six_1;
+reg	six_10;
+reg	six_11;
+reg	six_2;
+reg	six_3;
+reg	six_4;
+reg	six_5;
+reg	six_6;
+reg	six_7;
+reg	six_8;
+reg	six_9;
+reg	START;
+wire	start5;
+wire	start6;
+wire	WR_ALTERA_SYNTHESIZED0;
+wire	WR_ALTERA_SYNTHESIZED1;
+wire	WR_ALTERA_SYNTHESIZED5;
+wire	WR_ALTERA_SYNTHESIZED6;
+wire	WR_ALTERA_SYNTHESIZED80;
+wire	WR_ALTERA_SYNTHESIZED84;
+wire	WR_ALTERA_SYNTHESIZED90;
+wire	WR_ALTERA_SYNTHESIZED94;
+wire	WRA0;
+wire	WRF;
 wire	SYNTHESIZED_WIRE_0;
-reg	JKFF_inst90;
 wire	SYNTHESIZED_WIRE_1;
-wire	[7:0] SYNTHESIZED_WIRE_2;
-reg	DFF_KB0;
-reg	DFF_KB1;
-reg	DFF_KB2;
-reg	DFF_KB3;
-reg	DFF_KB4;
-reg	DFF_KB5;
-reg	DFF_KB6;
+wire	SYNTHESIZED_WIRE_2;
+wire	SYNTHESIZED_WIRE_3;
+wire	SYNTHESIZED_WIRE_4;
+wire	SYNTHESIZED_WIRE_5;
+wire	SYNTHESIZED_WIRE_6;
+wire	SYNTHESIZED_WIRE_7;
 
-wire	[15:0] GDFX_TEMP_SIGNAL_0;
+wire	[7:0] GDFX_TEMP_SIGNAL_7;
+wire	[7:0] GDFX_TEMP_SIGNAL_6;
+wire	[7:0] GDFX_TEMP_SIGNAL_5;
+wire	[7:0] GDFX_TEMP_SIGNAL_4;
+wire	[7:0] GDFX_TEMP_SIGNAL_3;
+wire	[7:0] GDFX_TEMP_SIGNAL_2;
 wire	[7:0] GDFX_TEMP_SIGNAL_1;
+wire	[7:0] GDFX_TEMP_SIGNAL_0;
+wire	[15:0] GDFX_TEMP_SIGNAL_8;
+wire	[15:0] GDFX_TEMP_SIGNAL_9;
+wire	[15:0] GDFX_TEMP_SIGNAL_10;
 
 
-assign	GDFX_TEMP_SIGNAL_0 = {L,H,L,L,L,L,L,L,L,L,L,H,L,H,H,L};
-assign	GDFX_TEMP_SIGNAL_1 = {H,H,H,H,H,H,H,H};
+assign	GDFX_TEMP_SIGNAL_7 = {H,L,H,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_6 = {H,L,L,H,L,H,L,L};
+assign	GDFX_TEMP_SIGNAL_5 = {H,L,L,H,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_4 = {H,L,L,L,L,H,L,L};
+assign	GDFX_TEMP_SIGNAL_3 = {H,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,L,H,H,H,H};
+assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,L,L,H};
+assign	GDFX_TEMP_SIGNAL_0 = {L,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_8 = {L,L,H,L,L,L,L,L,L,L,L,L,L,H,H,L};
+assign	GDFX_TEMP_SIGNAL_9 = {L,L,H,L,L,L,L,L,L,L,L,L,L,H,L,H};
+assign	GDFX_TEMP_SIGNAL_10 = {L,L,H,L,L,L,L,L,L,L,L,L,L,L,L,L};
 
 
 always@(posedge CLK)
 begin
-	KBEND <= ~KBEND & DFF_KB7 | KBEND & ~KBTEST;
+	begin
+	START <= SYNTHESIZED_WIRE_0;
+	end
 end
 
 
-assign	KBDOUT = KBEND;
+
+MX8x8	b2v_inst10(
+	.S2(SYNTHESIZED_WIRE_1),
+	.S1(SYNTHESIZED_WIRE_2),
+	.S0(SYNTHESIZED_WIRE_3),
+	.D0_(GDFX_TEMP_SIGNAL_0),
+	.D1_(GDFX_TEMP_SIGNAL_1),
+	.D2_(GDFX_TEMP_SIGNAL_2),
+	.D3_(GDFX_TEMP_SIGNAL_3),
+	.D4_(GDFX_TEMP_SIGNAL_4),
+	.D5_(GDFX_TEMP_SIGNAL_5),
+	.D6_(GDFX_TEMP_SIGNAL_6),
+	.D7_(GDFX_TEMP_SIGNAL_7),
+	.Q(D));
+
+assign	SYNTHESIZED_WIRE_4 = START | end6 | fail | end5;
 
 
-assign	KBRESET = SYNTHESIZED_WIRE_0 | nNMI;
+always@(posedge CLK)
+begin
+	begin
+	RDSTATUS <= SYNTHESIZED_WIRE_4;
+	end
+end
 
-assign	A = GDFX_TEMP_SIGNAL_0;
+assign	start5 = D[5] & RDSTATUS;
+
+assign	start6 = D[6] & RDSTATUS;
+
+assign	fail = RDSTATUS & SYNTHESIZED_WIRE_5;
+
+assign	SYNTHESIZED_WIRE_5 = ~(D[6] | D[5]);
 
 
-assign	SYNTHESIZED_WIRE_1 =  ~JKFF_inst90;
+always@(posedge CLK)
+begin
+	begin
+	five_1 <= start5;
+	end
+end
+
+
+CD8	b2v_inst18(
+	.D7(WRA0),
+	.D6(WR_ALTERA_SYNTHESIZED94),
+	.D5(WR_ALTERA_SYNTHESIZED90),
+	.D4(WR_ALTERA_SYNTHESIZED84),
+	.D3(WR_ALTERA_SYNTHESIZED80),
+	.D2(WRF),
+	.D1(WR_ALTERA_SYNTHESIZED1),
+	.D0(WR_ALTERA_SYNTHESIZED0),
+	.Q2(SYNTHESIZED_WIRE_1),
+	.Q1(SYNTHESIZED_WIRE_2),
+	.Q0(SYNTHESIZED_WIRE_3)
+	);
+
+assign	RD_ALTERA_SYNTHESIZED = RDSTATUS;
+
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_2 <= five_1;
+	end
+end
 
 
 RisingEdge	b2v_inst3(
-	.D(SYNTHESIZED_WIRE_1),
+	.D(H),
 	.CLK(CLK),
-	.Q(KBTEST));
+	.Q(SYNTHESIZED_WIRE_0));
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_3 <= five_2;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_4 <= five_3;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_5 <= five_4;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_6 <= five_5;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_7 <= five_6;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_8 <= five_7;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_9 <= five_8;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_10 <= five_9;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	five_11 <= five_10;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_1 <= start6;
+	end
+end
 
 
 
-REG8_INC_CL	b2v_inst5(
-	.CLK(CLK),
-	.INC(KBEND),
-	.CL(KBTEST),
-	.DOUT(KBTESTDELAY));
+always@(posedge CLK)
+begin
+	begin
+	six_2 <= six_1;
+	end
+end
 
 
-REG8_LD_SR	b2v_inst6(
-	.CLK(CLK),
-	.LD(L),
-	.SR(KBSR),
-	.IR(D[1]),
+always@(posedge CLK)
+begin
+	begin
+	six_3 <= six_2;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_4 <= six_3;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_5 <= six_4;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_6 <= six_5;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_7 <= six_6;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_8 <= six_7;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_9 <= six_8;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_10 <= six_9;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	six_11 <= six_10;
+	end
+end
+
+
+
+always@(posedge CLK)
+begin
+	begin
+	end5 <= five_11;
+	end
+end
+
+
+always@(posedge CLK)
+begin
+	begin
+	end6 <= six_11;
+	end
+end
+
+assign	WR_ALTERA_SYNTHESIZED0 = five_2 | five_5 | five_3 | five_7 | five_11 | five_9 | six_1 | six_3;
+
+assign	WR_ALTERA_SYNTHESIZED1 = six_5 | six_9 | six_11 | six_7;
+
+assign	WRF = six_2 | five_1;
+
+assign	WR_ALTERA_SYNTHESIZED80 = five_6 | five_4;
+
+assign	WR_ALTERA_SYNTHESIZED84 = five_10;
+
+
+assign	WR_ALTERA_SYNTHESIZED90 = six_4 | six_6 | five_8;
+
+assign	WR_ALTERA_SYNTHESIZED94 = six_10;
+
+
+assign	WRA0 = six_8;
+
+
+assign	WR_ALTERA_SYNTHESIZED5 = five_3 | five_2 | five_1 | five_6 | five_5 | five_4 | five_8 | five_7 | five_9 | five_11 | five_10 | L;
+
+assign	WR_ALTERA_SYNTHESIZED6 = six_3 | six_2 | six_1 | six_6 | six_5 | six_4 | six_8 | six_7 | six_9 | six_11 | six_10 | L;
+
+assign	WR =  ~RD_ALTERA_SYNTHESIZED;
+
+
+MX4x16	b2v_inst8(
+	.S1(SYNTHESIZED_WIRE_6),
+	.S0(SYNTHESIZED_WIRE_7),
 	
+	.D1_(GDFX_TEMP_SIGNAL_8),
+	.D2_(GDFX_TEMP_SIGNAL_9),
+	.D3_(GDFX_TEMP_SIGNAL_10),
+	.Q_(A));
+
+
+CD4	b2v_inst9(
+	.D3(RDSTATUS),
+	.D2(WR_ALTERA_SYNTHESIZED5),
+	.D1(WR_ALTERA_SYNTHESIZED6),
 	
-	.DOUT(SYNTHESIZED_WIRE_2));
-
-assign	D[7] = KBDOUT ? SYNTHESIZED_WIRE_2[7] : 1'bz;
-assign	D[6] = KBDOUT ? SYNTHESIZED_WIRE_2[6] : 1'bz;
-assign	D[5] = KBDOUT ? SYNTHESIZED_WIRE_2[5] : 1'bz;
-assign	D[4] = KBDOUT ? SYNTHESIZED_WIRE_2[4] : 1'bz;
-assign	D[3] = KBDOUT ? SYNTHESIZED_WIRE_2[3] : 1'bz;
-assign	D[2] = KBDOUT ? SYNTHESIZED_WIRE_2[2] : 1'bz;
-assign	D[1] = KBDOUT ? SYNTHESIZED_WIRE_2[1] : 1'bz;
-assign	D[0] = KBDOUT ? SYNTHESIZED_WIRE_2[0] : 1'bz;
-
-
-CMP8	b2v_inst8(
-	.A(KBTESTDELAY),
-	.B(GDFX_TEMP_SIGNAL_1),
-	
-	.E(SYNTHESIZED_WIRE_0)
+	.Q1(SYNTHESIZED_WIRE_6),
+	.Q0(SYNTHESIZED_WIRE_7)
 	);
 
-assign	KBSR = ~(KBEND | OUT_ALTERA_SYNTHESIZED0);
-
-
-always@(posedge CLK)
-begin
-	JKFF_inst90 <= ~JKFF_inst90 & H | JKFF_inst90 & ~KBRESET;
-end
-
-assign	RD = KBSR;
-
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB0 <= OUT_ALTERA_SYNTHESIZED0;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB1 <= DFF_KB0;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB2 <= DFF_KB1;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB3 <= DFF_KB2;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB4 <= DFF_KB3;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB5 <= DFF_KB4;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB6 <= DFF_KB5;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	DFF_KB7 <= DFF_KB6;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	begin
-	OUT_ALTERA_SYNTHESIZED0 <= KBTEST;
-	end
-end
-
-assign	OUT0 = OUT_ALTERA_SYNTHESIZED0;
+assign	RD = RD_ALTERA_SYNTHESIZED;
 assign	H = 1;
 assign	L = 0;
 
