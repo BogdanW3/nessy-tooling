@@ -1,4 +1,4 @@
-// Copyright (C) 2022  Intel Corporation. All rights reserved.
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
 // Your use of Intel Corporation's design tools, logic functions 
 // and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
@@ -14,8 +14,8 @@
 // https://fpgasoftware.intel.com/eula.
 
 // PROGRAM		"Quartus Prime"
-// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
-// CREATED		"Tue Aug 15 19:24:48 2023"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Thu Aug 24 10:28:29 2023"
 
 module pixel_buffer(
 	PUSH,
@@ -297,7 +297,7 @@ wire	[31:0] SYNTHESIZED_WIRE_126;
 wire	SYNTHESIZED_WIRE_127;
 wire	[31:0] SYNTHESIZED_WIRE_128;
 
-assign	SYNTHESIZED_WIRE_72 = 1;
+assign	SYNTHESIZED_WIRE_72 = 0;
 wire	[7:0] GDFX_TEMP_SIGNAL_1;
 wire	[7:0] GDFX_TEMP_SIGNAL_0;
 
@@ -1496,14 +1496,5 @@ MX2x32	b2v_inst99(
 assign	DOUT = Q0_;
 assign	H = 1;
 assign	L = 0;
-
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
 
 endmodule

@@ -1,4 +1,4 @@
-// Copyright (C) 2022  Intel Corporation. All rights reserved.
+// Copyright (C) 2023  Intel Corporation. All rights reserved.
 // Your use of Intel Corporation's design tools, logic functions 
 // and other software and tools, and any partner logic 
 // functions, and any output files from any of the foregoing 
@@ -14,8 +14,8 @@
 // https://fpgasoftware.intel.com/eula.
 
 // PROGRAM		"Quartus Prime"
-// VERSION		"Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition"
-// CREATED		"Tue Aug 15 19:24:47 2023"
+// VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
+// CREATED		"Thu Aug 24 10:28:32 2023"
 
 module render_pixel(
 	LD,
@@ -23,6 +23,7 @@ module render_pixel(
 	CLK,
 	DIN,
 	BR,
+	READY,
 	DOUT
 );
 
@@ -32,14 +33,13 @@ input wire	BG;
 input wire	CLK;
 input wire	[7:0] DIN;
 output wire	BR;
+output wire	READY;
 output wire	[31:0] DOUT;
 
 wire	[3:0] B;
 reg	BR_ALTERA_SYNTHESIZED;
 wire	[11:0] COLOR;
 wire	[3:0] G;
-wire	H;
-wire	L;
 wire	LD_BLUE;
 wire	LD_GREEN;
 wire	LD_RED;
@@ -47,11 +47,8 @@ wire	LD_XH;
 wire	LD_XL;
 wire	LD_YH;
 wire	LD_YL;
-reg	nBOOT;
-wire	nREADY;
 wire	PRIMED;
 wire	[3:0] R;
-reg	READY;
 wire	[3:0] SEQ;
 wire	TRANSFER;
 wire	[9:0] X;
@@ -69,11 +66,7 @@ REG4_INC_CL	b2v_inst(
 	.CL(TRANSFER),
 	.DOUT(SEQ));
 
-
 assign	PRIMED = LD_YH;
-
-
-
 
 
 
@@ -84,6 +77,7 @@ REG8_LD_CL	b2v_inst2(
 	.DIN(DIN),
 	.DOUT(X[7:0]));
 
+assign	READY =  ~BR_ALTERA_SYNTHESIZED;
 
 
 REG4_LD_CL	b2v_inst32(
@@ -163,16 +157,5 @@ assign	BR = BR_ALTERA_SYNTHESIZED;
 assign	DOUT[31:22] = X;
 assign	DOUT[21:12] = Y;
 assign	DOUT[11:0] = COLOR;
-assign	H = 1;
-assign	L = 0;
-
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
 
 endmodule

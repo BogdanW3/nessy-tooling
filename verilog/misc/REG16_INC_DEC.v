@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sun Aug 20 16:56:18 2023"
+// CREATED		"Thu Aug 24 10:29:08 2023"
 
 module REG16_INC_DEC(
 	CLK,

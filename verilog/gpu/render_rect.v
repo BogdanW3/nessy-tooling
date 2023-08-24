@@ -15,13 +15,14 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sun Aug 20 16:56:17 2023"
+// CREATED		"Thu Aug 24 10:28:33 2023"
 
 module render_rect(
 	LD,
 	BG,
 	CLK,
 	DIN,
+	READY,
 	BR,
 	DOUT
 );
@@ -31,8 +32,18 @@ input wire	LD;
 input wire	BG;
 input wire	CLK;
 input wire	[7:0] DIN;
+output reg	READY;
 output wire	BR;
 output wire	[31:0] DOUT;
+
+initial begin
+    if ($test$plusargs("trace") != 0) begin
+        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
+        $dumpfile("logs/vlt_dump.vcd");
+        $dumpvars();
+    end
+    $display("[%0t] Model running...\n", $time);
+end
 
 wire	[3:0] B;
 reg	BR_ALTERA_SYNTHESIZED;
@@ -55,12 +66,10 @@ wire	LD_Y_ENDL;
 wire	LD_Y_STARTH;
 wire	LD_Y_STARTL;
 reg	nBOOT;
-wire	nREADY;
 wire	nX_MAX;
 wire	nY_MAX;
 wire	PRIMED;
 wire	[3:0] R;
-reg	READY;
 wire	[3:0] SEQ;
 wire	TRANSFER;
 wire	[15:0] X_END;
@@ -94,7 +103,7 @@ assign	GDFX_TEMP_SIGNAL_0 = {R[3:0],G[3:0],B[3:0]};
 REG4_INC_CL	b2v_inst(
 	.CLK(CLK),
 	.INC(LD),
-	.CL(TRANSFER),
+	.CL(END),
 	.DOUT(SEQ));
 
 
@@ -140,7 +149,25 @@ assign	PRIMED = LD_Y_ENDH;
 
 
 
+always@(posedge CLK)
+begin
+	begin
+	nBOOT <= H;
+	end
+end
 
+
+always@(posedge CLK or negedge nBOOT)
+begin
+if (!nBOOT)
+	begin
+	READY <= 1;
+	end
+else
+	begin
+	READY <= ~READY & END | READY & ~PRIMED;
+	end
+end
 
 
 always@(posedge CLK)

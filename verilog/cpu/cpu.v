@@ -15,26 +15,28 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sun Aug 20 16:56:03 2023"
+// CREATED		"Thu Aug 24 10:28:26 2023"
 
 module cpu(
 	nNMI,
 	CLK,
+	DIN,
 	OUT0,
 	RD,
 	WR,
 	A,
-	D
+	DOUT
 );
 
 
 input wire	nNMI;
 input wire	CLK;
+input wire	[7:0] DIN;
 output wire	OUT0;
 output wire	RD;
 output wire	WR;
 output wire	[15:0] A;
-inout wire	[7:0] D;
+output wire	[7:0] DOUT;
 
 reg	end5;
 reg	end6;
@@ -71,7 +73,11 @@ wire	start5;
 wire	start6;
 wire	WR_ALTERA_SYNTHESIZED0;
 wire	WR_ALTERA_SYNTHESIZED1;
+wire	WR_ALTERA_SYNTHESIZED2;
+wire	WR_ALTERA_SYNTHESIZED20;
+wire	WR_ALTERA_SYNTHESIZED3;
 wire	WR_ALTERA_SYNTHESIZED5;
+wire	WR_ALTERA_SYNTHESIZED58;
 wire	WR_ALTERA_SYNTHESIZED6;
 wire	WR_ALTERA_SYNTHESIZED80;
 wire	WR_ALTERA_SYNTHESIZED84;
@@ -87,31 +93,41 @@ wire	SYNTHESIZED_WIRE_4;
 wire	SYNTHESIZED_WIRE_5;
 wire	SYNTHESIZED_WIRE_6;
 wire	SYNTHESIZED_WIRE_7;
+wire	SYNTHESIZED_WIRE_8;
+wire	SYNTHESIZED_WIRE_9;
 
-wire	[7:0] GDFX_TEMP_SIGNAL_7;
-wire	[7:0] GDFX_TEMP_SIGNAL_6;
-wire	[7:0] GDFX_TEMP_SIGNAL_5;
-wire	[7:0] GDFX_TEMP_SIGNAL_4;
-wire	[7:0] GDFX_TEMP_SIGNAL_3;
-wire	[7:0] GDFX_TEMP_SIGNAL_2;
-wire	[7:0] GDFX_TEMP_SIGNAL_1;
 wire	[7:0] GDFX_TEMP_SIGNAL_0;
-wire	[15:0] GDFX_TEMP_SIGNAL_8;
-wire	[15:0] GDFX_TEMP_SIGNAL_9;
-wire	[15:0] GDFX_TEMP_SIGNAL_10;
+wire	[7:0] GDFX_TEMP_SIGNAL_3;
+wire	[7:0] GDFX_TEMP_SIGNAL_4;
+wire	[7:0] GDFX_TEMP_SIGNAL_5;
+wire	[7:0] GDFX_TEMP_SIGNAL_6;
+wire	[7:0] GDFX_TEMP_SIGNAL_7;
+wire	[7:0] GDFX_TEMP_SIGNAL_8;
+wire	[7:0] GDFX_TEMP_SIGNAL_9;
+wire	[7:0] GDFX_TEMP_SIGNAL_10;
+wire	[7:0] GDFX_TEMP_SIGNAL_11;
+wire	[7:0] GDFX_TEMP_SIGNAL_1;
+wire	[7:0] GDFX_TEMP_SIGNAL_2;
+wire	[15:0] GDFX_TEMP_SIGNAL_12;
+wire	[15:0] GDFX_TEMP_SIGNAL_13;
+wire	[15:0] GDFX_TEMP_SIGNAL_14;
 
 
-assign	GDFX_TEMP_SIGNAL_7 = {H,L,H,L,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_6 = {H,L,L,H,L,H,L,L};
-assign	GDFX_TEMP_SIGNAL_5 = {H,L,L,H,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_4 = {H,L,L,L,L,H,L,L};
-assign	GDFX_TEMP_SIGNAL_3 = {H,L,L,L,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_2 = {L,L,L,L,H,H,H,H};
-assign	GDFX_TEMP_SIGNAL_1 = {L,L,L,L,L,L,L,H};
 assign	GDFX_TEMP_SIGNAL_0 = {L,L,L,L,L,L,L,L};
-assign	GDFX_TEMP_SIGNAL_8 = {L,L,H,L,L,L,L,L,L,L,L,L,L,H,H,L};
-assign	GDFX_TEMP_SIGNAL_9 = {L,L,H,L,L,L,L,L,L,L,L,L,L,H,L,H};
-assign	GDFX_TEMP_SIGNAL_10 = {L,L,H,L,L,L,L,L,L,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_3 = {L,L,L,L,L,L,L,H};
+assign	GDFX_TEMP_SIGNAL_4 = {L,L,L,L,L,L,H,L};
+assign	GDFX_TEMP_SIGNAL_5 = {L,L,L,L,L,L,H,H};
+assign	GDFX_TEMP_SIGNAL_6 = {L,L,L,L,H,H,H,H};
+assign	GDFX_TEMP_SIGNAL_7 = {L,L,H,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_8 = {L,H,L,H,H,L,L,L};
+assign	GDFX_TEMP_SIGNAL_9 = {H,L,L,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_10 = {H,L,L,L,L,H,L,L};
+assign	GDFX_TEMP_SIGNAL_11 = {H,L,L,H,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_1 = {H,L,L,H,L,H,L,L};
+assign	GDFX_TEMP_SIGNAL_2 = {H,L,H,L,L,L,L,L};
+assign	GDFX_TEMP_SIGNAL_12 = {L,L,H,L,L,L,L,L,L,L,L,L,L,H,H,L};
+assign	GDFX_TEMP_SIGNAL_13 = {L,L,H,L,L,L,L,L,L,L,L,L,L,H,L,H};
+assign	GDFX_TEMP_SIGNAL_14 = {L,L,H,L,L,L,L,L,L,L,L,L,L,L,L,L};
 
 
 always@(posedge CLK)
@@ -122,38 +138,23 @@ begin
 end
 
 
-
-MX8x8	b2v_inst10(
-	.S2(SYNTHESIZED_WIRE_1),
-	.S1(SYNTHESIZED_WIRE_2),
-	.S0(SYNTHESIZED_WIRE_3),
-	.D0_(GDFX_TEMP_SIGNAL_0),
-	.D1_(GDFX_TEMP_SIGNAL_1),
-	.D2_(GDFX_TEMP_SIGNAL_2),
-	.D3_(GDFX_TEMP_SIGNAL_3),
-	.D4_(GDFX_TEMP_SIGNAL_4),
-	.D5_(GDFX_TEMP_SIGNAL_5),
-	.D6_(GDFX_TEMP_SIGNAL_6),
-	.D7_(GDFX_TEMP_SIGNAL_7),
-	.Q(D));
-
-assign	SYNTHESIZED_WIRE_4 = START | end6 | fail | end5;
+assign	SYNTHESIZED_WIRE_1 = START | end6 | fail | end5;
 
 
 always@(posedge CLK)
 begin
 	begin
-	RDSTATUS <= SYNTHESIZED_WIRE_4;
+	RDSTATUS <= SYNTHESIZED_WIRE_1;
 	end
 end
 
-assign	start5 = D[5] & RDSTATUS;
+assign	SYNTHESIZED_WIRE_7 =  ~DIN[6];
 
-assign	start6 = D[6] & RDSTATUS;
+assign	start6 = DIN[6] & RDSTATUS;
 
-assign	fail = RDSTATUS & SYNTHESIZED_WIRE_5;
+assign	fail = RDSTATUS & SYNTHESIZED_WIRE_2;
 
-assign	SYNTHESIZED_WIRE_5 = ~(D[6] | D[5]);
+assign	SYNTHESIZED_WIRE_2 = ~(DIN[6] | DIN[5]);
 
 
 always@(posedge CLK)
@@ -163,22 +164,71 @@ begin
 	end
 end
 
+assign	RD_ALTERA_SYNTHESIZED = RDSTATUS;
 
-CD8	b2v_inst18(
-	.D7(WRA0),
-	.D6(WR_ALTERA_SYNTHESIZED94),
-	.D5(WR_ALTERA_SYNTHESIZED90),
-	.D4(WR_ALTERA_SYNTHESIZED84),
-	.D3(WR_ALTERA_SYNTHESIZED80),
-	.D2(WRF),
+
+
+RisingEdge	b2v_inst2(
+	.D(NMI),
+	.CLK(CLK),
+	.Q(OUT0));
+
+
+CD16	b2v_inst20(
+	
+	
+	
+	
+	.D11(WRA0),
+	.D10(WR_ALTERA_SYNTHESIZED94),
+	.D9(WR_ALTERA_SYNTHESIZED90),
+	.D8(WR_ALTERA_SYNTHESIZED84),
+	.D7(WR_ALTERA_SYNTHESIZED80),
+	.D6(WR_ALTERA_SYNTHESIZED58),
+	.D5(WR_ALTERA_SYNTHESIZED20),
+	.D4(WRF),
+	.D3(WR_ALTERA_SYNTHESIZED3),
+	.D2(WR_ALTERA_SYNTHESIZED2),
 	.D1(WR_ALTERA_SYNTHESIZED1),
 	.D0(WR_ALTERA_SYNTHESIZED0),
-	.Q2(SYNTHESIZED_WIRE_1),
-	.Q1(SYNTHESIZED_WIRE_2),
-	.Q0(SYNTHESIZED_WIRE_3)
+	.Q3(SYNTHESIZED_WIRE_3),
+	.Q2(SYNTHESIZED_WIRE_4),
+	.Q1(SYNTHESIZED_WIRE_5),
+	.Q0(SYNTHESIZED_WIRE_6)
 	);
 
-assign	RD_ALTERA_SYNTHESIZED = RDSTATUS;
+
+MX16x8	b2v_inst21(
+	.S3(SYNTHESIZED_WIRE_3),
+	.S2(SYNTHESIZED_WIRE_4),
+	.S1(SYNTHESIZED_WIRE_5),
+	.S0(SYNTHESIZED_WIRE_6),
+	.D0_(GDFX_TEMP_SIGNAL_0),
+	.D10_(GDFX_TEMP_SIGNAL_1),
+	.D11_(GDFX_TEMP_SIGNAL_2),
+	
+	
+	
+	
+	.D1_(GDFX_TEMP_SIGNAL_3),
+	.D2_(GDFX_TEMP_SIGNAL_4),
+	.D3_(GDFX_TEMP_SIGNAL_5),
+	.D4_(GDFX_TEMP_SIGNAL_6),
+	.D5_(GDFX_TEMP_SIGNAL_7),
+	.D6_(GDFX_TEMP_SIGNAL_8),
+	.D7_(GDFX_TEMP_SIGNAL_9),
+	.D8_(GDFX_TEMP_SIGNAL_10),
+	.D9_(GDFX_TEMP_SIGNAL_11),
+	.Q(DOUT));
+
+assign	WR_ALTERA_SYNTHESIZED0 = five_2 | five_4 | five_3 | five_5 | five_7 | five_6 | six_1 | six_3;
+
+assign	WR_ALTERA_SYNTHESIZED80 = L;
+
+
+assign	WR_ALTERA_SYNTHESIZED90 = six_6 | six_4;
+
+assign	WR_ALTERA_SYNTHESIZED84 = L;
 
 
 
@@ -356,6 +406,7 @@ begin
 	end
 end
 
+assign	NMI =  ~nNMI;
 
 
 always@(posedge CLK)
@@ -373,18 +424,15 @@ begin
 	end
 end
 
-assign	WR_ALTERA_SYNTHESIZED0 = five_2 | five_5 | five_3 | five_7 | five_11 | five_9 | six_1 | six_3;
-
 assign	WR_ALTERA_SYNTHESIZED1 = six_5 | six_9 | six_11 | six_7;
 
 assign	WRF = six_2 | five_1;
 
-assign	WR_ALTERA_SYNTHESIZED80 = five_6 | five_4;
-
-assign	WR_ALTERA_SYNTHESIZED84 = five_10;
+assign	WR_ALTERA_SYNTHESIZED58 = five_10;
 
 
-assign	WR_ALTERA_SYNTHESIZED90 = six_4 | six_6 | five_8;
+assign	WR_ALTERA_SYNTHESIZED20 = five_8;
+
 
 assign	WR_ALTERA_SYNTHESIZED94 = six_10;
 
@@ -392,20 +440,28 @@ assign	WR_ALTERA_SYNTHESIZED94 = six_10;
 assign	WRA0 = six_8;
 
 
+assign	start5 = SYNTHESIZED_WIRE_7 & DIN[5] & RDSTATUS;
+
 assign	WR_ALTERA_SYNTHESIZED5 = five_3 | five_2 | five_1 | five_6 | five_5 | five_4 | five_8 | five_7 | five_9 | five_11 | five_10 | L;
 
 assign	WR_ALTERA_SYNTHESIZED6 = six_3 | six_2 | six_1 | six_6 | six_5 | six_4 | six_8 | six_7 | six_9 | six_11 | six_10 | L;
+
+assign	WR_ALTERA_SYNTHESIZED3 = five_9;
+
+
+assign	WR_ALTERA_SYNTHESIZED2 = five_11;
+
 
 assign	WR =  ~RD_ALTERA_SYNTHESIZED;
 
 
 MX4x16	b2v_inst8(
-	.S1(SYNTHESIZED_WIRE_6),
-	.S0(SYNTHESIZED_WIRE_7),
+	.S1(SYNTHESIZED_WIRE_8),
+	.S0(SYNTHESIZED_WIRE_9),
 	
-	.D1_(GDFX_TEMP_SIGNAL_8),
-	.D2_(GDFX_TEMP_SIGNAL_9),
-	.D3_(GDFX_TEMP_SIGNAL_10),
+	.D1_(GDFX_TEMP_SIGNAL_12),
+	.D2_(GDFX_TEMP_SIGNAL_13),
+	.D3_(GDFX_TEMP_SIGNAL_14),
 	.Q_(A));
 
 
@@ -414,8 +470,8 @@ CD4	b2v_inst9(
 	.D2(WR_ALTERA_SYNTHESIZED5),
 	.D1(WR_ALTERA_SYNTHESIZED6),
 	
-	.Q1(SYNTHESIZED_WIRE_6),
-	.Q0(SYNTHESIZED_WIRE_7)
+	.Q1(SYNTHESIZED_WIRE_8),
+	.Q0(SYNTHESIZED_WIRE_9)
 	);
 
 assign	RD = RD_ALTERA_SYNTHESIZED;

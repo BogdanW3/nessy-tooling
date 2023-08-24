@@ -15,54 +15,60 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug 24 10:29:29 2023"
+// CREATED		"Thu Aug 24 10:29:22 2023"
 
-module REG8_LD_SR(
+module REG4_LD_INC_DEC(
 	CLK,
+	INC,
+	DEC,
 	LD,
-	SR,
-	IR,
 	DIN,
-	S,
 	DOUT
 );
 
 
 input wire	CLK;
+input wire	INC;
+input wire	DEC;
 input wire	LD;
-input wire	SR;
-input wire	IR;
-input wire	[7:0] DIN;
-output wire	S;
-output wire	[7:0] DOUT;
+input wire	[3:0] DIN;
+output wire	[3:0] DOUT;
 
-wire	[7:0] DOUT_ALTERA_SYNTHESIZED;
+wire	[3:0] DOUT_ALTERA_SYNTHESIZED;
+wire	LOWMAX;
+wire	LOWMIN;
 wire	SYNTHESIZED_WIRE_0;
+wire	SYNTHESIZED_WIRE_1;
 
 
 
 
 
-REG4_LD_SR	b2v_inst(
+REG2_LD_INC_DEC	b2v_inst(
 	.CLK(CLK),
 	.LD(LD),
-	.SR(SR),
-	.IR(IR),
-	.DIN(DIN[7:4]),
-	.S(SYNTHESIZED_WIRE_0),
-	.DOUT(DOUT_ALTERA_SYNTHESIZED[7:4]));
+	.INC(INC),
+	.DEC(DEC),
+	.DIN(DIN[1:0]),
+	.DOUT(DOUT_ALTERA_SYNTHESIZED[1:0]));
+
+assign	SYNTHESIZED_WIRE_0 = INC & LOWMAX;
+
+assign	SYNTHESIZED_WIRE_1 = DEC & LOWMIN;
+
+assign	LOWMAX = DOUT_ALTERA_SYNTHESIZED[1] & DOUT_ALTERA_SYNTHESIZED[0];
+
+assign	LOWMIN = ~(DOUT_ALTERA_SYNTHESIZED[0] | DOUT_ALTERA_SYNTHESIZED[1]);
 
 
-REG4_LD_SR	b2v_inst1(
+REG2_LD_INC_DEC	b2v_inst6(
 	.CLK(CLK),
 	.LD(LD),
-	.SR(SR),
-	.IR(SYNTHESIZED_WIRE_0),
-	.DIN(DIN[3:0]),
-	
-	.DOUT(DOUT_ALTERA_SYNTHESIZED[3:0]));
+	.INC(SYNTHESIZED_WIRE_0),
+	.DEC(SYNTHESIZED_WIRE_1),
+	.DIN(DIN[3:2]),
+	.DOUT(DOUT_ALTERA_SYNTHESIZED[3:2]));
 
-assign	S = DOUT_ALTERA_SYNTHESIZED[0];
 assign	DOUT = DOUT_ALTERA_SYNTHESIZED;
 
 endmodule
