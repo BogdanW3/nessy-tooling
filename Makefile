@@ -4,16 +4,21 @@ endif
 
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
-TLE=gpu/render_rect
+
+-include Makefile_user
 
 default: verilog run
 
 SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))
+SOURCES_VERILOG += $(addprefix $(VERILOG_DIR)/,$(shell find $(BDF_DIR) -name "*.v" -printf "%P "))
 INCLUDE_FOLDERS = $(shell find ./nessy/src -type d -printf "-I${VERILOG_DIR}/%P ")
 
 ${VERILOG_DIR}/%.v: ${BDF_DIR}/%.bdf
-	quartus_map --convert_bdf_to_verilog=$< && dirname $@ | xargs mkdir --parents  && mv $(BDF_DIR)/$*.v $@
+	quartus_map --convert_bdf_to_verilog=$< && dirname $@ | xargs mkdir --parents && if [ "$*" = "$(TLE)" ]; then sed '$$e cat tests/example_tracing.v' $(BDF_DIR)/$*.v > $@; else cp $(BDF_DIR)/$*.v $@; fi && rm $(BDF_DIR)/$*.v
+
+${VERILOG_DIR}/%.v: ${BDF_DIR}/%.v
+	cp $< $@
 
 .PHONY: verilog
 verilog: $(SOURCES_VERILOG)
@@ -62,7 +67,7 @@ run:
 # 2. Or, run the make rules Verilator does:
 #	$(MAKE) -j -C obj_dir -f Vtop.mk
 # 3. Or, call a submakefile where we can override the rules ourselves:
-	$(MAKE) -j4 -C obj_dir -f ../Makefile_obj -E TLE=${TLE}
+	$(MAKE) -j$(CORECOUNT) -C obj_dir -f ../Makefile_obj -E TLE=${TLE}
 
 	@echo
 	@echo "-- RUN ---------------------"

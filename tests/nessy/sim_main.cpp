@@ -82,8 +82,11 @@ int main(int argc, char** argv) {
         
         top->SDRAM_DQ = 0xAF0C;
 
-        top->PS2_CLK = 1;
-        top->PS2_DATA = 1;
+        top->PS2_CLK0 = 1;
+        top->PS2_DATA0 = 1;
+        
+        top->PS2_CLK1 = 1;
+        top->PS2_DATA1 = 1;
 
         // Evaluate model
         // (If you have multiple models being simulated in the same

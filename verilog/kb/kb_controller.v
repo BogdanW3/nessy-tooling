@@ -15,40 +15,30 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:53:55 2023"
+// CREATED		"Tue Aug 29 21:46:16 2023"
 
 module kb_controller(
 	INTA,
 	CLK,
-	INTR,
-	PS2_DATA,
 	PS2_CLK,
+	PS2_DATA,
+	INTR,
 	Q
 );
 
 
 input wire	INTA;
 input wire	CLK;
-output wire	INTR;
-inout wire	PS2_DATA;
-inout wire	PS2_CLK;
+input wire	PS2_CLK;
+input wire	PS2_DATA;
+output reg	INTR;
 output wire	[7:0] Q;
 
-reg	D0;
-reg	D1;
-reg	D2;
-reg	D3;
-reg	D4;
-reg	D5;
-reg	D6;
-reg	D7;
-wire	H;
+reg	[7:0] D;
 wire	idle;
 wire	KBCLK;
-wire	L;
 wire	LD;
 reg	parity;
-reg	[7:0] Q_ALTERA_SYNTHESIZED;
 reg	tick0;
 reg	tick1;
 reg	tick2;
@@ -59,7 +49,6 @@ reg	tick6;
 reg	tick7;
 reg	tick8;
 reg	tick9;
-reg	VALID;
 wire	SYNTHESIZED_WIRE_0;
 wire	SYNTHESIZED_WIRE_4;
 wire	SYNTHESIZED_WIRE_3;
@@ -71,7 +60,7 @@ assign	SYNTHESIZED_WIRE_4 = 0;
 
 
 kb_debouncer	b2v_inst(
-	
+	.D(PS2_CLK),
 	.CLK(CLK),
 	.Q(KBCLK));
 
@@ -82,6 +71,14 @@ begin
 	parity <= PS2_DATA;
 	end
 end
+
+
+REG8_LD_CL	b2v_inst10(
+	.CLK(CLK),
+	.LD(LD),
+	
+	.DIN(D),
+	.DOUT(Q));
 
 
 always@(posedge KBCLK)
@@ -159,7 +156,7 @@ end
 always@(posedge KBCLK)
 begin
 	begin
-	D7 <= parity;
+	D[7] <= parity;
 	end
 end
 
@@ -172,16 +169,7 @@ begin
 end
 
 
-assign	SYNTHESIZED_WIRE_3 = ;
-
-
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[7] <= D7;
-	end
-end
+assign	SYNTHESIZED_WIRE_3 =  ~PS2_DATA;
 
 
 RisingEdge	b2v_inst27(
@@ -190,80 +178,17 @@ RisingEdge	b2v_inst27(
 	.Q(LD));
 
 
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[6] <= D6;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[5] <= D5;
-	end
-end
-
-
 always@(posedge KBCLK)
 begin
 	begin
-	D6 <= D7;
+	D[6] <= D[7];
 	end
 end
 
 
 always@(posedge CLK)
 begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[4] <= D4;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[3] <= D3;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[2] <= D2;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[1] <= D1;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-if (LD)
-	begin
-	Q_ALTERA_SYNTHESIZED[0] <= D0;
-	end
-end
-
-
-always@(posedge CLK)
-begin
-	VALID <= ~VALID & LD | VALID & ~INTA;
+	INTR <= ~INTR & LD | INTR & ~INTA;
 end
 
 assign	idle = ~(tick9 | tick8 | tick7 | tick5 | tick6 | tick4 | tick2 | tick3 | tick1 | SYNTHESIZED_WIRE_4 | tick0 | SYNTHESIZED_WIRE_4);
@@ -280,7 +205,7 @@ end
 always@(posedge KBCLK)
 begin
 	begin
-	D5 <= D6;
+	D[5] <= D[6];
 	end
 end
 
@@ -288,7 +213,7 @@ end
 always@(posedge KBCLK)
 begin
 	begin
-	D4 <= D5;
+	D[4] <= D[5];
 	end
 end
 
@@ -296,17 +221,15 @@ end
 always@(posedge KBCLK)
 begin
 	begin
-	D3 <= D4;
+	D[3] <= D[4];
 	end
 end
-
-
 
 
 always@(posedge KBCLK)
 begin
 	begin
-	D2 <= D3;
+	D[2] <= D[3];
 	end
 end
 
@@ -316,7 +239,7 @@ assign	SYNTHESIZED_WIRE_0 = SYNTHESIZED_WIRE_3 & DFF_inst38 & idle;
 always@(posedge KBCLK)
 begin
 	begin
-	D1 <= D2;
+	D[1] <= D[2];
 	end
 end
 
@@ -324,13 +247,9 @@ end
 always@(posedge KBCLK)
 begin
 	begin
-	D0 <= D1;
+	D[0] <= D[1];
 	end
 end
 
-assign	INTR = VALID;
-assign	Q = Q_ALTERA_SYNTHESIZED;
-assign	H = 1;
-assign	L = 0;
 
 endmodule

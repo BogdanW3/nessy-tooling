@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug 24 10:28:52 2023"
+// CREATED		"Tue Aug 29 21:46:55 2023"
 
 module MX2x12(
 	S0,

@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Sat Aug 12 22:54:57 2023"
+// CREATED		"Tue Aug 29 21:47:46 2023"
 
 module RisingEdge(
 	CLK,

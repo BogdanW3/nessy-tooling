@@ -15,7 +15,7 @@
 
 // PROGRAM		"Quartus Prime"
 // VERSION		"Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition"
-// CREATED		"Thu Aug 24 10:28:33 2023"
+// CREATED		"Tue Aug 29 21:46:14 2023"
 
 module render_rect(
 	LD,
@@ -35,15 +35,6 @@ input wire	[7:0] DIN;
 output reg	READY;
 output wire	BR;
 output wire	[31:0] DOUT;
-
-initial begin
-    if ($test$plusargs("trace") != 0) begin
-        $display("[%0t] Tracing to logs/vlt_dump.vcd...\n", $time);
-        $dumpfile("logs/vlt_dump.vcd");
-        $dumpvars();
-    end
-    $display("[%0t] Model running...\n", $time);
-end
 
 wire	[3:0] B;
 reg	BR_ALTERA_SYNTHESIZED;
