@@ -3,4 +3,4 @@ db/
 .vscode/
 obj_dir/
 .gitmodules
-Makefile_user
+Makefile.user

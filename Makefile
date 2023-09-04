@@ -5,7 +5,9 @@ endif
 BDF_DIR=nessy/src
 VERILOG_DIR=verilog
 
--include Makefile_user
+$(shell if [ ! -f Makefile.user ]; then cp Makefile.user.example Makefile.user; fi)
+
+-include Makefile.user
 
 default: verilog run
 
