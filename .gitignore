@@ -4,3 +4,4 @@ db/
 obj_dir/
 .gitmodules
 Makefile.user
+verilog/
