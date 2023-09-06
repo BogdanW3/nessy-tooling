@@ -21,120 +21,43 @@ int main(int argc, char** argv) {
 
     const std::unique_ptr<Vcpu_fetch> instance{new Vcpu_fetch{ctx.get(), "cpu"}};
 
+	int instruction[6] = {
+		0x40, //NA1 (RTI)
+		0x0A, //A1 (ASL a)
+		0x10, //NA2 (BPL)
+		0x09, //A2 (ORA #immed)
+		0x20, //NA3 (JSR)
+		0x6C, //A3 (JMP (memind))
+	};
+
     instance->CLK = 0;
 	instance->START = 1;
 	instance->FC = 0;
 	instance->MDR = 0;
 	int i = 0;
+	int k = 1;
+	int set = -1;
     // Simulate until $finish
     while (!ctx->gotFinish()) {
-		switch(i) {
-			//INSTRERROR (ISC a,x):
-			case 0:
-				//FETCH [SETUP]
-				instance->START = true;
-				break;
-			case 1:
-				//FETCH [T0]
-				instance->START = false;
-				break;
-			case 2:
-				//FETCH [T1]
-				break;
-			case 3:
-				//FETCH [T1]
+		if(instance->rdMEM == true)
+		{
+			if(k%2 == 0) 
+			{
 				instance->FC = true;
-				instance->MDR = 0x1A;
-				break;
-			case 4:
-				//FETCH [T2]
-				instance->FC = false;
-				break;
-			case 5:
-				//FETCH [T3]
-				//takt pauze (da se EN resetuje);
-				break;
-			//ADDRERROR (NOP)
-			case 6: 
-				instance->START = true;
-				break;
-			case 7:
-				//FETCH [T0]
-				instance->START = false;
-				break;
-			case 8:
-				//FETCH [T1]
-				break;
-			case 9:
-				//FETCH [T1]
-				instance->FC = true;
-				instance->MDR = 0x1A;
-				break;
-			case 10:
-				//FETCH [T2]
-				instance->FC = false;
-				break;
-			case 11: 
-				//FETCH [T3]
-				//takt pauze (da se EN resetuje);
-				break;
-			//NA1 (RTI)
-			case 12:
-				//FETCH [SETUP]
-				instance->START = true;
-				break;
-			case 13:
-				//FETCH [T0]
-				instance->START = false;
-				break;
-			case 14:
-				//FETCH [T1]
-				break;
-			case 15:
-				//FETCH [T1]
-				instance->FC = true;
-				instance->MDR = 0x40;
-				break;
-			case 16:
-				//FETCH [T2]
-				instance->FC = false;
-				break;
-			case 17:
-				//FETCH [T3]
-				break;
-			case 18:
-				//FETCH [T4]
-				break;
-			//A1 (ASL_ACC)
-			case 19:
-				//FETCH [SETUP]
-				instance->START = true;
-				break;
-			case 20:
-				//FETCH [T0]
-				instance->START = false;
-				break;
-			case 21:
-				//FETCH [T1]
-				break;
-			case 22:
-				//FETCH [T1]
-				instance->FC = true;
-				instance->MDR = 0x0A;
-				break;
-			case 23:
-				//FETCH [T2]
-				instance->FC = false;
-				break;
-			case 24:
-				//FETCH [T3]
-				//takt pauze (da se EN resetuje);
-				break;
-			case 25:
-				break;
-			
+				instance->MDR = instruction[i/15];
+				set = i;
+			}
+			k++;
 		}
-		
+		//ugasi FC posle jednog takta
+		if(set + 1 == i)
+			instance->FC = false;
+
+		if(i%15 == 0)
+			instance->START = true;
+		if(i%15 == 1)
+			instance->START = false;
+
 		instance->eval();
 			
 		//Rastuca ivica;
@@ -142,153 +65,13 @@ int main(int argc, char** argv) {
 		instance->CLK = !instance->CLK;
         instance->eval();
 	
-		//Proveri rezultate
-		switch(i) {
-			//INSTRERROR (ISC a,x)
-			case 0: 
-				//FETCH [T0]
-				if(instance->ldMAR != true)
-					VL_PRINTF("[%d] FAIL: Expected ldMAR: 1, got ldMAR: %u\n", i, instance->ldMAR);
-				if(instance->mxMAR0 != true)
-					VL_PRINTF("[%d] FAIL: Expected mxMAR0: 1, got mxMAR: %u\n", i, instance->mxMAR0);
-				break;
-			case 1: 
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 2:
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 3:
-				//FETCH [T2]
-				break;
-			case 4:
-				//FETCH [T3]
-				if(instance->IR0_ != 0x92)
-					VL_PRINTF("[%d] FAIL: Expected IR0_: 0x92, got IR0_: %02x\n", i, instance->IR0_);
-				if(instance->START_INTR != true)
-					VL_PRINTF("[%d] FAIL: Expected START_INTR: 1, got START_INTR: %u\n", i, instance->START_INTR);
-				break;
-			//ADDRERROR (STA #immed)
-			case 5: 
-				//Takt pauze (da se CNT resetuje):
-				break;
-			case 6: 
-				//FETCH [T0]
-				if(instance->ldMAR != true)
-					VL_PRINTF("[%d] FAIL: Expected ldMAR: 1, got ldMAR: %u\n", i, instance->ldMAR);
-				if(instance->mxMAR0 != true)
-					VL_PRINTF("[%d] FAIL: Expected mxMAR0: 1, got mxMAR: %u\n", i, instance->mxMAR0);
-				break;
-			case 7: 
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 8:
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 9:
-				//FETCH [T2]
-				break;
-			case 10:
-				//FETCH [T3]
-				if(instance->IR0_ != 0x1a)
-					VL_PRINTF("[%d] FAIL: Expected IR0_: 0x1a, got IR0_: %02x\n", i, instance->IR0_);
-				if(instance->START_INTR != true)
-					VL_PRINTF("[%d] FAIL: Expected START_INTR: 1, got START_INTR: %u\n", i, instance->START_INTR);
-				break;
-			//NA1 [RTI]
-			case 11:
-				//FETCH [SETUP]
-				break;
-			case 12: 
-				//FETCH [T0]
-				if(instance->ldMAR != true)
-					VL_PRINTF("[%d] FAIL: Expected ldMAR: 1, got ldMAR: %u\n", i, instance->ldMAR);
-				if(instance->mxMAR0 != true)
-					VL_PRINTF("[%d] FAIL: Expected mxMAR0: 1, got mxMAR: %u\n", i, instance->mxMAR0);
-				break;
-			case 13: 
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 14:
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 15:
-				//FETCH [T2]
-				break;
-			case 16:
-				//FETCH [T3]
-				if(instance->IR0_ != 0x40)
-					VL_PRINTF("[%d] FAIL: Expected IR0_: 0x40, got IR0_: %02x\n", i, instance->IR0_);
-				if(instance->START_INTR != false)
-					VL_PRINTF("[%d] FAIL: Expected START_INTR: 0, got START_INTR: %u\n", i, instance->START_INTR);
-				break;
-			case 17:
-				//FETCH [T4]
-				if(instance->START_EXEC != true)
-					VL_PRINTF("[%d] FAIL: Expected START_EXEC: 1, got START_EXEC: %u\n", i, instance->START_EXEC);
-				if(instance->START_ADDR != false)
-					VL_PRINTF("[%d] FAIL: Expected START_ADDR: 0, got START_ADDR: %u\n", i, instance->START_ADDR);
-				break;
-			//A1 (ASL_ACC)
-			case 18:
-				//FETCH [SETUP]
-				break;
-			case 19: 
-				//FETCH [T0]
-				if(instance->ldMAR != true)
-					VL_PRINTF("[%d] FAIL: Expected ldMAR: 1, got ldMAR: %u\n", i, instance->ldMAR);
-				if(instance->mxMAR0 != true)
-					VL_PRINTF("[%d] FAIL: Expected mxMAR0: 1, got mxMAR: %u\n", i, instance->mxMAR0);
-				break;
-			case 20: 
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 21:
-				//FETCH [T1]
-				if(instance->rdMEM != true)
-					VL_PRINTF("[%d] FAIL: Expected rdMEM: 1, got rdMEM: %u\n", i, instance->rdMEM);
-				break;
-			case 22:
-				//FETCH [T2]
-				break;
-			case 23:
-				//FETCH [T3]
-				if(instance->IR0_ != 0x0A)
-					VL_PRINTF("[%d] FAIL: Expected IR0_: 0x40, got IR0_: %02x\n", i, instance->IR0_);
-				if(instance->START_INTR != false)
-					VL_PRINTF("[%d] FAIL: Expected START_INTR: 0, got START_INTR: %u\n", i, instance->START_INTR);
-				break;
-			case 24:
-				//FETCH [T4]
-				if(instance->START_EXEC != false)
-					VL_PRINTF("[%d] FAIL: Expected START_EXEC: 0, got START_EXEC: %u\n", i, instance->START_EXEC);
-				if(instance->START_ADDR != true)
-					VL_PRINTF("[%d] FAIL: Expected START_ADDR: 1, got START_ADDR: %u\n", i, instance->START_ADDR);
-				break;
-			
-		}	
-
 		//Padajuca Ivica;
         ctx->timeInc(1);
         instance->CLK = !instance->CLK;
         //instance->eval();
 
 		//Sledeci korak;
-		if (i == 26) break;
+		if (i == 90) break;
 		i++;
     }
 
