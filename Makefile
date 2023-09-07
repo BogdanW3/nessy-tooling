@@ -15,6 +15,7 @@ SOURCES_BDF = $(shell find $(BDF_DIR) -name "*.bdf" -printf "%P ")
 SOURCES_VERILOG = $(addprefix $(VERILOG_DIR)/,$(SOURCES_BDF:.bdf=.v))
 SOURCES_VERILOG += $(addprefix $(VERILOG_DIR)/,$(shell find $(BDF_DIR) -name "*.v" -printf "%P "))
 INCLUDE_FOLDERS = $(shell find ./nessy/src -type d -printf "-I${VERILOG_DIR}/%P ")
+INCLUDE_FOLDERS += -Iverilog_manual
 
 ${VERILOG_DIR}/%.v: ${BDF_DIR}/%.bdf
 	quartus_map --convert_bdf_to_verilog=$< && dirname $@ | xargs mkdir --parents && if [ "$*" = "$(TLE)" ]; then sed '$$e cat tests/example_tracing.v' $(BDF_DIR)/$*.v > $@; else cp $(BDF_DIR)/$*.v $@; fi && rm $(BDF_DIR)/$*.v
@@ -96,4 +97,4 @@ show-config:
 
 maintainer-copy::
 clean mostlyclean distclean maintainer-clean::
-	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core
+	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core verilog
