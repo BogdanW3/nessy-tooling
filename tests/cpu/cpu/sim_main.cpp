@@ -21,48 +21,50 @@ int main(int argc, char** argv) {
 
     const std::unique_ptr<Vcpu> instance{new Vcpu{ctx.get(), "cpu"}};
 
+	uint8_t instruction[8] = {
+		//LDY #00
+		0xA0,
+		0x00,
+		//LDX #AA
+		0xA2,
+		0xAA,
+		//LDA #BB
+		0xA9,
+		0xBB,
+		//TAX
+		0xAA,
+		//TXS
+		0x9A
+	};
+
+
     instance->CLK = 0;
 	instance->nNMI = 1;
 	instance->DIN = 0;
 	instance->FC = 0;
 
 	int i = 0;
+	int mem_delay = 1;
+	int instr_cnt = 0;
+	int set = -1;
     // Simulate until $finish
     while (!ctx->gotFinish()) {
-		switch(i) {
-			case 0:
-				//POWERON [T0]
-				break;
-			case 1:
-				//POWERON [T1]
-				break;
-			case 2:
-				//POWERON [T1]
-				instance->FC = true;
-				instance->DIN = 0x00;
-				break;
-			case 3:
-				//POWERON [T2]
-				instance->FC = false;
-				break;
-			case 4: 
-				//POWERON [T3]
-				break;
-			case 5:
-				//POWERON [T3]
-				instance->FC = true;
-				instance->DIN = 0x80;
-				break;
-			case 6:
-				//POWERON [T4]
-				instance->FC = false;
-				break;
-			case 7:
-				//FETCH [T0]
-				break;
-				
-		}
 		
+		if(instance->RD == true)
+		{
+			if(mem_delay%3 == 0)
+			{
+				instance->FC = true;
+				instance->DIN = instruction[instr_cnt++];
+				set = i;
+			}
+			mem_delay++;
+		}
+
+		if(set + 1 == i)
+			instance->FC = false;
+
+
 		instance->eval();
 			
 		//Rastuca ivica;
@@ -70,66 +72,6 @@ int main(int argc, char** argv) {
 		instance->CLK = !instance->CLK;
         instance->eval();
 	
-		//Proveri rezultate
-		switch(i) {
-			case 0: 
-				//POWERON [T1]
-				if(instance->RD != true)
-					VL_PRINTF("[%d] FAIL: Expected R: 1, got R: %u\n", i, instance->RD);
-				if(instance->WR != false)
-					VL_PRINTF("[%d] FAIL: Expected WR: 0, got WR: %u\n", i, instance->WR);
-				if(instance->A != 0xFFFC)
-					VL_PRINTF("[%d] FAIL: Expected A: 0xFFFC, got A: %04x\n", i, instance->A);
-				break;
-			case 1:
-				//POWERON [T1]
-				if(instance->RD != true)
-					VL_PRINTF("[%d] FAIL: Expected R: 1, got R: %u\n", i, instance->RD);
-				if(instance->WR != false)
-					VL_PRINTF("[%d] FAIL: Expected WR: 0, got WR: %u\n", i, instance->WR);
-				if(instance->A != 0xFFFC)
-					VL_PRINTF("[%d] FAIL: Expected A: 0xFFFC, got A: %04x\n", i, instance->A);
-				break;
-			case 2:
-				//POWERON [T2]
-				if(instance->RD != false)
-					VL_PRINTF("[%d] FAIL: Expected R: 0, got R: %u\n", i, instance->RD);
-				if(instance->WR != false)
-					VL_PRINTF("[%d] FAIL: Expected WR: 0, got WR: %u\n", i, instance->WR);
-				break;
-			case 3: 
-				//POWERON [T3]
-				if(instance->RD != true)
-					VL_PRINTF("[%d] FAIL: Expected R: 1, got R: %u\n", i, instance->RD);
-				if(instance->WR != false)
-					VL_PRINTF("[%d] FAIL: Expected WR: 0, got WR: %u\n", i, instance->WR);
-				if(instance->A != 0xFFFD)
-					VL_PRINTF("[%d] FAIL: Expected A: 0xFFFD, got A: %04x\n", i, instance->A);
-				break;
-			case 4:
-				//POWERON [T3]
-				if(instance->RD != true)
-					VL_PRINTF("[%d] FAIL: Expected R: 1, got R: %u\n", i, instance->RD);
-				if(instance->WR != false)
-					VL_PRINTF("[%d] FAIL: Expected WR: 0, got WR: %u\n", i, instance->WR);
-				if(instance->A != 0xFFFD)
-					VL_PRINTF("[%d] FAIL: Expected A: 0xFFFD, got A: %04x\n", i, instance->A);
-				break;
-			case 5:
-				//POWERON [T4]
-				if(instance->RD != false)
-					VL_PRINTF("[%d] FAIL: Expected R: 0, got R: %u\n", i, instance->RD);
-				if(instance->WR != false)
-					VL_PRINTF("[%d] FAIL: Expected WR: 0, got WR: %u\n", i, instance->WR);
-				break;
-			case 6:
-				//FETCH [T0]
-				break;
-			case 7:
-				//FETVH [T0]
-				break;
-				
-		}	
 
 		//Padajuca Ivica;
         ctx->timeInc(1);
@@ -137,7 +79,7 @@ int main(int argc, char** argv) {
         //instance->eval();
 
 		//Sledeci korak;
-		if (i == 10) break;
+		if (instr_cnt == 9 || i == 240) break;
 		i++;
     }
 

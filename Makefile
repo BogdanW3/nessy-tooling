@@ -18,7 +18,10 @@ INCLUDE_FOLDERS = $(shell find ./nessy/src -type d -printf "-I${VERILOG_DIR}/%P 
 INCLUDE_FOLDERS += -Iverilog_manual
 
 ${VERILOG_DIR}/%.v: ${BDF_DIR}/%.bdf
-	quartus_map --convert_bdf_to_verilog=$< && dirname $@ | xargs mkdir --parents && if [ "$*" = "$(TLE)" ]; then sed '$$e cat tests/example_tracing.v' $(BDF_DIR)/$*.v > $@; else cp $(BDF_DIR)/$*.v $@; fi && rm $(BDF_DIR)/$*.v
+	quartus_map --convert_bdf_to_verilog=$<
+	dirname $@ | xargs mkdir --parents 
+	if [ "$*" = "$(TLE)" ]; then sed '$$e cat tests/example_tracing.v' $(BDF_DIR)/$*.v > $@; else cp $(BDF_DIR)/$*.v $@; fi
+	rm $(BDF_DIR)/$*.v
 
 ${VERILOG_DIR}/%.v: ${BDF_DIR}/%.v
 	cp $< $@
